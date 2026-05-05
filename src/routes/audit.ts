@@ -20,6 +20,7 @@ const upload = multer({
 // In-memory stores (swap for Supabase in production)
 const audits = new Map<string, AuditResult>();
 const disputes = new Map<string, Dispute[]>();
+const generatedLetters = new Map<string, import("../types/index.js").GeneratedDocument[]>();
 
 // ─── POST /api/audit — Upload reports & run cross-bureau audit ───────────────
 
@@ -112,12 +113,15 @@ auditRouter.post("/:id/disputes", (req, res) => {
   };
 
   const letters = generateAllDisputeLetters(audit.discrepancies, client);
+  generatedLetters.set(audit.id, letters);
 
   const disputeRecords: Dispute[] = [];
+  let letterIdx = 0;
   for (const discrepancy of audit.discrepancies) {
     const bureaus = Object.keys(discrepancy.values) as Bureau[];
     for (const bureau of bureaus) {
-      const letter = letters.find((l) => l.fileName.includes(bureau));
+      const letter = letters[letterIdx];
+      letterIdx++;
       const dispute = createDispute(
         client.id,
         audit.id,
@@ -162,24 +166,12 @@ auditRouter.get("/:id/disputes", (req, res) => {
 // ─── GET /api/audit/:id/letters/:index — Download a specific letter ──────────
 
 auditRouter.get("/:id/letters/:index", (req, res) => {
-  const audit = audits.get(req.params.id!);
-  if (!audit) {
-    res.status(404).json({ error: "Audit not found" });
+  const letters = generatedLetters.get(req.params.id!);
+  if (!letters) {
+    res.status(404).json({ error: "No letters found. Generate disputes first." });
     return;
   }
 
-  const client: Client = {
-    id: audit.clientId,
-    email: "",
-    name: "Client",
-    phone: null,
-    state: "NY",
-    county: "New York",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-
-  const letters = generateAllDisputeLetters(audit.discrepancies, client);
   const idx = parseInt(req.params.index!, 10);
   const letter = letters[idx];
 

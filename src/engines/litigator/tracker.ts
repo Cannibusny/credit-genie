@@ -142,7 +142,7 @@ export function summarizeDisputes(disputes: Dispute[]): DisputeSummary {
   return {
     total: disputes.length,
     byStatus,
-    expiredCount: readyForLitigation.length,
+    expiredCount: disputes.filter((d) => d.status === "pending_response" && d.responseDeadline && isPast(new Date(d.responseDeadline))).length,
     readyForLitigation,
   };
 }

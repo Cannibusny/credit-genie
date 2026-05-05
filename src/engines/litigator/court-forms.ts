@@ -82,7 +82,7 @@ III. FACTUAL ALLEGATIONS
 IV. VIOLATIONS
 
 {{#each violations}}
-{{@index}}. {{this}}
+{{this}}
 {{/each}}
 
 V. CAUSES OF ACTION
@@ -157,7 +157,7 @@ export function generateLitigationPackage(
 
     const violations = bureauDisputes.map(
       (d, i) =>
-        `Violation ${i + 1}: ${d.discrepancyId} — Inaccurate information persists after formal dispute. Letter sent ${d.sentAt ? format(new Date(d.sentAt), "MMMM d, yyyy") : "N/A"}.`,
+        `${10 + i}. Violation ${i + 1}: ${d.discrepancyId} — Inaccurate information persists after formal dispute. Letter sent ${d.sentAt ? format(new Date(d.sentAt), "MMMM d, yyyy") : "N/A"}.`,
     );
 
     const content = COMPLAINT_TEMPLATE({
