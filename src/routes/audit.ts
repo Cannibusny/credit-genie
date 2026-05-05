@@ -3,6 +3,7 @@ import multer from "multer";
 import { randomUUID } from "node:crypto";
 import { extractTextFromPdf, parseReport, runAudit, generateAllDisputeLetters } from "../engines/sniper/index.js";
 import { createDispute, markDisputeSent } from "../engines/litigator/index.js";
+import { config } from "../lib/config.js";
 import { log } from "../lib/logger.js";
 import type { Bureau, Client, Dispute, AuditResult } from "../types/index.js";
 
@@ -10,7 +11,7 @@ export const auditRouter = Router();
 
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 25 * 1024 * 1024 },
+  limits: { fileSize: config.MAX_REPORT_SIZE_MB * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
     if (file.mimetype === "application/pdf") cb(null, true);
     else cb(new Error("Only PDF files are accepted"));

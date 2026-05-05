@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const optionalUrl = z.string().url().optional();
+const optionalUrl = z.string().url().optional().or(z.literal(""));
 
 const envSchema = z.object({
   PORT: z.coerce.number().default(3001),
