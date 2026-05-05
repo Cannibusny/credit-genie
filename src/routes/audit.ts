@@ -9,6 +9,8 @@ import type { Bureau, Client, Dispute, AuditResult } from "../types/index.js";
 
 export const auditRouter = Router();
 
+const VALID_BUREAUS = new Set<string>(["equifax", "experian", "transunion"]);
+
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: config.MAX_REPORT_SIZE_MB * 1024 * 1024 },
@@ -50,7 +52,8 @@ auditRouter.post(
       const reports = await Promise.all(
         files.map(async (file, i) => {
           const text = await extractTextFromPdf(file.buffer);
-          const override = (overrides[i] || undefined) as Bureau | undefined;
+          const raw = overrides[i] || undefined;
+          const override = (raw && VALID_BUREAUS.has(raw) ? raw : undefined) as Bureau | undefined;
           return parseReport(text, override);
         }),
       );
@@ -96,61 +99,66 @@ auditRouter.get("/:id", (req, res) => {
 // ─── POST /api/audit/:id/disputes — Generate dispute letters ────────────────
 
 auditRouter.post("/:id/disputes", (req, res) => {
-  const audit = audits.get(req.params.id!);
-  if (!audit) {
-    res.status(404).json({ error: "Audit not found" });
-    return;
-  }
-
-  const client: Client = {
-    id: audit.clientId,
-    email: (req.body.email as string) || "client@example.com",
-    name: (req.body.name as string) || "Client",
-    phone: (req.body.phone as string) || null,
-    state: (req.body.state as string) || "NY",
-    county: (req.body.county as string) || "New York",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-
-  const letters = generateAllDisputeLetters(audit.discrepancies, client);
-  generatedLetters.set(audit.id, letters);
-
-  const disputeRecords: Dispute[] = [];
-  let letterIdx = 0;
-  for (const discrepancy of audit.discrepancies) {
-    const bureaus = Object.keys(discrepancy.values) as Bureau[];
-    for (const bureau of bureaus) {
-      const letter = letters[letterIdx];
-      letterIdx++;
-      const dispute = createDispute(
-        client.id,
-        audit.id,
-        discrepancy,
-        bureau,
-        letter?.content ?? "",
-      );
-      disputeRecords.push(markDisputeSent(dispute));
+  try {
+    const audit = audits.get(req.params.id!);
+    if (!audit) {
+      res.status(404).json({ error: "Audit not found" });
+      return;
     }
+
+    const client: Client = {
+      id: audit.clientId,
+      email: (req.body.email as string) || "client@example.com",
+      name: (req.body.name as string) || "Client",
+      phone: (req.body.phone as string) || null,
+      state: (req.body.state as string) || "NY",
+      county: (req.body.county as string) || "New York",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    const letters = generateAllDisputeLetters(audit.discrepancies, client);
+    generatedLetters.set(audit.id, letters);
+
+    const disputeRecords: Dispute[] = [];
+    let letterIdx = 0;
+    for (const discrepancy of audit.discrepancies) {
+      const bureaus = Object.keys(discrepancy.values) as Bureau[];
+      for (const bureau of bureaus) {
+        const letter = letters[letterIdx];
+        letterIdx++;
+        const dispute = createDispute(
+          client.id,
+          audit.id,
+          discrepancy,
+          bureau,
+          letter?.content ?? "",
+        );
+        disputeRecords.push(markDisputeSent(dispute));
+      }
+    }
+
+    disputes.set(audit.id, disputeRecords);
+
+    res.json({
+      auditId: audit.id,
+      disputesCreated: disputeRecords.length,
+      letters: letters.map((l) => ({
+        fileName: l.fileName,
+        type: l.type,
+        generatedAt: l.generatedAt,
+      })),
+      disputes: disputeRecords.map((d) => ({
+        id: d.id,
+        bureau: d.bureau,
+        status: d.status,
+        responseDeadline: d.responseDeadline,
+      })),
+    });
+  } catch (err) {
+    log.error({ err }, "Dispute generation failed");
+    res.status(500).json({ error: "Dispute generation failed." });
   }
-
-  disputes.set(audit.id, disputeRecords);
-
-  res.json({
-    auditId: audit.id,
-    disputesCreated: disputeRecords.length,
-    letters: letters.map((l) => ({
-      fileName: l.fileName,
-      type: l.type,
-      generatedAt: l.generatedAt,
-    })),
-    disputes: disputeRecords.map((d) => ({
-      id: d.id,
-      bureau: d.bureau,
-      status: d.status,
-      responseDeadline: d.responseDeadline,
-    })),
-  });
 });
 
 // ─── GET /api/audit/:id/disputes — Get disputes for an audit ─────────────────
