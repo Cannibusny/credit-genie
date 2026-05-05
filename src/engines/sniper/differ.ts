@@ -12,12 +12,17 @@ import { log } from "../../lib/logger.js";
 
 // ─── Account Matching ────────────────────────────────────────────────────────
 
+const CREDITOR_STOP_WORDS = new Set([
+  "bank", "financial", "services", "corp", "inc", "llc", "na", "co", "the",
+]);
+
 function normalizeCreditor(name: string): string {
   return name
     .toLowerCase()
-    .replace(/[^a-z0-9]/g, "")
-    .replace(/(bank|financial|services|corp|inc|llc|na)\b/g, "")
-    .trim();
+    .split(/[\s.,\-\/&']+/)
+    .filter((w) => w.length > 0 && !CREDITOR_STOP_WORDS.has(w))
+    .join("")
+    .replace(/[^a-z0-9]/g, "");
 }
 
 function accountsMatch(a: ParsedAccount, b: ParsedAccount): boolean {

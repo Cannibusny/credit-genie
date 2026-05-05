@@ -47,15 +47,15 @@ function extractPersonalInfo(text: string) {
 // ─── Account Parsing ─────────────────────────────────────────────────────────
 
 const statusMap: Record<string, AccountStatus> = {
-  open: "open",
-  current: "open",
-  closed: "closed",
   "paid/closed": "paid",
-  "charge-off": "charge_off",
   "charged off": "charge_off",
+  "charge-off": "charge_off",
   collection: "collection",
-  paid: "paid",
+  current: "open",
   settled: "settled",
+  closed: "closed",
+  open: "open",
+  paid: "paid",
 };
 
 const paymentMap: Record<string, PaymentStatus> = {

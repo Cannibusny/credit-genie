@@ -49,7 +49,7 @@ auditRouter.post(
       const reports = await Promise.all(
         files.map(async (file, i) => {
           const text = await extractTextFromPdf(file.buffer);
-          const override = overrides[i] as Bureau | undefined;
+          const override = (overrides[i] || undefined) as Bureau | undefined;
           return parseReport(text, override);
         }),
       );
