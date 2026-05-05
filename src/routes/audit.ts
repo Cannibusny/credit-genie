@@ -181,6 +181,6 @@ auditRouter.get("/:id/letters/:index", (req, res) => {
   }
 
   res.setHeader("Content-Type", "text/plain");
-  res.setHeader("Content-Disposition", `attachment; filename="${letter.fileName}"`);
+  res.setHeader("Content-Disposition", `attachment; filename="${letter.fileName.replace(/["\\]/g, "_")}"`);
   res.send(letter.content);
 });

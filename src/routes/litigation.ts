@@ -75,6 +75,6 @@ litigationRouter.get("/package/:id/forms/:index", (req, res) => {
   }
 
   res.setHeader("Content-Type", "text/plain");
-  res.setHeader("Content-Disposition", `attachment; filename="${form.fileName}"`);
+  res.setHeader("Content-Disposition", `attachment; filename="${form.fileName.replace(/["\\]/g, "_")}"`);
   res.send(form.content);
 });
