@@ -94,7 +94,11 @@ Count 3: Violation of FCRA § 617 — Negligent Noncompliance
 VI. DAMAGES SOUGHT
 
 Plaintiff seeks:
+{{#if isCapped}}
+a. Statutory damages of \${{totalDamages}} (\$1,000 per violation × {{violationCount}} violations = \${{uncappedDamages}}, capped to jurisdictional small claims limit of \${{smallClaimsLimit}}) under FCRA § 616(a)(1)(A).
+{{else}}
 a. Statutory damages of \${{totalDamages}} (\$1,000 per violation × {{violationCount}} violations) under FCRA § 616(a)(1)(A).
+{{/if}}
 b. Court costs and filing fees of \${{filingFee}}.
 c. Such other relief as the Court deems just and proper.
 
@@ -150,7 +154,7 @@ export function generateLitigationPackage(
 
     const violationCount = bureauDisputes.length;
     const damages = violationCount * 1000;
-    totalDamages += damages;
+    totalDamages += Math.min(damages, jurisdiction.smallClaimsLimit);
 
     const cappedDamages = Math.min(damages, jurisdiction.smallClaimsLimit);
     const wasVerified = bureauDisputes.some((d) => d.status === "verified");
@@ -170,8 +174,10 @@ export function generateLitigationPackage(
       county: jurisdiction.county,
       state: jurisdiction.state,
       totalDamages: cappedDamages.toLocaleString(),
+      uncappedDamages: damages.toLocaleString(),
       smallClaimsLimit: jurisdiction.smallClaimsLimit.toLocaleString(),
       violationCount,
+      isCapped: damages > jurisdiction.smallClaimsLimit,
       disputeDate: bureauDisputes[0]?.sentAt
         ? format(new Date(bureauDisputes[0].sentAt), "MMMM d, yyyy")
         : "N/A",

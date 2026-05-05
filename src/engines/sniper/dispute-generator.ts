@@ -94,7 +94,7 @@ export function generateDisputeLetter(
 
   const content = DISPUTE_TEMPLATE({
     clientName: client.name,
-    clientAddress: `${client.state}, ${client.county}`,
+    clientAddress: `${client.county}, ${client.state}`,
     date: format(new Date(), "MMMM d, yyyy"),
     bureauName: bureauInfo.name,
     bureauAddress: bureauInfo.address,
