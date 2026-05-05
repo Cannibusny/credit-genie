@@ -115,6 +115,7 @@ export function parseAccounts(text: string): ParsedAccount[] {
     const limitMatch = block.match(/(?:Credit Limit|Limit)[:\s]+\$?([\d,.]+)/i);
     const openedMatch = block.match(/(?:Date Opened|Opened)[:\s]+(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/i);
     const reportedMatch = block.match(/(?:Date Reported|Reported|Last Reported)[:\s]+(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/i);
+    const dofdMatch = block.match(/(?:Date of First Delinquency|First Delinquency|DOFD|Date of 1st Delinquency|First Reported Late)[:\s]+(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/i);
     const highMatch = block.match(/(?:High Balance|Highest Balance)[:\s]+\$?([\d,.]+)/i);
     const monthlyMatch = block.match(/(?:Monthly Payment|Payment)[:\s]+\$?([\d,.]+)/i);
 
@@ -146,6 +147,7 @@ export function parseAccounts(text: string): ParsedAccount[] {
       creditLimit: parseMoney(limitMatch?.[1]),
       dateOpened: openedMatch?.[1] ?? null,
       dateReported: reportedMatch?.[1] ?? null,
+      dateOfFirstDelinquency: dofdMatch?.[1] ?? null,
       paymentHistory,
       highBalance: parseMoney(highMatch?.[1]),
       monthlyPayment: parseMoney(monthlyMatch?.[1]),

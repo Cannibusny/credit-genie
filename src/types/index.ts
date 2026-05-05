@@ -57,6 +57,7 @@ export interface ParsedAccount {
   creditLimit: number | null;
   dateOpened: string | null; // ISO date
   dateReported: string | null;
+  dateOfFirstDelinquency: string | null;
   paymentHistory: PaymentHistoryEntry[];
   highBalance: number | null;
   monthlyPayment: number | null;

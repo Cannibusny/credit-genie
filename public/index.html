@@ -540,6 +540,7 @@
 
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => document.querySelectorAll(s);
+    function esc(s) { const d = document.createElement('div'); d.textContent = String(s ?? ''); return d.innerHTML; }
 
     // ─── Upload Zone ────────────────────────────────────────────────────
     const zone = $('#uploadZone');
@@ -570,13 +571,13 @@
       list.innerHTML = files.map((f, i) => `
         <span class="file-chip">
           <span class="dot"></span>
-          ${f.name}
+          ${esc(f.name)}
           <span class="remove" onclick="removeFile(${i})">&times;</span>
         </span>
       `).join('');
       selects.innerHTML = files.map((f, i) => `
         <div class="bureau-select">
-          <span>${f.name.split('.')[0].substring(0, 15)}</span>
+          <span>${esc(f.name.split('.')[0].substring(0, 15))}</span>
           <select id="bureau-${i}">
             <option value="">Auto-detect</option>
             <option value="equifax">Equifax</option>
@@ -647,25 +648,25 @@
       `;
 
       // Summary
-      $('#summaryBox').innerHTML = `<strong>Audit Summary:</strong> ${data.summary}`;
+      $('#summaryBox').innerHTML = `<strong>Audit Summary:</strong> ${esc(data.summary)}`;
 
       // Violations
       $('#violationCount').textContent = data.totalViolations;
       $('#violationsList').innerHTML = data.discrepancies.map(d => `
         <div class="violation-card">
           <div class="violation-header">
-            <h4>${d.description}</h4>
-            <span class="severity-badge severity-${d.severity}">${d.severity}</span>
+            <h4>${esc(d.description)}</h4>
+            <span class="severity-badge severity-${esc(d.severity)}">${esc(d.severity)}</span>
           </div>
           <div class="violation-body">
-            <strong>Type:</strong> ${d.violationType.replace(/_/g, ' ')}
+            <strong>Type:</strong> ${esc(d.violationType.replace(/_/g, ' '))}
             &nbsp;&middot;&nbsp;
-            <strong>Field:</strong> ${d.field}
+            <strong>Field:</strong> ${esc(d.field)}
           </div>
-          <div class="violation-legal">${d.legalBasis}</div>
+          <div class="violation-legal">${esc(d.legalBasis)}</div>
           <div class="violation-values">
             ${Object.entries(d.values).map(([b, v]) =>
-              `<span class="bureau-value"><span class="bureau-name">${b}:</span> ${v}</span>`
+              `<span class="bureau-value"><span class="bureau-name">${esc(b)}:</span> ${esc(v)}</span>`
             ).join('')}
           </div>
         </div>
@@ -725,7 +726,7 @@
                style="display:inline-block;margin:6px;padding:10px 20px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-size:13px;transition:border-color 0.2s"
                onmouseover="this.style.borderColor='var(--accent)'"
                onmouseout="this.style.borderColor='var(--border)'">
-              ${l.fileName}
+              ${esc(l.fileName)}
             </a>
           `).join('')}
         </div>

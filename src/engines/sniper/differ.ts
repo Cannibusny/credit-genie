@@ -260,6 +260,17 @@ function detectDuplicateAccounts(
   return discrepancies;
 }
 
+function parseDate(raw: string): Date | null {
+  const parts = raw.split(/[\/\-]/);
+  if (parts.length < 3) return null;
+  const month = parseInt(parts[0]!, 10);
+  const day = parseInt(parts[1]!, 10);
+  let year = parseInt(parts[2]!, 10);
+  if (year < 100) year += 2000;
+  const d = new Date(year, month - 1, day);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
 function detectObsoleteItems(reports: ParsedCreditReport[]): Discrepancy[] {
   const discrepancies: Discrepancy[] = [];
   const now = new Date();
@@ -267,20 +278,19 @@ function detectObsoleteItems(reports: ParsedCreditReport[]): Discrepancy[] {
 
   for (const report of reports) {
     for (const account of report.accounts) {
-      if (!account.dateOpened) continue;
-      const parts = account.dateOpened.split(/[\/\-]/);
-      if (parts.length < 3) continue;
+      if (account.accountStatus !== "collection" && account.accountStatus !== "charge_off") continue;
 
-      const month = parseInt(parts[0]!, 10);
-      const day = parseInt(parts[1]!, 10);
-      let year = parseInt(parts[2]!, 10);
-      if (year < 100) year += 2000;
-      const opened = new Date(year, month - 1, day);
+      const referenceDate =
+        account.dateOfFirstDelinquency ?? account.dateReported ?? null;
+      if (!referenceDate) continue;
 
-      if (
-        opened < sevenYearsAgo &&
-        (account.accountStatus === "collection" || account.accountStatus === "charge_off")
-      ) {
+      const parsed = parseDate(referenceDate);
+      if (!parsed) continue;
+
+      if (parsed < sevenYearsAgo) {
+        const dateLabel = account.dateOfFirstDelinquency
+          ? `first delinquency ${referenceDate}`
+          : `reported ${referenceDate}`;
         discrepancies.push({
           id: randomUUID(),
           accountMatch: {
@@ -289,12 +299,12 @@ function detectObsoleteItems(reports: ParsedCreditReport[]): Discrepancy[] {
             entries: { [report.bureau]: account },
           },
           field: "obsolete",
-          values: { [report.bureau]: account.dateOpened },
+          values: { [report.bureau]: referenceDate },
           violationType: "section_605_obsolete",
           severity: "critical",
           legalBasis:
-            "FCRA § 605(a) — Negative information older than 7 years must be removed from consumer reports.",
-          description: `"${account.creditorName}" on ${report.bureau} opened ${account.dateOpened} exceeds the 7-year reporting window.`,
+            "FCRA § 605(a) — Negative information older than 7 years from date of first delinquency must be removed from consumer reports.",
+          description: `"${account.creditorName}" on ${report.bureau} ${dateLabel} exceeds the 7-year reporting window.`,
         });
       }
     }
