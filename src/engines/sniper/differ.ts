@@ -233,9 +233,8 @@ function detectDuplicateAccounts(
   for (const report of reports) {
     const seen = new Map<string, ParsedAccount>();
     for (const account of report.accounts) {
-      const key = normalizeCreditor(account.creditorName);
-      const existing = seen.get(key);
-      if (existing && existing.accountNumber === account.accountNumber) {
+      const key = normalizeCreditor(account.creditorName) + ":" + account.accountNumber;
+      if (seen.has(key)) {
         discrepancies.push({
           id: randomUUID(),
           accountMatch: {
