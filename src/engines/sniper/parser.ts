@@ -99,13 +99,13 @@ function parseMoney(raw: string | undefined): number | null {
 export function parseAccounts(text: string): ParsedAccount[] {
   const accounts: ParsedAccount[] = [];
 
-  // Split on common account header patterns
-  const blocks = text.split(/(?=(?:Account|Creditor|Tradeline)\s*(?:Name|#|:))/i);
+  // Split on account name headers only (not "Account #" which is the number field)
+  const blocks = text.split(/(?=(?:Account\s+Name|Creditor\s*(?:Name)?|Tradeline\s*(?:Name)?)\s*[:\s])/i);
 
   for (const block of blocks) {
     if (block.trim().length < 30) continue;
 
-    const creditorMatch = block.match(/(?:Account|Creditor|Tradeline)\s*(?:Name)?[:\s]+([^\n]+)/i);
+    const creditorMatch = block.match(/(?:Account\s+Name|Creditor\s*(?:Name)?|Tradeline\s*(?:Name)?)[:\s]+([^\n]+)/i);
     if (!creditorMatch) continue;
 
     const acctNumMatch = block.match(/(?:Account\s*(?:#|Number|No))[:\s]+([X\d*-]+)/i);
