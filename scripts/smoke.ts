@@ -2,7 +2,7 @@
  * Smoke test — exercises all three engines without external dependencies.
  */
 import { parseReport, runAudit, generateAllDisputeLetters } from "../src/engines/sniper/index.js";
-import { createDispute, markDisputeSent, checkDeadlines, summarizeDisputes } from "../src/engines/litigator/index.js";
+import { createDispute, markDisputeSent, checkDeadlines, summarizeDisputes, generateLitigationPackage, lookupJurisdiction } from "../src/engines/litigator/index.js";
 import { analyzeCashFlow, generateBuildingPlan } from "../src/engines/builder/index.js";
 import type { Bureau, Client } from "../src/types/index.js";
 
@@ -149,6 +149,23 @@ console.log(`Deadline alerts: ${deadlines.length}`);
 const summary = summarizeDisputes(disputes);
 console.log(`Summary: ${JSON.stringify(summary.byStatus)}`);
 console.log(`Ready for litigation: ${summary.readyForLitigation.length}`);
+
+// Jurisdiction lookup
+const nyJurisdiction = lookupJurisdiction("NY", "Orange");
+console.log(`\nJurisdiction: ${nyJurisdiction.courtName}`);
+console.log(`Filing Fee: $${nyJurisdiction.filingFee}, Limit: $${nyJurisdiction.smallClaimsLimit}`);
+
+const flJurisdiction = lookupJurisdiction("FL", "Miami-Dade");
+console.log(`FL Jurisdiction: ${flJurisdiction.courtName}`);
+
+// Litigation package
+const litPkg = generateLitigationPackage(client, disputes);
+console.log(`\nLitigation Package: ${litPkg.id}`);
+console.log(`Court Forms: ${litPkg.courtForms.length}`);
+console.log(`Estimated Damages: $${litPkg.estimatedDamages}`);
+for (const f of litPkg.courtForms) {
+  console.log(`  - ${f.type}: ${f.fileName} (${f.content.length} chars)`);
+}
 
 // ─── Engine 3: Liquid Credit Builder ────────────────────────────────────────
 

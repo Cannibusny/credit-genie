@@ -166,9 +166,9 @@ export interface JurisdictionInfo {
 }
 
 export interface GeneratedDocument {
-  type: "dispute_letter" | "court_complaint" | "summons" | "evidence_exhibit";
+  type: "dispute_letter" | "court_complaint" | "summons" | "evidence_exhibit" | "proof_of_service" | "cover_letter";
   fileName: string;
-  content: string; // HTML or Markdown
+  content: string;
   generatedAt: string;
 }
 
