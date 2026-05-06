@@ -93,7 +93,23 @@ auditRouter.get("/:id", (req, res) => {
     res.status(404).json({ error: "Audit not found" });
     return;
   }
-  res.json(result);
+  res.json({
+    auditId: result.id,
+    totalViolations: result.totalViolations,
+    estimatedDamages: result.estimatedDamages,
+    summary: result.summary,
+    discrepancies: result.discrepancies.map((d) => ({
+      id: d.id,
+      field: d.field,
+      violationType: d.violationType,
+      severity: d.severity,
+      description: d.description,
+      legalBasis: d.legalBasis,
+      values: d.values,
+    })),
+    accountsAnalyzed: result.matchedAccounts.length,
+    bureausProcessed: result.reports.map((r) => r.bureau),
+  });
 });
 
 // ─── POST /api/audit/:id/disputes — Generate dispute letters ────────────────
