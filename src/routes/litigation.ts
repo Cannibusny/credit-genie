@@ -6,12 +6,14 @@ import {
   markDisputeResponse,
   escalateToLitigation,
 } from "../engines/litigator/index.js";
-import { updateDispute } from "../lib/store.js";
+import {
+  updateDispute,
+  saveLitigationPackage,
+  getLitigationPackage,
+} from "../lib/store.js";
 import type { Client, Dispute } from "../types/index.js";
 
 export const litigationRouter = Router();
-
-const packages = new Map<string, ReturnType<typeof generateLitigationPackage>>();
 
 // ─── POST /api/litigation/package — Generate court filing package ────────────
 
@@ -39,7 +41,7 @@ litigationRouter.post("/package", (req, res) => {
     };
 
     const pkg = generateLitigationPackage(client, body.disputes);
-    packages.set(pkg.id, pkg);
+    saveLitigationPackage(pkg);
 
     res.json({
       packageId: pkg.id,
@@ -60,7 +62,7 @@ litigationRouter.post("/package", (req, res) => {
 // ─── GET /api/litigation/package/:id — Retrieve package ──────────────────────
 
 litigationRouter.get("/package/:id", (req, res) => {
-  const pkg = packages.get(req.params.id!);
+  const pkg = getLitigationPackage(req.params.id!);
   if (!pkg) {
     res.status(404).json({ error: "Litigation package not found" });
     return;
@@ -82,7 +84,7 @@ litigationRouter.get("/package/:id", (req, res) => {
 // ─── GET /api/litigation/package/:id/forms/:index — Download a court form ────
 
 litigationRouter.get("/package/:id/forms/:index", (req, res) => {
-  const pkg = packages.get(req.params.id!);
+  const pkg = getLitigationPackage(req.params.id!);
   if (!pkg) {
     res.status(404).json({ error: "Package not found" });
     return;
