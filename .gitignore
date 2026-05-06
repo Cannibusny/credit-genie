@@ -8,3 +8,6 @@ reports/
 generated/
 .DS_Store
 coverage/
+credit-genie.db
+credit-genie.db-wal
+credit-genie.db-shm

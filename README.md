@@ -50,7 +50,7 @@ npm run dev      # Start server on :3001
 - **Tesseract.js** — OCR for scanned PDFs
 - **pdf-parse** — Native text extraction
 - **Handlebars** — Legal document templating
-- **Supabase** — Control plane (optional, stubs when not configured)
+- **SQLite + Drizzle ORM** — Local persistent storage for audits, disputes, and litigation packages
 - **Anthropic Claude** — AI-powered analysis (optional)
 - **Plaid** — Open Banking integration (Engine 3, optional)
 
