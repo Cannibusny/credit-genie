@@ -1,29 +1,35 @@
-import pdf from "pdf-parse";
+import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import { log } from "../../lib/logger.js";
 
 /**
- * Extract text from a credit report PDF.
- * Uses native text extraction (for digital PDFs with embedded text).
- * Tesseract OCR fallback is not used because Tesseract.js cannot
- * process PDF buffers directly — it only supports image formats.
- * For scanned PDFs, a PDF-to-image conversion step would be needed first.
+ * Extract text from a credit report PDF using pdfjs-dist.
+ * Works with both pdf-lib and pdfkit generated PDFs.
  */
 export async function extractTextFromPdf(buffer: Buffer): Promise<string> {
-  const native = await extractNativeText(buffer);
-  if (native.length > 0) {
-    log.info({ chars: native.length }, "Extracted text via native PDF parser");
-  } else {
-    log.warn("No text extracted from PDF — scanned-image PDFs require OCR preprocessing");
-  }
-  return native;
-}
-
-async function extractNativeText(buffer: Buffer): Promise<string> {
   try {
-    const data = await pdf(buffer);
-    return data.text.trim();
+    const uint8 = new Uint8Array(buffer);
+    const doc = await getDocument({ data: uint8, useSystemFonts: true }).promise;
+    const pages: string[] = [];
+
+    for (let i = 1; i <= doc.numPages; i++) {
+      const page = await doc.getPage(i);
+      const content = await page.getTextContent();
+      const text = content.items
+        .filter((item) => "str" in item)
+        .map((item) => (item as { str: string }).str)
+        .join(" ");
+      pages.push(text);
+    }
+
+    const result = pages.join("\n").trim();
+    if (result.length > 0) {
+      log.info({ chars: result.length }, "Extracted text via pdfjs-dist");
+    } else {
+      log.warn("No text extracted from PDF — may be a scanned-image PDF");
+    }
+    return result;
   } catch (err) {
-    log.warn({ err }, "Native PDF parse failed");
+    log.warn({ err }, "PDF parse failed");
     return "";
   }
 }
