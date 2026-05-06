@@ -5,7 +5,14 @@ import { extractTextFromPdf, parseReport, runAudit, generateAllDisputeLetters } 
 import { createDispute, markDisputeSent } from "../engines/litigator/index.js";
 import { config } from "../lib/config.js";
 import { log } from "../lib/logger.js";
-import { audits, disputes, generatedLetters } from "../lib/store.js";
+import {
+  saveAudit,
+  getAudit,
+  saveDisputes,
+  getDisputesByAudit,
+  saveLetters,
+  getLetters,
+} from "../lib/store.js";
 import type { Bureau, Client, Dispute } from "../types/index.js";
 
 export const auditRouter = Router();
@@ -55,7 +62,7 @@ auditRouter.post(
       );
 
       const result = runAudit(clientId, reports);
-      audits.set(result.id, result);
+      saveAudit(result);
 
       res.json({
         auditId: result.id,
@@ -84,7 +91,7 @@ auditRouter.post(
 // ─── GET /api/audit/:id — Get audit result ───────────────────────────────────
 
 auditRouter.get("/:id", (req, res) => {
-  const result = audits.get(req.params.id!);
+  const result = getAudit(req.params.id!);
   if (!result) {
     res.status(404).json({ error: "Audit not found" });
     return;
@@ -112,7 +119,7 @@ auditRouter.get("/:id", (req, res) => {
 
 auditRouter.post("/:id/disputes", (req, res) => {
   try {
-    const audit = audits.get(req.params.id!);
+    const audit = getAudit(req.params.id!);
     if (!audit) {
       res.status(404).json({ error: "Audit not found" });
       return;
@@ -134,7 +141,7 @@ auditRouter.post("/:id/disputes", (req, res) => {
     };
 
     const letters = generateAllDisputeLetters(audit.discrepancies, client);
-    generatedLetters.set(audit.id, letters);
+    saveLetters(audit.id, letters);
 
     const disputeRecords: Dispute[] = [];
     let letterIdx = 0;
@@ -154,7 +161,7 @@ auditRouter.post("/:id/disputes", (req, res) => {
       }
     }
 
-    disputes.set(audit.id, disputeRecords);
+    saveDisputes(audit.id, disputeRecords);
 
     res.json({
       auditId: audit.id,
@@ -180,8 +187,8 @@ auditRouter.post("/:id/disputes", (req, res) => {
 // ─── GET /api/audit/:id/disputes — Get disputes for an audit ─────────────────
 
 auditRouter.get("/:id/disputes", (req, res) => {
-  const disputeList = disputes.get(req.params.id!);
-  if (!disputeList) {
+  const disputeList = getDisputesByAudit(req.params.id!);
+  if (disputeList.length === 0) {
     res.status(404).json({ error: "No disputes found for this audit" });
     return;
   }
@@ -191,8 +198,8 @@ auditRouter.get("/:id/disputes", (req, res) => {
 // ─── GET /api/audit/:id/letters/:index — Download a specific letter ──────────
 
 auditRouter.get("/:id/letters/:index", (req, res) => {
-  const letters = generatedLetters.get(req.params.id!);
-  if (!letters) {
+  const letters = getLetters(req.params.id!);
+  if (letters.length === 0) {
     res.status(404).json({ error: "No letters found. Generate disputes first." });
     return;
   }

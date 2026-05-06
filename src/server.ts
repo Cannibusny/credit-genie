@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { config, stubs } from "./lib/config.js";
 import { log } from "./lib/logger.js";
+import { runMigrations } from "./db/index.js";
 import { auditRouter } from "./routes/audit.js";
 import { litigationRouter } from "./routes/litigation.js";
 import { builderRouter } from "./routes/builder.js";
@@ -38,6 +39,8 @@ app.get("/health", (_req, res) => {
 app.get("*", (_req, res) => {
   res.sendFile(path.join(__dirname, "..", "public", "index.html"));
 });
+
+runMigrations();
 
 app.listen(config.PORT, () => {
   log.info({ port: config.PORT, stubs }, `Credit Genie running on :${config.PORT}`);
