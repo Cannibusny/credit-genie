@@ -11,10 +11,16 @@ import type {
   AuditResult,
   Discrepancy,
   Dispute,
+  DisputeTemplate,
   GeneratedDocument,
   LitigationPackage,
   ParsedCreditReport,
 } from "../types/index.js";
+
+// Reserved for the future `dispute_templates` SQLite table. Keeps the API
+// surface stable so the in-memory templates can be migrated to a persistent
+// store without consumer changes.
+export const disputeTemplates = new Map<string, DisputeTemplate>();
 
 // ─── Audits ──────────────────────────────────────────────────────────────────
 
