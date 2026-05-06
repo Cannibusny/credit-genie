@@ -478,7 +478,7 @@ export function generateLitigationPackage(
 
     // 3. Proof of Service
     documents.push({
-      type: "court_complaint",
+      type: "proof_of_service",
       fileName: `proof-of-service-${bureau}-${Date.now()}.txt`,
       content: PROOF_OF_SERVICE_TEMPLATE(templateData),
       generatedAt: new Date().toISOString(),
@@ -486,7 +486,7 @@ export function generateLitigationPackage(
 
     // 4. Cover Letter
     documents.push({
-      type: "court_complaint",
+      type: "cover_letter",
       fileName: `cover-letter-${bureau}-${Date.now()}.txt`,
       content: COVER_LETTER_TEMPLATE(templateData),
       generatedAt: new Date().toISOString(),

@@ -5,7 +5,8 @@ import { extractTextFromPdf, parseReport, runAudit, generateAllDisputeLetters } 
 import { createDispute, markDisputeSent } from "../engines/litigator/index.js";
 import { config } from "../lib/config.js";
 import { log } from "../lib/logger.js";
-import type { Bureau, Client, Dispute, AuditResult } from "../types/index.js";
+import { audits, disputes, generatedLetters } from "../lib/store.js";
+import type { Bureau, Client, Dispute } from "../types/index.js";
 
 export const auditRouter = Router();
 
@@ -19,11 +20,6 @@ const upload = multer({
     else cb(new Error("Only PDF files are accepted"));
   },
 });
-
-// In-memory stores (swap for Supabase in production)
-const audits = new Map<string, AuditResult>();
-const disputes = new Map<string, Dispute[]>();
-const generatedLetters = new Map<string, import("../types/index.js").GeneratedDocument[]>();
 
 // ─── POST /api/audit — Upload reports & run cross-bureau audit ───────────────
 

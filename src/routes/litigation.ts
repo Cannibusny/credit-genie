@@ -6,11 +6,11 @@ import {
   markDisputeResponse,
   escalateToLitigation,
 } from "../engines/litigator/index.js";
+import { updateDispute } from "../lib/store.js";
 import type { Client, Dispute } from "../types/index.js";
 
 export const litigationRouter = Router();
 
-// In-memory (mirrors audit.ts stores — in production, use Supabase)
 const packages = new Map<string, ReturnType<typeof generateLitigationPackage>>();
 
 // ─── POST /api/litigation/package — Generate court filing package ────────────
@@ -148,6 +148,9 @@ litigationRouter.post("/respond", (req, res) => {
 
     const shouldEscalate = body.responseStatus === "verified";
     const escalated = shouldEscalate ? escalateToLitigation(updated) : updated;
+
+    // Persist updated dispute back to the shared server-side store
+    updateDispute(escalated.id, () => escalated);
 
     res.json({
       dispute: {
