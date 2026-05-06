@@ -29,12 +29,16 @@ async function extractNativeText(buffer: Buffer): Promise<string> {
 }
 
 async function extractWithOcr(buffer: Buffer): Promise<string> {
-  const worker = await Tesseract.createWorker("eng");
+  let worker: Tesseract.Worker | null = null;
   try {
+    worker = await Tesseract.createWorker("eng");
     const { data } = await worker.recognize(buffer);
     log.info({ chars: data.text.length, confidence: data.confidence }, "OCR complete");
     return data.text.trim();
+  } catch (err) {
+    log.warn({ err }, "Tesseract OCR failed");
+    return "";
   } finally {
-    await worker.terminate();
+    if (worker) await worker.terminate().catch(() => {});
   }
 }
