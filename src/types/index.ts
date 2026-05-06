@@ -177,12 +177,35 @@ export interface GeneratedDocument {
 export interface Client {
   id: string;
   email: string;
-  name: string;
+  name: string; // full name
   phone: string | null;
+  ssn: string | null; // last 4 digits only
+  street: string | null;
+  city: string | null;
   state: string;
   county: string;
+  zip: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+// ─── Dynamic Document Generator ─────────────────────────────────────────────
+
+export interface DisputeTemplate {
+  formId: string; // e.g., "Form-221"
+  name: string; // e.g., "Late Payment Dispute"
+  category: string; // e.g., "Late Payments"
+  description: string; // short description
+  body: string; // Handlebars template with {{dynamic_brackets}}
+  requiredFields: string[]; // list of bracket names that must be filled
+}
+
+export interface RenderedDocument {
+  formId: string;
+  formName: string;
+  content: string; // the filled-in letter
+  missingFields: string[]; // fields that were empty/missing
+  complete: boolean; // true if no missing fields
 }
 
 export interface CreditBuildingRecommendation {

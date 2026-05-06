@@ -119,8 +119,12 @@ const client: Client = {
   email: "john@example.com",
   name: "John A Smith",
   phone: "555-0123",
+  ssn: "1234",
+  street: "123 Main St",
+  city: "New York",
   state: "NY",
   county: "New York",
+  zip: "10001",
   createdAt: new Date().toISOString(),
   updatedAt: new Date().toISOString(),
 };

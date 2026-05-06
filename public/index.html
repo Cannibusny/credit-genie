@@ -478,6 +478,239 @@
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: #FFFFFF; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 0; }
+
+    /* ─── Documents Tab (industrial aesthetic) ──────────────────────────── */
+    .doc-section {
+      margin-bottom: 24px;
+    }
+    .doc-section-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #001A33;
+      border-bottom: 1px solid #D0D5DD;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+    }
+    .doc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .doc-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 768px) {
+      .doc-grid, .doc-grid-3 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .doc-grid, .doc-grid-3 { grid-template-columns: 1fr; }
+    }
+    .doc-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .doc-field label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #4A5568;
+    }
+    .doc-field input,
+    .doc-field select {
+      border: 1px solid #D0D5DD;
+      border-radius: 0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      padding: 10px 14px;
+      background: #FFFFFF;
+      color: #001A33;
+      width: 100%;
+      outline: none;
+    }
+    .doc-field input:focus,
+    .doc-field select:focus {
+      border-color: #0A4C8F;
+    }
+    .doc-form-selector {
+      border: 1px solid #0A4C8F;
+      border-radius: 0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      padding: 10px 14px;
+      background: #FFFFFF;
+      color: #001A33;
+      width: 100%;
+      cursor: pointer;
+      outline: none;
+    }
+    .doc-form-meta {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border: 1px solid #D0D5DD;
+      background: #F7F8FA;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: #001A33;
+    }
+    .doc-form-meta .doc-form-name {
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .doc-form-meta .doc-form-category {
+      color: #4A5568;
+      font-size: 11px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .doc-form-meta .doc-form-description {
+      color: #4A5568;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .doc-form-meta .doc-required-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .doc-required-tag {
+      display: inline-block;
+      border: 1px solid #D0D5DD;
+      padding: 2px 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: #4A5568;
+      text-transform: lowercase;
+      letter-spacing: 0.5px;
+      background: #FFFFFF;
+    }
+    .doc-missing-fields {
+      border: 1px solid #D0D5DD;
+      border-left: 3px solid #C53030;
+      background: #FFF5F5;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .doc-missing-fields .doc-missing-title {
+      color: #C53030;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .doc-missing-fields ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .doc-missing-fields li {
+      color: #C53030;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    .doc-missing-fields li::before {
+      content: "• ";
+      color: #C53030;
+      font-weight: 600;
+    }
+    .doc-preview {
+      border: 1px solid #D0D5DD;
+      background: #FFFFFF;
+      padding: 32px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      color: #001A33;
+      min-height: 400px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+    }
+    .doc-preview .doc-missing-token {
+      color: #C53030;
+      background: #FFF5F5;
+      padding: 2px 4px;
+      border: 1px solid #FED7D7;
+    }
+    .doc-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .doc-btn-primary {
+      background: #0A4C8F;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 0;
+      padding: 12px 32px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+    .doc-btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .doc-btn-secondary {
+      background: transparent;
+      border: 1px solid #0A4C8F;
+      color: #0A4C8F;
+      border-radius: 0;
+      padding: 12px 32px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+    .doc-status {
+      margin-top: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: #4A5568;
+    }
+
+    @media print {
+      body { background: #FFFFFF; }
+      .app > *:not(#tab-documents) { display: none !important; }
+      .nav-tabs,
+      .hero,
+      .doc-client-form,
+      .doc-form-selector-section,
+      .doc-missing-fields,
+      .doc-actions,
+      .doc-status { display: none !important; }
+      #tab-documents .doc-section:not(.doc-preview-section) { display: none !important; }
+      .doc-preview {
+        border: none !important;
+        padding: 0 !important;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+      }
+      .doc-preview .doc-missing-token {
+        color: #C53030 !important;
+        background: transparent !important;
+        border: none !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -495,6 +728,7 @@
       <button class="nav-tab" data-tab="disputes"><span class="tab-icon">&#128233;</span> Disputes <span class="tab-badge" id="disputeBadge" style="display:none">0</span></button>
       <button class="nav-tab" data-tab="litigation"><span class="tab-icon">&#9878;</span> Litigation</button>
       <button class="nav-tab" data-tab="builder"><span class="tab-icon">&#128200;</span> Credit Builder</button>
+      <button class="nav-tab" data-tab="documents"><span class="tab-icon">&#128196;</span> Documents</button>
     </nav>
 
     <!-- ═══════════════════════════════════════════════════════════════════ -->
@@ -681,6 +915,106 @@
           </div>
           <div id="scoreProjection"></div>
         </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- TAB 5: DOCUMENTS — Dynamic Document Generator -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="tab-content" id="tab-documents">
+      <div class="doc-section doc-client-form">
+        <div class="doc-section-title">Client Profile</div>
+        <div class="doc-grid">
+          <div class="doc-field">
+            <label for="docClientFullName">Full Name</label>
+            <input type="text" id="docClientFullName" data-doc-field="client_full_name" placeholder="Jane Q. Consumer" />
+          </div>
+          <div class="doc-field">
+            <label for="docClientSsn">SSN (Last 4)</label>
+            <input type="text" id="docClientSsn" data-doc-field="client_ssn" maxlength="4" placeholder="1234" />
+          </div>
+          <div class="doc-field">
+            <label for="docClientEmail">Email</label>
+            <input type="email" id="docClientEmail" data-doc-field="client_email" placeholder="jane@example.com" />
+          </div>
+          <div class="doc-field">
+            <label for="docClientPhone">Phone</label>
+            <input type="text" id="docClientPhone" data-doc-field="client_phone" placeholder="555-0123" />
+          </div>
+        </div>
+        <div class="doc-grid" style="margin-top:16px">
+          <div class="doc-field">
+            <label for="docClientStreet">Street</label>
+            <input type="text" id="docClientStreet" data-doc-field="client_address" placeholder="123 Main St" />
+          </div>
+          <div class="doc-field">
+            <label for="docClientCity">City</label>
+            <input type="text" id="docClientCity" data-doc-field="client_city" placeholder="New York" />
+          </div>
+          <div class="doc-field">
+            <label for="docClientState">State</label>
+            <input type="text" id="docClientState" data-doc-field="client_state" maxlength="2" placeholder="NY" />
+          </div>
+          <div class="doc-field">
+            <label for="docClientZip">Zip</label>
+            <input type="text" id="docClientZip" data-doc-field="client_zip" placeholder="10001" />
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section">
+        <div class="doc-section-title">Account Details</div>
+        <div class="doc-grid-3">
+          <div class="doc-field">
+            <label for="docCreditorName">Creditor / Furnisher</label>
+            <input type="text" id="docCreditorName" data-doc-field="creditor_name" placeholder="Capital One Bank" />
+          </div>
+          <div class="doc-field">
+            <label for="docAccountNumber">Account Number</label>
+            <input type="text" id="docAccountNumber" data-doc-field="account_number" placeholder="****1234" />
+          </div>
+          <div class="doc-field">
+            <label for="docBureau">Bureau</label>
+            <select id="docBureau">
+              <option value="equifax">Equifax</option>
+              <option value="experian">Experian</option>
+              <option value="transunion">TransUnion</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="docExtraSection" style="display:none">
+        <div class="doc-section-title">Form-Specific Fields</div>
+        <div class="doc-grid-3" id="docExtraFields"></div>
+      </div>
+
+      <div class="doc-section doc-form-selector-section">
+        <div class="doc-section-title">Select Form ID</div>
+        <select id="docFormSelect" class="doc-form-selector">
+          <option value="">— Select a dispute template —</option>
+        </select>
+        <div id="docFormMeta" class="doc-form-meta" style="display:none">
+          <div class="doc-form-name" id="docFormName"></div>
+          <div class="doc-form-category" id="docFormCategory"></div>
+          <div class="doc-form-description" id="docFormDescription"></div>
+          <div class="doc-required-tags" id="docRequiredTags"></div>
+        </div>
+      </div>
+
+      <div class="doc-missing-fields" id="docMissingFields" style="display:none">
+        <div class="doc-missing-title">⚠ Missing Required Fields</div>
+        <ul id="docMissingList"></ul>
+      </div>
+
+      <div class="doc-section doc-preview-section">
+        <div class="doc-section-title">Document Preview</div>
+        <div class="doc-preview" id="docPreview">Select a form ID above to generate a preview.</div>
+        <div class="doc-actions">
+          <button class="doc-btn-primary" id="docDownloadBtn" disabled>Download Letter</button>
+          <button class="doc-btn-secondary" id="docPrintBtn" disabled>Print</button>
+        </div>
+        <div class="doc-status" id="docStatus"></div>
       </div>
     </div>
   </div>
@@ -1259,6 +1593,272 @@
       `;
 
       results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ─── Documents Tab — Dynamic Document Generator ─────────────────────
+    const DOC_FIELD_LABELS = {
+      client_full_name: 'Full Name',
+      client_ssn: 'SSN (Last 4)',
+      client_address: 'Street Address',
+      client_city: 'City',
+      client_state: 'State',
+      client_zip: 'Zip',
+      client_email: 'Email',
+      client_phone: 'Phone',
+      creditor_name: 'Creditor / Furnisher',
+      account_number: 'Account Number',
+      collection_amount: 'Collection Amount',
+      original_creditor: 'Original Creditor',
+      police_report_number: 'Police Report Number',
+      debt_collector_name: 'Debt Collector Name',
+      debt_collector_address: 'Debt Collector Address',
+      alleged_amount: 'Alleged Amount',
+      bureau_name: 'Bureau Name',
+      bureau_address: 'Bureau Address',
+      current_date: 'Current Date',
+    };
+
+    // Standard fields that already have inputs in Client Profile / Account Details.
+    const DOC_STANDARD_FIELDS = new Set([
+      'client_full_name', 'client_ssn', 'client_address', 'client_city',
+      'client_state', 'client_zip', 'client_email', 'client_phone',
+      'creditor_name', 'account_number',
+      'bureau_name', 'bureau_address', 'current_date',
+    ]);
+
+    let docTemplates = [];
+    let docCurrentTemplate = null;
+    let docCurrentResult = null;
+    let docRenderTimer = null;
+
+    function docLabel(field) {
+      return DOC_FIELD_LABELS[field] || field;
+    }
+
+    function docCollectContext() {
+      const ctx = {};
+      $$('#tab-documents [data-doc-field]').forEach(el => {
+        const key = el.dataset.docField;
+        if (key && el.value !== undefined) {
+          ctx[key] = el.value.trim();
+        }
+      });
+      return ctx;
+    }
+
+    function docRenderExtraFields(template) {
+      const section = $('#docExtraSection');
+      const container = $('#docExtraFields');
+      if (!template) {
+        section.style.display = 'none';
+        container.innerHTML = '';
+        return;
+      }
+      const extras = (template.requiredFields || []).filter(f => !DOC_STANDARD_FIELDS.has(f));
+      if (extras.length === 0) {
+        section.style.display = 'none';
+        container.innerHTML = '';
+        return;
+      }
+      // Preserve any existing values for extras already on the page.
+      const existing = {};
+      $$('#docExtraFields [data-doc-field]').forEach(el => {
+        existing[el.dataset.docField] = el.value;
+      });
+      container.innerHTML = extras.map(field => `
+        <div class="doc-field">
+          <label for="docExtra_${esc(field)}">${esc(docLabel(field))}</label>
+          <input type="text" id="docExtra_${esc(field)}" data-doc-field="${esc(field)}" value="${esc(existing[field] || '')}" />
+        </div>
+      `).join('');
+      section.style.display = 'block';
+      container.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', docScheduleRender);
+      });
+    }
+
+    function docPopulateFormSelect() {
+      const sel = $('#docFormSelect');
+      sel.innerHTML = '<option value="">— Select a dispute template —</option>' +
+        docTemplates.map(t => `<option value="${esc(t.formId)}">${esc(t.formId)}: ${esc(t.name)}</option>`).join('');
+    }
+
+    function docShowFormMeta(template) {
+      const meta = $('#docFormMeta');
+      if (!template) {
+        meta.style.display = 'none';
+        return;
+      }
+      $('#docFormName').textContent = `${template.formId}: ${template.name}`;
+      $('#docFormCategory').textContent = `Category — ${template.category}`;
+      $('#docFormDescription').textContent = template.description;
+      $('#docRequiredTags').innerHTML = (template.requiredFields || [])
+        .map(f => `<span class="doc-required-tag">${esc(f)}</span>`)
+        .join('');
+      meta.style.display = 'block';
+    }
+
+    function docHighlightMissing(content) {
+      // First HTML-escape, then wrap [MISSING: xxx] tokens.
+      const escaped = esc(content);
+      return escaped.replace(/\[MISSING: ([a-zA-Z_][a-zA-Z0-9_]*)\]/g,
+        (_, name) => `<span class="doc-missing-token">[MISSING: ${esc(name)}]</span>`);
+    }
+
+    function docUpdateMissingPanel(missingFields) {
+      const panel = $('#docMissingFields');
+      const list = $('#docMissingList');
+      if (!missingFields || missingFields.length === 0) {
+        panel.style.display = 'none';
+        list.innerHTML = '';
+        return;
+      }
+      panel.style.display = 'block';
+      list.innerHTML = missingFields.map(f => `<li>${esc(docLabel(f))} <span style="color:#9B2C2C">(${esc(f)})</span></li>`).join('');
+    }
+
+    async function docRenderPreview() {
+      const formId = $('#docFormSelect').value;
+      const preview = $('#docPreview');
+      const downloadBtn = $('#docDownloadBtn');
+      const printBtn = $('#docPrintBtn');
+      const status = $('#docStatus');
+
+      if (!formId || !docCurrentTemplate) {
+        preview.textContent = 'Select a form ID above to generate a preview.';
+        downloadBtn.disabled = true;
+        printBtn.disabled = true;
+        docUpdateMissingPanel([]);
+        status.textContent = '';
+        docCurrentResult = null;
+        return;
+      }
+
+      const context = docCollectContext();
+      const bureau = $('#docBureau').value;
+
+      try {
+        const r = await fetch('/api/documents/render', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ formId, context, bureau }),
+        });
+        if (!r.ok) {
+          const err = await r.json().catch(() => ({}));
+          preview.textContent = `Render failed: ${err.error || r.statusText}`;
+          downloadBtn.disabled = true;
+          printBtn.disabled = true;
+          return;
+        }
+        const result = await r.json();
+        docCurrentResult = result;
+        preview.innerHTML = docHighlightMissing(result.content);
+        docUpdateMissingPanel(result.missingFields);
+        downloadBtn.disabled = !result.complete;
+        printBtn.disabled = false;
+        if (result.complete) {
+          status.textContent = `Form ${result.formId} ready. ${result.content.length} characters.`;
+        } else {
+          status.textContent = `${result.missingFields.length} required field(s) missing. Fill them in to enable download.`;
+        }
+      } catch (err) {
+        preview.textContent = `Error: ${err && err.message ? err.message : String(err)}`;
+        downloadBtn.disabled = true;
+        printBtn.disabled = true;
+      }
+    }
+
+    function docScheduleRender() {
+      if (docRenderTimer) clearTimeout(docRenderTimer);
+      docRenderTimer = setTimeout(() => { docRenderPreview(); }, 300);
+    }
+
+    async function docLoadTemplates() {
+      try {
+        const r = await fetch('/api/documents/templates');
+        if (!r.ok) return;
+        const data = await r.json();
+        docTemplates = data.templates || [];
+        docPopulateFormSelect();
+      } catch (_) {
+        // silent — tab simply won't have templates available
+      }
+    }
+
+    function docHandleFormSelect() {
+      const formId = $('#docFormSelect').value;
+      docCurrentTemplate = docTemplates.find(t => t.formId === formId) || null;
+      docShowFormMeta(docCurrentTemplate);
+      docRenderExtraFields(docCurrentTemplate);
+      docRenderPreview();
+    }
+
+    async function docDownload() {
+      const formId = $('#docFormSelect').value;
+      if (!formId) return;
+      const context = docCollectContext();
+      const bureau = $('#docBureau').value;
+      try {
+        const r = await fetch('/api/documents/download', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ formId, context, bureau }),
+        });
+        if (!r.ok) {
+          const err = await r.json().catch(() => ({}));
+          $('#docStatus').textContent = `Download failed: ${err.error || r.statusText}`;
+          return;
+        }
+        const blob = await r.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${formId}-${Date.now()}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        $('#docStatus').textContent = `Downloaded ${formId}.`;
+      } catch (err) {
+        $('#docStatus').textContent = `Error: ${err && err.message ? err.message : String(err)}`;
+      }
+    }
+
+    function docPrint() {
+      if (!docCurrentResult) return;
+      const w = window.open('', '_blank');
+      if (!w) return;
+      const formId = docCurrentResult.formId || '';
+      const formName = docCurrentResult.formName || '';
+      const content = docHighlightMissing(docCurrentResult.content || '');
+      w.document.write(`<!DOCTYPE html><html><head><title>${esc(formId)} — ${esc(formName)}</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&display=swap">
+        <style>
+          body { font-family: 'IBM Plex Mono', monospace; color: #001A33; margin: 32px; line-height: 1.8; font-size: 13px; white-space: pre-wrap; }
+          .doc-missing-token { color: #C53030; }
+        </style></head><body>${content}</body></html>`);
+      w.document.close();
+      w.focus();
+      w.print();
+    }
+
+    // Wire up Documents tab. The script tag sits after the DOM nodes, so
+    // we initialize immediately if the document is already parsed; otherwise
+    // we defer to DOMContentLoaded.
+    function docInit() {
+      docLoadTemplates();
+      $('#docFormSelect').addEventListener('change', docHandleFormSelect);
+      $('#docBureau').addEventListener('change', docScheduleRender);
+      $$('#tab-documents [data-doc-field]').forEach(el => {
+        el.addEventListener('input', docScheduleRender);
+      });
+      $('#docDownloadBtn').addEventListener('click', docDownload);
+      $('#docPrintBtn').addEventListener('click', docPrint);
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', docInit);
+    } else {
+      docInit();
     }
   </script>
 </body>

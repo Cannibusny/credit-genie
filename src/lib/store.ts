@@ -8,6 +8,7 @@ import type {
   Discrepancy,
   Dispute,
   DisputeStatus,
+  DisputeTemplate,
   GeneratedDocument,
   LitigationPackage,
   ParsedCreditReport,
@@ -226,3 +227,11 @@ export function getLitigationPackage(id: string): LitigationPackage | null {
     createdAt: row.createdAt,
   };
 }
+
+// ─── Dispute Templates ──────────────────────────────────────────────────────
+
+// In-memory placeholder kept for parity with the route layer that expects this
+// export. Templates are currently sourced from a static array in
+// `engines/documents/templates.ts`; if/when they need to be user-editable, this
+// can be backed by a real `dispute_templates` SQLite table.
+export const disputeTemplates = new Map<string, DisputeTemplate>();
