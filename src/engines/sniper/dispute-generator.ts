@@ -56,7 +56,7 @@ Enclosures:
 - Copy of credit report highlighting disputed item
 - Copy of government-issued ID
 - Proof of address
-`.trim());
+`.trim(), { noEscape: true });
 
 // ─── Bureau Addresses ────────────────────────────────────────────────────────
 

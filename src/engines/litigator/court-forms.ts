@@ -111,7 +111,7 @@ Respectfully submitted,
 _________________________
 {{clientName}}, Pro Se
 Date: {{date}}
-`.trim());
+`.trim(), { noEscape: true });
 
 // ─── Bureau Defendant Info ───────────────────────────────────────────────────
 
