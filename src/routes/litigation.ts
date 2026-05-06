@@ -7,6 +7,7 @@ import {
   escalateToLitigation,
 } from "../engines/litigator/index.js";
 import { updateDispute } from "../lib/store.js";
+import { log } from "../lib/logger.js";
 import type { Client, Dispute } from "../types/index.js";
 
 export const litigationRouter = Router();
@@ -153,8 +154,19 @@ litigationRouter.post("/respond", (req, res) => {
     const shouldEscalate = body.responseStatus === "verified";
     const escalated = shouldEscalate ? escalateToLitigation(updated) : updated;
 
-    // Persist updated dispute back to the shared server-side store
-    updateDispute(escalated.id, () => escalated);
+    // Persist updated dispute back to the shared server-side store.
+    // updateDispute returns null when the dispute is no longer in the
+    // in-memory store (e.g. after a server restart, or after disputes were
+    // regenerated for the same audit). The endpoint still returns success
+    // because the response was processed, but we surface the divergence so
+    // it shows up in logs.
+    const persisted = updateDispute(escalated.id, () => escalated);
+    if (!persisted) {
+      log.warn(
+        { disputeId: escalated.id, auditId: escalated.auditId },
+        "Dispute not found in store — response recorded but not persisted",
+      );
+    }
 
     res.json({
       dispute: {
