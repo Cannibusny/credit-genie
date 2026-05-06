@@ -1,0 +1,1865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Credit Genie — Legal Intelligence System</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap">
+  <style>
+    /* ─── Reset & Base ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #FFFFFF;
+      --surface: #FFFFFF;
+      --surface-2: #F7F8FA;
+      --surface-3: #EDF0F4;
+      --border: #D0D5DD;
+      --text: #001A33;
+      --text-dim: #4A5568;
+      --accent: #0A4C8F;
+      --accent-glow: none;
+      --green: #0A4C8F;
+      --green-dim: #083D73;
+      --green-glow: none;
+      --red: #C53030;
+      --red-glow: none;
+      --orange: #B7791F;
+      --yellow: #975A16;
+      --blue: #0A4C8F;
+      --radius: 0px;
+      --radius-lg: 0px;
+      --font: 'IBM Plex Mono', monospace;
+      --mono: 'IBM Plex Mono', monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Layout ────────────────────────────────────────────────────────── */
+    .app { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+
+    /* ─── Hero ──────────────────────────────────────────────────────────── */
+    .hero {
+      text-align: center;
+      padding: 40px 0 24px;
+      position: relative;
+    }
+    .hero::before { display: none; }
+    .hero-badge {
+      display: inline-block;
+      background: transparent;
+      border: 1px solid var(--text);
+      border-radius: 0;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--text);
+      position: relative;
+      z-index: 1;
+    }
+    .hero p {
+      font-size: 14px;
+      color: var(--text-dim);
+      max-width: 620px;
+      margin: 16px auto 0;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ─── Navigation Tabs ──────────────────────────────────────────────── */
+    .nav-tabs {
+      display: flex;
+      gap: 0;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 0;
+      padding: 0;
+      margin: 24px 0 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .nav-tab {
+      flex: 1;
+      padding: 12px 16px;
+      background: none;
+      border: none;
+      border-right: 1px solid var(--border);
+      border-radius: 0;
+      color: var(--text-dim);
+      font-size: 12px;
+      font-weight: 400;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      text-align: center;
+      white-space: nowrap;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .nav-tab:last-child { border-right: none; }
+    .nav-tab:hover { color: var(--text); background: var(--surface-2); }
+    .nav-tab.active {
+      color: #FFFFFF;
+      background: var(--text);
+      box-shadow: none;
+    }
+    .nav-tab .tab-icon { margin-right: 6px; }
+    .nav-tab .tab-badge {
+      display: inline-block;
+      background: var(--red);
+      color: #FFFFFF;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 1px 6px;
+      border-radius: 0;
+      margin-left: 6px;
+    }
+
+    /* ─── Tab Content ──────────────────────────────────────────────────── */
+    .tab-content { display: none; animation: fadeIn 0.4s ease; }
+    .tab-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+    /* ─── Upload Zone ───────────────────────────────────────────────────── */
+    .upload-zone {
+      border: 1px dashed var(--border);
+      border-radius: 0;
+      padding: 48px 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      background: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: var(--accent);
+      background: var(--surface-2);
+      box-shadow: none;
+    }
+    .upload-zone.has-files { border-color: var(--accent); border-style: solid; }
+    .upload-icon {
+      width: 48px; height: 48px;
+      margin: 0 auto 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .upload-zone h3 { font-size: 16px; font-weight: 400; margin-bottom: 8px; }
+    .upload-zone p { font-size: 13px; color: var(--text-dim); }
+    .file-list { margin-top: 20px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .file-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: 0; padding: 6px 12px; font-size: 12px; font-weight: 400;
+    }
+    .file-chip .dot { width: 8px; height: 8px; border-radius: 0; background: var(--accent); }
+    .file-chip .remove { cursor: pointer; opacity: 0.6; transition: opacity 0.2s; margin-left: 4px; }
+    .file-chip .remove:hover { opacity: 1; }
+
+    /* ─── Bureau Select ─────────────────────────────────────────────────── */
+    .bureau-selects { margin-top: 16px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .bureau-select {
+      display: flex; align-items: center; gap: 8px;
+      background: #FFFFFF; border: 1px solid var(--border);
+      border-radius: 0; padding: 6px 12px; font-size: 12px; color: var(--text);
+    }
+    .bureau-select select {
+      background: transparent; border: none; color: var(--text);
+      font-size: 12px; font-family: var(--font); outline: none; cursor: pointer;
+    }
+    .bureau-select select option { background: #FFFFFF; }
+
+    /* ─── Buttons ───────────────────────────────────────────────────────── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-top: 24px; padding: 12px 32px;
+      background: var(--accent);
+      border: none; border-radius: 0;
+      color: #FFFFFF; font-size: 13px; font-weight: 400; font-family: var(--font);
+      cursor: pointer; transition: background 0.2s;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .btn-primary:hover { background: var(--green-dim); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-primary .spinner {
+      width: 14px; height: 14px;
+      border: 2px solid rgba(255,255,255,0.3); border-top-color: #FFFFFF;
+      border-radius: 0; animation: spin 0.6s linear infinite; display: none;
+    }
+    .btn-primary.loading .spinner { display: block; }
+    .btn-primary.loading .btn-text { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .btn-green {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 32px;
+      background: var(--accent);
+      border: none; border-radius: 0;
+      color: #FFFFFF; font-size: 13px; font-weight: 400; font-family: var(--font);
+      cursor: pointer; transition: background 0.2s;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .btn-green:hover { background: var(--green-dim); }
+    .btn-green:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 24px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      border-radius: 0;
+      color: var(--accent); font-size: 13px; font-weight: 400; font-family: var(--font);
+      cursor: pointer; transition: background 0.2s, color 0.2s;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .btn-outline:hover { background: var(--accent); color: #FFFFFF; }
+    .btn-outline:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-red {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 32px;
+      background: var(--red);
+      border: none; border-radius: 0;
+      color: #FFFFFF; font-size: 13px; font-weight: 400; font-family: var(--font);
+      cursor: pointer; transition: background 0.2s;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .btn-red:hover { background: #9B2424; }
+    .btn-red:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ─── Stats Row ─────────────────────────────────────────────────────── */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px; margin-bottom: 24px;
+    }
+    .stat-card {
+      background: #FFFFFF; border: 1px solid var(--border);
+      border-radius: 0; padding: 20px; text-align: center;
+    }
+    .stat-card .number {
+      font-size: 32px; font-weight: 400; letter-spacing: -0.5px; line-height: 1;
+      font-family: var(--font);
+    }
+    .stat-card .number.violations { color: var(--red); }
+    .stat-card .number.damages { color: var(--accent); }
+    .stat-card .number.accounts { color: var(--text); }
+    .stat-card .number.time { color: var(--text); }
+    .stat-card .number.blue { color: var(--accent); }
+    .stat-card .label {
+      font-size: 11px; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--text-dim); margin-top: 6px;
+    }
+
+    /* ─── Summary ───────────────────────────────────────────────────────── */
+    .summary-box {
+      background: #FFFFFF; border: 1px solid var(--border);
+      border-radius: 0; padding: 20px; margin-bottom: 24px;
+      font-size: 13px; line-height: 1.7; color: var(--text-dim);
+    }
+    .summary-box strong { color: var(--text); font-weight: 500; }
+
+    /* ─── Section Title ─────────────────────────────────────────────────── */
+    .section-title {
+      font-size: 16px; font-weight: 400; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .section-title .count {
+      background: var(--red); color: #FFFFFF; font-size: 11px; font-weight: 500;
+      padding: 2px 8px; border-radius: 0;
+    }
+    .section-title .count-green { background: var(--accent); color: #FFFFFF; }
+    .section-title .count-accent { background: var(--accent); color: #FFFFFF; }
+
+    /* ─── Violations ────────────────────────────────────────────────────── */
+    .violations-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+    .violation-card {
+      background: #FFFFFF; border: 1px solid var(--border);
+      border-radius: 0; padding: 16px; transition: border-color 0.2s;
+    }
+    .violation-card:hover { border-color: var(--accent); }
+    .violation-header {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; flex-wrap: wrap;
+    }
+    .violation-header h4 { font-size: 13px; font-weight: 500; }
+    .severity-badge {
+      font-size: 10px; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 1px; padding: 2px 8px; border-radius: 0;
+      border: 1px solid;
+    }
+    .severity-critical { background: transparent; color: var(--red); border-color: var(--red); }
+    .severity-high { background: transparent; color: var(--orange); border-color: var(--orange); }
+    .severity-medium { background: transparent; color: var(--yellow); border-color: var(--yellow); }
+    .severity-low { background: transparent; color: var(--text-dim); border-color: var(--text-dim); }
+    .violation-body { margin-top: 8px; font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+    .violation-legal { margin-top: 6px; font-size: 12px; font-family: var(--mono); color: var(--accent); }
+    .violation-values { margin-top: 8px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .bureau-value {
+      font-size: 12px; background: var(--surface-2); border: 1px solid var(--border);
+      border-radius: 0; padding: 4px 10px; font-family: var(--mono);
+    }
+    .bureau-value .bureau-name { font-weight: 500; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* ─── Dispute Actions ───────────────────────────────────────────────── */
+    .action-section {
+      background: var(--surface-2);
+      border: 1px solid var(--border); border-radius: 0;
+      padding: 28px; text-align: center; margin-top: 32px;
+    }
+    .action-section h3 {
+      font-size: 16px; font-weight: 400; margin-bottom: 6px;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .action-section p { color: var(--text-dim); font-size: 13px; margin-bottom: 20px; }
+    .client-form {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px; max-width: 600px; margin: 0 auto 20px; text-align: left;
+    }
+    .client-form input, .form-input {
+      background: #FFFFFF; border: 1px solid var(--border);
+      border-radius: 0; padding: 10px 14px; color: var(--text);
+      font-size: 13px; font-family: var(--font); outline: none;
+      transition: border-color 0.2s; width: 100%;
+    }
+    .client-form input:focus, .form-input:focus { border-color: var(--accent); }
+    .client-form input::placeholder, .form-input::placeholder { color: var(--text-dim); }
+
+    /* ─── Dispute Results ───────────────────────────────────────────────── */
+    .dispute-results { margin-top: 20px; display: none; animation: fadeIn 0.5s ease; }
+    .dispute-results.visible { display: block; }
+
+    /* ─── Cards ──────────────────────────────────────────────────────────── */
+    .card {
+      background: #FFFFFF; border: 1px solid var(--border);
+      border-radius: 0; padding: 20px; margin-bottom: 12px;
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .card-title {
+      font-size: 14px; font-weight: 400;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+
+    /* ─── Dispute Tracker ───────────────────────────────────────────────── */
+    .dispute-tracker { display: flex; flex-direction: column; gap: 10px; }
+    .dispute-item {
+      background: #FFFFFF; border: 1px solid var(--border);
+      border-radius: 0; padding: 16px; display: flex;
+      align-items: center; gap: 16px; transition: border-color 0.2s;
+    }
+    .dispute-item:hover { border-color: var(--accent); }
+    .dispute-status {
+      width: 8px; height: 8px; border-radius: 0; flex-shrink: 0;
+    }
+    .status-pending { background: var(--yellow); }
+    .status-sent { background: var(--blue); }
+    .status-verified { background: var(--orange); }
+    .status-deleted { background: var(--accent); }
+    .status-escalated { background: var(--red); }
+    .dispute-info { flex: 1; }
+    .dispute-info h4 { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+    .dispute-info p { font-size: 12px; color: var(--text-dim); }
+    .dispute-deadline {
+      font-size: 12px; font-weight: 400; font-family: var(--mono);
+      padding: 4px 10px; border-radius: 0;
+      border: 1px solid;
+    }
+    .deadline-ok { background: transparent; color: var(--accent); border-color: var(--accent); }
+    .deadline-warning { background: transparent; color: var(--yellow); border-color: var(--yellow); }
+    .deadline-expired { background: transparent; color: var(--red); border-color: var(--red); }
+
+    /* ─── Litigation Package ────────────────────────────────────────────── */
+    .litigation-forms { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+    .form-card {
+      background: #FFFFFF; border: 1px solid var(--border);
+      border-radius: 0; padding: 16px; text-align: center;
+      transition: border-color 0.2s; cursor: pointer; text-decoration: none; color: var(--text);
+      display: block;
+    }
+    .form-card:hover { border-color: var(--accent); }
+    .form-card .form-icon { font-size: 24px; margin-bottom: 8px; }
+    .form-card .form-name { font-size: 13px; font-weight: 500; }
+    .form-card .form-type { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+
+    /* ─── Credit Builder ────────────────────────────────────────────────── */
+    .builder-form {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px; max-width: 700px; margin: 0 auto 24px;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group label {
+      font-size: 11px; font-weight: 500; color: var(--text-dim);
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .form-group .checkbox-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; }
+    .form-group .checkbox-row input[type="checkbox"] { accent-color: var(--accent); width: 14px; height: 14px; }
+
+    .recommendation-card {
+      background: #FFFFFF; border: 1px solid var(--border);
+      border-radius: 0; padding: 16px; margin-bottom: 10px;
+      transition: border-color 0.2s;
+    }
+    .recommendation-card:hover { border-color: var(--accent); }
+    .rec-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .rec-header h4 { font-size: 13px; font-weight: 500; }
+    .rec-impact {
+      font-size: 12px; font-weight: 500; color: var(--accent);
+      background: transparent; border: 1px solid var(--accent);
+      padding: 2px 8px; border-radius: 0;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .rec-body { font-size: 13px; color: var(--text-dim); line-height: 1.5; margin-bottom: 8px; }
+    .rec-meta { display: flex; gap: 12px; flex-wrap: wrap; }
+    .rec-tag {
+      font-size: 11px; font-weight: 400; background: var(--surface-2);
+      border: 1px solid var(--border); border-radius: 0; padding: 3px 10px;
+      color: var(--text-dim);
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    /* ─── Progress Bar ──────────────────────────────────────────────────── */
+    .progress-bar {
+      width: 100%; height: 4px; background: var(--surface-3);
+      border-radius: 0; overflow: hidden; margin: 8px 0;
+    }
+    .progress-fill { height: 100%; border-radius: 0; transition: width 0.5s ease; }
+    .progress-fill.green { background: var(--accent); }
+    .progress-fill.accent { background: var(--accent); }
+    .progress-fill.orange { background: var(--orange); }
+
+    /* ─── Empty State ───────────────────────────────────────────────────── */
+    .empty-state {
+      text-align: center; padding: 48px 24px; color: var(--text-dim);
+    }
+    .empty-state .empty-icon { font-size: 40px; margin-bottom: 16px; opacity: 0.5; }
+    .empty-state h3 {
+      font-size: 16px; font-weight: 400; color: var(--text); margin-bottom: 8px;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .empty-state p { font-size: 13px; max-width: 460px; margin: 0 auto; line-height: 1.6; }
+
+    /* ─── Responsive ────────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .nav-tabs { flex-wrap: wrap; }
+      .nav-tab { font-size: 11px; padding: 10px 12px; }
+    }
+    @media (max-width: 640px) {
+      .app { padding: 20px 16px; }
+      .hero { padding: 24px 0 16px; }
+      .upload-zone { padding: 32px 20px; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ─── Scrollbar ─────────────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: #FFFFFF; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 0; }
+
+    /* ─── Documents Tab (industrial aesthetic) ──────────────────────────── */
+    .doc-section {
+      margin-bottom: 24px;
+    }
+    .doc-section-title {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #001A33;
+      border-bottom: 1px solid #D0D5DD;
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+    }
+    .doc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .doc-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 768px) {
+      .doc-grid, .doc-grid-3 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .doc-grid, .doc-grid-3 { grid-template-columns: 1fr; }
+    }
+    .doc-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .doc-field label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #4A5568;
+    }
+    .doc-field input,
+    .doc-field select {
+      border: 1px solid #D0D5DD;
+      border-radius: 0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      padding: 10px 14px;
+      background: #FFFFFF;
+      color: #001A33;
+      width: 100%;
+      outline: none;
+    }
+    .doc-field input:focus,
+    .doc-field select:focus {
+      border-color: #0A4C8F;
+    }
+    .doc-form-selector {
+      border: 1px solid #0A4C8F;
+      border-radius: 0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      padding: 10px 14px;
+      background: #FFFFFF;
+      color: #001A33;
+      width: 100%;
+      cursor: pointer;
+      outline: none;
+    }
+    .doc-form-meta {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border: 1px solid #D0D5DD;
+      background: #F7F8FA;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: #001A33;
+    }
+    .doc-form-meta .doc-form-name {
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .doc-form-meta .doc-form-category {
+      color: #4A5568;
+      font-size: 11px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .doc-form-meta .doc-form-description {
+      color: #4A5568;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .doc-form-meta .doc-required-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .doc-required-tag {
+      display: inline-block;
+      border: 1px solid #D0D5DD;
+      padding: 2px 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: #4A5568;
+      text-transform: lowercase;
+      letter-spacing: 0.5px;
+      background: #FFFFFF;
+    }
+    .doc-missing-fields {
+      border: 1px solid #D0D5DD;
+      border-left: 3px solid #C53030;
+      background: #FFF5F5;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+    .doc-missing-fields .doc-missing-title {
+      color: #C53030;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .doc-missing-fields ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .doc-missing-fields li {
+      color: #C53030;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    .doc-missing-fields li::before {
+      content: "• ";
+      color: #C53030;
+      font-weight: 600;
+    }
+    .doc-preview {
+      border: 1px solid #D0D5DD;
+      background: #FFFFFF;
+      padding: 32px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      color: #001A33;
+      min-height: 400px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+    }
+    .doc-preview .doc-missing-token {
+      color: #C53030;
+      background: #FFF5F5;
+      padding: 2px 4px;
+      border: 1px solid #FED7D7;
+    }
+    .doc-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .doc-btn-primary {
+      background: #0A4C8F;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 0;
+      padding: 12px 32px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+    .doc-btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .doc-btn-secondary {
+      background: transparent;
+      border: 1px solid #0A4C8F;
+      color: #0A4C8F;
+      border-radius: 0;
+      padding: 12px 32px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+    }
+    .doc-status {
+      margin-top: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: #4A5568;
+    }
+
+    @media print {
+      body { background: #FFFFFF; }
+      .app > *:not(#tab-documents) { display: none !important; }
+      .nav-tabs,
+      .hero,
+      .doc-client-form,
+      .doc-form-selector-section,
+      .doc-missing-fields,
+      .doc-actions,
+      .doc-status { display: none !important; }
+      #tab-documents .doc-section:not(.doc-preview-section) { display: none !important; }
+      .doc-preview {
+        border: none !important;
+        padding: 0 !important;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+      }
+      .doc-preview .doc-missing-token {
+        color: #C53030 !important;
+        background: transparent !important;
+        border: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-badge">ADgorhythms Legal Intelligence</div>
+      <h1>Credit Genie</h1>
+      <p>Upload your credit reports. Every reporting violation is identified, statutory dispute letters are generated, and court filings are prepared if the bureaus fail to comply.</p>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-tab="audit"><span class="tab-icon">&#128270;</span> Audit</button>
+      <button class="nav-tab" data-tab="disputes"><span class="tab-icon">&#128233;</span> Disputes <span class="tab-badge" id="disputeBadge" style="display:none">0</span></button>
+      <button class="nav-tab" data-tab="litigation"><span class="tab-icon">&#9878;</span> Litigation</button>
+      <button class="nav-tab" data-tab="builder"><span class="tab-icon">&#128200;</span> Credit Builder</button>
+      <button class="nav-tab" data-tab="documents"><span class="tab-icon">&#128196;</span> Documents</button>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- TAB 1: AUDIT -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="tab-content active" id="tab-audit">
+      <div class="upload-zone" id="uploadZone">
+        <div class="upload-icon">&#128196;</div>
+        <h3>Drop your credit reports here</h3>
+        <p>Upload PDFs from Equifax, Experian, and TransUnion (up to 3 files)</p>
+        <input type="file" id="fileInput" accept=".pdf" multiple hidden />
+        <div class="file-list" id="fileList"></div>
+        <div class="bureau-selects" id="bureauSelects"></div>
+      </div>
+
+      <div style="text-align:center">
+        <button class="btn-primary" id="auditBtn" disabled>
+          <span class="spinner"></span>
+          <span class="btn-text">Run Free Credit Audit</span>
+        </button>
+      </div>
+
+      <div id="auditResults" style="display:none; margin-top:32px;">
+        <div class="stats-row" id="statsRow"></div>
+        <div class="summary-box" id="summaryBox"></div>
+        <div class="section-title">
+          Violations Found <span class="count" id="violationCount">0</span>
+        </div>
+        <div class="violations-list" id="violationsList"></div>
+
+        <div class="action-section">
+          <h3>Generate Dispute Letters</h3>
+          <p>One click. Every violation. Legally cited. Ready to send.</p>
+          <div class="client-form">
+            <input type="text" id="clientName" placeholder="Your full name" />
+            <input type="email" id="clientEmail" placeholder="Email address" />
+            <input type="text" id="clientState" placeholder="State (e.g. NY)" maxlength="2" />
+            <input type="text" id="clientCounty" placeholder="County" />
+          </div>
+          <button class="btn-green" id="disputeBtn" disabled>Generate All Dispute Letters</button>
+          <div class="dispute-results" id="disputeResults"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- TAB 2: DISPUTES -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="tab-content" id="tab-disputes">
+      <div id="disputesEmpty" class="empty-state">
+        <div class="empty-icon">&#128233;</div>
+        <h3>No Active Disputes</h3>
+        <p>Run a credit audit first, then generate dispute letters. Your active disputes and their 30-day deadlines will appear here.</p>
+      </div>
+
+      <div id="disputesActive" style="display:none">
+        <div class="stats-row" id="disputeStats"></div>
+
+        <div class="section-title" style="margin-top:24px">
+          Active Disputes <span class="count count-accent" id="activeDisputeCount">0</span>
+        </div>
+
+        <div class="dispute-tracker" id="disputeTracker"></div>
+
+        <div class="action-section" style="margin-top:24px" id="escalateSection">
+          <h3>Bureau Didn't Fix It?</h3>
+          <p>If a bureau verified but didn't correct the error, escalate to litigation. The Genie prepares your Small Claims filing package automatically.</p>
+          <button class="btn-red" id="escalateBtn" disabled>Escalate to Litigation</button>
+        </div>
+
+        <div class="action-section" style="margin-top:16px" id="recordResponseSection">
+          <h3>Record Bureau Response</h3>
+          <p>When a bureau responds to your dispute, record it here to update the tracker.</p>
+          <div class="client-form" style="max-width:400px">
+            <select class="form-input" id="responseDisputeId">
+              <option value="">Select dispute...</option>
+            </select>
+            <select class="form-input" id="responseStatus">
+              <option value="">Response type...</option>
+              <option value="verified">Verified (not fixed)</option>
+              <option value="deleted">Deleted (removed)</option>
+              <option value="updated">Updated (corrected)</option>
+            </select>
+          </div>
+          <button class="btn-outline" id="recordResponseBtn" style="margin-top:12px">Record Response</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- TAB 3: LITIGATION -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="tab-content" id="tab-litigation">
+      <div id="litigationEmpty" class="empty-state">
+        <div class="empty-icon">&#9878;</div>
+        <h3>No Litigation Packages</h3>
+        <p>When bureaus fail to correct errors after your disputes, escalate them here. The Genie generates a full Small Claims filing package including complaint, summons, proof of service, cover letter, and evidence exhibit.</p>
+      </div>
+
+      <div id="litigationActive" style="display:none">
+        <div class="card" style="margin-bottom:24px">
+          <div class="card-header">
+            <span class="card-title">Jurisdiction Info</span>
+          </div>
+          <div id="jurisdictionInfo"></div>
+        </div>
+
+        <div class="section-title">
+          Court Filing Documents <span class="count count-green" id="formCount">0</span>
+        </div>
+
+        <div class="litigation-forms" id="litigationForms"></div>
+
+        <div class="summary-box" style="margin-top:24px" id="litigationSummary"></div>
+      </div>
+
+      <!-- Manual Litigation Generator -->
+      <div class="action-section" style="margin-top:24px">
+        <h3>Generate Litigation Package</h3>
+        <p>Manually create a Small Claims filing package for any jurisdiction.</p>
+        <div class="client-form" style="max-width:600px">
+          <input type="text" id="litClientName" placeholder="Your full name" />
+          <input type="email" id="litClientEmail" placeholder="Email address" />
+          <input type="text" id="litClientState" placeholder="State (e.g. NY)" maxlength="2" />
+          <input type="text" id="litClientCounty" placeholder="County" />
+        </div>
+        <button class="btn-red" id="manualLitBtn" disabled>Generate Filing Package</button>
+        <p style="font-size:12px;color:var(--text-dim);margin-top:8px">Requires active disputes from the Disputes tab</p>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- TAB 4: CREDIT BUILDER -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="tab-content" id="tab-builder">
+      <div class="card" style="margin-bottom:24px">
+        <div class="card-header">
+          <span class="card-title">Quick Credit Assessment</span>
+        </div>
+        <p style="font-size:13px;color:var(--text-dim);margin-bottom:16px">
+          Tell us about your finances and we'll recommend the fastest path to better credit. No bank login required.
+        </p>
+        <div class="builder-form">
+          <div class="form-group">
+            <label>Monthly Income</label>
+            <input type="number" class="form-input" id="builderIncome" placeholder="$4,000" value="4000" />
+          </div>
+          <div class="form-group">
+            <label>Monthly Rent</label>
+            <input type="number" class="form-input" id="builderRent" placeholder="$1,200" />
+          </div>
+          <div class="form-group">
+            <label>Utilities</label>
+            <div class="checkbox-row">
+              <input type="checkbox" id="builderUtilities" checked />
+              <span style="font-size:13px">I pay electric/gas/water</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Streaming</label>
+            <div class="checkbox-row">
+              <input type="checkbox" id="builderStreaming" checked />
+              <span style="font-size:13px">Netflix, Spotify, etc.</span>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center">
+          <button class="btn-green" id="builderBtn">Analyze My Credit Potential</button>
+        </div>
+      </div>
+
+      <div id="builderResults" style="display:none">
+        <div class="stats-row" id="builderStats"></div>
+
+        <div class="section-title" style="margin-top:24px">
+          Recommended Actions <span class="count count-green" id="recCount">0</span>
+        </div>
+
+        <div id="recommendationsList"></div>
+
+        <div class="card" style="margin-top:24px">
+          <div class="card-header">
+            <span class="card-title">Score Impact Projection</span>
+          </div>
+          <div id="scoreProjection"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- TAB 5: DOCUMENTS — Dynamic Document Generator -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="tab-content" id="tab-documents">
+      <div class="doc-section doc-client-form">
+        <div class="doc-section-title">Client Profile</div>
+        <div class="doc-grid">
+          <div class="doc-field">
+            <label for="docClientFullName">Full Name</label>
+            <input type="text" id="docClientFullName" data-doc-field="client_full_name" placeholder="Jane Q. Consumer" />
+          </div>
+          <div class="doc-field">
+            <label for="docClientSsn">SSN (Last 4)</label>
+            <input type="text" id="docClientSsn" data-doc-field="client_ssn" maxlength="4" placeholder="1234" />
+          </div>
+          <div class="doc-field">
+            <label for="docClientEmail">Email</label>
+            <input type="email" id="docClientEmail" data-doc-field="client_email" placeholder="jane@example.com" />
+          </div>
+          <div class="doc-field">
+            <label for="docClientPhone">Phone</label>
+            <input type="text" id="docClientPhone" data-doc-field="client_phone" placeholder="555-0123" />
+          </div>
+        </div>
+        <div class="doc-grid" style="margin-top:16px">
+          <div class="doc-field">
+            <label for="docClientStreet">Street</label>
+            <input type="text" id="docClientStreet" data-doc-field="client_address" placeholder="123 Main St" />
+          </div>
+          <div class="doc-field">
+            <label for="docClientCity">City</label>
+            <input type="text" id="docClientCity" data-doc-field="client_city" placeholder="New York" />
+          </div>
+          <div class="doc-field">
+            <label for="docClientState">State</label>
+            <input type="text" id="docClientState" data-doc-field="client_state" maxlength="2" placeholder="NY" />
+          </div>
+          <div class="doc-field">
+            <label for="docClientZip">Zip</label>
+            <input type="text" id="docClientZip" data-doc-field="client_zip" placeholder="10001" />
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section">
+        <div class="doc-section-title">Account Details</div>
+        <div class="doc-grid-3">
+          <div class="doc-field">
+            <label for="docCreditorName">Creditor / Furnisher</label>
+            <input type="text" id="docCreditorName" data-doc-field="creditor_name" placeholder="Capital One Bank" />
+          </div>
+          <div class="doc-field">
+            <label for="docAccountNumber">Account Number</label>
+            <input type="text" id="docAccountNumber" data-doc-field="account_number" placeholder="****1234" />
+          </div>
+          <div class="doc-field">
+            <label for="docBureau">Bureau</label>
+            <select id="docBureau">
+              <option value="equifax">Equifax</option>
+              <option value="experian">Experian</option>
+              <option value="transunion">TransUnion</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="docExtraSection" style="display:none">
+        <div class="doc-section-title">Form-Specific Fields</div>
+        <div class="doc-grid-3" id="docExtraFields"></div>
+      </div>
+
+      <div class="doc-section doc-form-selector-section">
+        <div class="doc-section-title">Select Form ID</div>
+        <select id="docFormSelect" class="doc-form-selector">
+          <option value="">— Select a dispute template —</option>
+        </select>
+        <div id="docFormMeta" class="doc-form-meta" style="display:none">
+          <div class="doc-form-name" id="docFormName"></div>
+          <div class="doc-form-category" id="docFormCategory"></div>
+          <div class="doc-form-description" id="docFormDescription"></div>
+          <div class="doc-required-tags" id="docRequiredTags"></div>
+        </div>
+      </div>
+
+      <div class="doc-missing-fields" id="docMissingFields" style="display:none">
+        <div class="doc-missing-title">⚠ Missing Required Fields</div>
+        <ul id="docMissingList"></ul>
+      </div>
+
+      <div class="doc-section doc-preview-section">
+        <div class="doc-section-title">Document Preview</div>
+        <div class="doc-preview" id="docPreview">Select a form ID above to generate a preview.</div>
+        <div class="doc-actions">
+          <button class="doc-btn-primary" id="docDownloadBtn" disabled>Download Letter</button>
+          <button class="doc-btn-secondary" id="docPrintBtn" disabled>Print</button>
+        </div>
+        <div class="doc-status" id="docStatus"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ─── State ──────────────────────────────────────────────────────────
+    let files = [];
+    let currentAuditId = null;
+    let currentDisputes = [];
+    let currentAuditData = null;
+    let currentLitigationPkg = null;
+
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => document.querySelectorAll(s);
+    function esc(s) { const d = document.createElement('div'); d.textContent = String(s ?? ''); return d.innerHTML; }
+
+    // ─── Tab Navigation ─────────────────────────────────────────────────
+    $$('.nav-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        $$('.nav-tab').forEach(t => t.classList.remove('active'));
+        $$('.tab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        const target = tab.dataset.tab;
+        $(`#tab-${target}`).classList.add('active');
+      });
+    });
+
+    function switchTab(tabName) {
+      $$('.nav-tab').forEach(t => {
+        t.classList.toggle('active', t.dataset.tab === tabName);
+      });
+      $$('.tab-content').forEach(c => c.classList.remove('active'));
+      $(`#tab-${tabName}`).classList.add('active');
+    }
+
+    // ─── Upload Zone ────────────────────────────────────────────────────
+    const zone = $('#uploadZone');
+    const fileInput = $('#fileInput');
+    const auditBtn = $('#auditBtn');
+
+    zone.addEventListener('click', () => fileInput.click());
+    zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+    zone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      zone.classList.remove('dragover');
+      handleFiles([...e.dataTransfer.files].filter(f => f.type === 'application/pdf'));
+    });
+    fileInput.addEventListener('change', () => handleFiles([...fileInput.files]));
+
+    function handleFiles(newFiles) {
+      files = [...files, ...newFiles].slice(0, 3);
+      renderFiles();
+      auditBtn.disabled = files.length === 0;
+      if (files.length > 0) zone.classList.add('has-files');
+      else zone.classList.remove('has-files');
+    }
+
+    function renderFiles() {
+      const list = $('#fileList');
+      const selects = $('#bureauSelects');
+      list.innerHTML = files.map((f, i) => `
+        <span class="file-chip">
+          <span class="dot"></span>
+          ${esc(f.name)}
+          <span class="remove" onclick="removeFile(${i})">&times;</span>
+        </span>
+      `).join('');
+      selects.innerHTML = files.map((f, i) => `
+        <div class="bureau-select">
+          <span>${esc(f.name.split('.')[0].substring(0, 15))}</span>
+          <select id="bureau-${i}">
+            <option value="">Auto-detect</option>
+            <option value="equifax">Equifax</option>
+            <option value="experian">Experian</option>
+            <option value="transunion">TransUnion</option>
+          </select>
+        </div>
+      `).join('');
+    }
+
+    window.removeFile = (i) => {
+      files.splice(i, 1);
+      renderFiles();
+      auditBtn.disabled = files.length === 0;
+      if (files.length === 0) zone.classList.remove('has-files');
+    };
+
+    // ─── Run Audit ──────────────────────────────────────────────────────
+    auditBtn.addEventListener('click', async () => {
+      if (files.length === 0) return;
+      auditBtn.classList.add('loading');
+      auditBtn.disabled = true;
+
+      const formData = new FormData();
+      files.forEach((f, i) => {
+        formData.append('reports', f);
+        const sel = $(`#bureau-${i}`);
+        formData.append('bureaus', (sel && sel.value) ? sel.value : '');
+      });
+
+      try {
+        const res = await fetch('/api/audit', { method: 'POST', body: formData });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Audit failed');
+        currentAuditId = data.auditId;
+        currentAuditData = data;
+        renderAuditResults(data);
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        auditBtn.classList.remove('loading');
+        auditBtn.disabled = false;
+      }
+    });
+
+    function renderAuditResults(data) {
+      const results = $('#auditResults');
+      results.style.display = 'block';
+
+      $('#statsRow').innerHTML = `
+        <div class="stat-card">
+          <div class="number violations">${data.totalViolations}</div>
+          <div class="label">Violations Found</div>
+        </div>
+        <div class="stat-card">
+          <div class="number damages">$${data.estimatedDamages.toLocaleString()}</div>
+          <div class="label">Estimated Damages</div>
+        </div>
+        <div class="stat-card">
+          <div class="number accounts">${data.accountsAnalyzed}</div>
+          <div class="label">Accounts Analyzed</div>
+        </div>
+        <div class="stat-card">
+          <div class="number time">${data.bureausProcessed.length}</div>
+          <div class="label">Bureaus Processed</div>
+        </div>
+      `;
+
+      $('#summaryBox').innerHTML = `<strong>Audit Summary:</strong> ${esc(data.summary)}`;
+      $('#violationCount').textContent = data.totalViolations;
+      $('#violationsList').innerHTML = data.discrepancies.map(d => `
+        <div class="violation-card">
+          <div class="violation-header">
+            <h4>${esc(d.description)}</h4>
+            <span class="severity-badge severity-${esc(d.severity)}">${esc(d.severity)}</span>
+          </div>
+          <div class="violation-body">
+            <strong>Type:</strong> ${esc(d.violationType.replace(/_/g, ' '))}
+            &nbsp;&middot;&nbsp;
+            <strong>Field:</strong> ${esc(d.field)}
+          </div>
+          <div class="violation-legal">${esc(d.legalBasis)}</div>
+          <div class="violation-values">
+            ${Object.entries(d.values).map(([b, v]) =>
+              `<span class="bureau-value"><span class="bureau-name">${esc(b)}:</span> ${esc(v)}</span>`
+            ).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      $('#disputeBtn').disabled = data.totalViolations === 0;
+      results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ─── Generate Disputes ──────────────────────────────────────────────
+    $('#disputeBtn').addEventListener('click', async () => {
+      if (!currentAuditId) return;
+      const btn = $('#disputeBtn');
+      btn.disabled = true;
+      btn.textContent = 'Generating...';
+
+      try {
+        const res = await fetch(`/api/audit/${currentAuditId}/disputes`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: $('#clientName').value || 'Client',
+            email: $('#clientEmail').value || '',
+            state: $('#clientState').value || 'NY',
+            county: $('#clientCounty').value || 'New York',
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        currentDisputes = data.disputes;
+        renderDisputeGenResults(data);
+        updateDisputeTracker();
+        updateDisputeBadge();
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Generate All Dispute Letters';
+      }
+    });
+
+    function renderDisputeGenResults(data) {
+      const el = $('#disputeResults');
+      el.classList.add('visible');
+      el.innerHTML = `
+        <div class="stats-row" style="margin-top:20px">
+          <div class="stat-card">
+            <div class="number" style="color:var(--green)">${data.disputesCreated}</div>
+            <div class="label">Letters Generated</div>
+          </div>
+          <div class="stat-card">
+            <div class="number" style="color:var(--yellow)">${data.disputes.filter(d => d.status === 'pending_response').length}</div>
+            <div class="label">Pending Response</div>
+          </div>
+        </div>
+        <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
+          ${data.letters.map((l, i) => `
+            <a href="/api/audit/${currentAuditId}/letters/${i}" target="_blank" class="form-card" style="padding:12px 16px;min-width:auto">
+              <span class="form-name">${esc(l.fileName)}</span>
+            </a>
+          `).join('')}
+        </div>
+        <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--text-dim)">
+          Letters generated! Go to the <a href="#" onclick="switchTab('disputes');return false" style="color:var(--accent)">Disputes tab</a> to track responses and deadlines.
+        </p>
+      `;
+    }
+
+    // ─── Dispute Tracker ────────────────────────────────────────────────
+    function updateDisputeBadge() {
+      const badge = $('#disputeBadge');
+      const pending = currentDisputes.filter(d => d.status === 'pending_response');
+      if (pending.length > 0) {
+        badge.style.display = 'inline-block';
+        badge.textContent = pending.length;
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+    function updateDisputeTracker() {
+      if (currentDisputes.length === 0) {
+        $('#disputesEmpty').style.display = 'block';
+        $('#disputesActive').style.display = 'none';
+        return;
+      }
+
+      $('#disputesEmpty').style.display = 'none';
+      $('#disputesActive').style.display = 'block';
+
+      const pending = currentDisputes.filter(d => d.status === 'pending_response');
+      const resolved = currentDisputes.filter(d => ['deleted', 'updated'].includes(d.status));
+      const escalated = currentDisputes.filter(d => ['verified', 'escalated_litigation'].includes(d.status));
+
+      $('#disputeStats').innerHTML = `
+        <div class="stat-card">
+          <div class="number" style="color:var(--blue)">${currentDisputes.length}</div>
+          <div class="label">Total Disputes</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" style="color:var(--yellow)">${pending.length}</div>
+          <div class="label">Awaiting Response</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" style="color:var(--green)">${resolved.length}</div>
+          <div class="label">Resolved</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" style="color:var(--red)">${escalated.length}</div>
+          <div class="label">Escalated</div>
+        </div>
+      `;
+
+      $('#activeDisputeCount').textContent = currentDisputes.length;
+
+      const tracker = $('#disputeTracker');
+      tracker.innerHTML = currentDisputes.map(d => {
+        const statusClass = d.status === 'pending_response' ? 'status-pending' :
+                           d.status === 'verified' ? 'status-verified' :
+                           d.status === 'deleted' || d.status === 'updated' ? 'status-deleted' :
+                           d.status === 'escalated_litigation' ? 'status-escalated' : 'status-sent';
+
+        let deadline = '';
+        if (d.responseDeadline) {
+          const days = Math.ceil((new Date(d.responseDeadline) - new Date()) / (1000 * 60 * 60 * 24));
+          if (days <= 0) deadline = `<span class="dispute-deadline deadline-expired">EXPIRED</span>`;
+          else if (days <= 5) deadline = `<span class="dispute-deadline deadline-warning">${days}d left</span>`;
+          else deadline = `<span class="dispute-deadline deadline-ok">${days}d left</span>`;
+        }
+
+        return `
+          <div class="dispute-item">
+            <div class="dispute-status ${statusClass}"></div>
+            <div class="dispute-info">
+              <h4>${esc(d.bureau.charAt(0).toUpperCase() + d.bureau.slice(1))} — Dispute</h4>
+              <p>Status: ${esc(d.status.replace(/_/g, ' '))} &middot; ID: ${esc(d.id.substring(0, 8))}</p>
+            </div>
+            ${deadline}
+          </div>
+        `;
+      }).join('');
+
+      // Update response dropdown
+      const select = $('#responseDisputeId');
+      select.innerHTML = '<option value="">Select dispute...</option>' +
+        pending.map(d => `<option value="${esc(d.id)}">${esc(d.bureau)} — ${esc(d.id.substring(0, 8))}</option>`).join('');
+
+      // Enable escalate button if any are verified
+      const verifiedDisputes = currentDisputes.filter(d => d.status === 'verified');
+      $('#escalateBtn').disabled = verifiedDisputes.length === 0;
+      $('#manualLitBtn').disabled = currentDisputes.length === 0;
+    }
+
+    // ─── Record Response ────────────────────────────────────────────────
+    $('#recordResponseBtn').addEventListener('click', async () => {
+      const disputeId = $('#responseDisputeId').value;
+      const status = $('#responseStatus').value;
+      if (!disputeId || !status) {
+        alert('Select a dispute and response type');
+        return;
+      }
+
+      const dispute = currentDisputes.find(d => d.id === disputeId);
+      if (!dispute) return;
+
+      try {
+        const res = await fetch('/api/litigation/respond', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            dispute,
+            responseStatus: status,
+            responseContent: `Bureau responded: ${status}`,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        // Update local state
+        const idx = currentDisputes.findIndex(d => d.id === disputeId);
+        if (idx >= 0) {
+          currentDisputes[idx].status = data.dispute.status;
+          currentDisputes[idx].responseReceivedAt = data.dispute.responseReceivedAt;
+        }
+
+        updateDisputeTracker();
+        updateDisputeBadge();
+        alert(data.message);
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    // ─── Escalate to Litigation ─────────────────────────────────────────
+    $('#escalateBtn').addEventListener('click', async () => {
+      const verifiedDisputes = currentDisputes.filter(d => d.status === 'verified' || d.status === 'escalated_litigation');
+      if (verifiedDisputes.length === 0) {
+        alert('No disputes eligible for escalation. Mark a dispute as "Verified (not fixed)" first.');
+        return;
+      }
+      await generateLitigationPackage(verifiedDisputes);
+    });
+
+    $('#manualLitBtn').addEventListener('click', async () => {
+      const name = $('#litClientName').value;
+      const state = $('#litClientState').value;
+      if (!name || !state) {
+        alert('Fill in at least your name and state.');
+        return;
+      }
+      await generateLitigationPackage(currentDisputes);
+    });
+
+    async function generateLitigationPackage(disputes) {
+      const name = $('#litClientName').value || $('#clientName').value || 'Client';
+      const email = $('#litClientEmail').value || $('#clientEmail').value || '';
+      const state = $('#litClientState').value || $('#clientState').value || 'NY';
+      const county = $('#litClientCounty').value || $('#clientCounty').value || 'New York';
+
+      try {
+        const res = await fetch('/api/litigation/package', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            client: { name, email, state, county },
+            disputes,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        currentLitigationPkg = data;
+        renderLitigationPackage(data);
+        switchTab('litigation');
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    function renderLitigationPackage(data) {
+      $('#litigationEmpty').style.display = 'none';
+      $('#litigationActive').style.display = 'block';
+
+      const j = data.jurisdiction;
+      $('#jurisdictionInfo').innerHTML = `
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px">
+          <div><span style="color:var(--text-dim);font-size:12px">Court</span><br><strong style="font-size:13px">${esc(j.courtName)}</strong></div>
+          <div><span style="color:var(--text-dim);font-size:12px">Filing Fee</span><br><strong style="font-size:13px">$${j.filingFee}</strong></div>
+          <div><span style="color:var(--text-dim);font-size:12px">Small Claims Limit</span><br><strong style="font-size:13px">$${j.smallClaimsLimit.toLocaleString()}</strong></div>
+          <div><span style="color:var(--text-dim);font-size:12px">Estimated Damages</span><br><strong style="font-size:13px;color:var(--green)">$${data.estimatedDamages.toLocaleString()}</strong></div>
+        </div>
+      `;
+
+      $('#formCount').textContent = data.courtFormsCount;
+
+      const formIcons = {
+        'court_complaint': '&#128220;',
+        'summons': '&#128276;',
+        'proof_of_service': '&#128203;',
+        'cover_letter': '&#9993;',
+        'evidence_exhibit': '&#128269;',
+      };
+      const formLabels = {
+        'court_complaint': 'Court Complaint',
+        'summons': 'Summons',
+        'proof_of_service': 'Proof of Service',
+        'cover_letter': 'Cover Letter',
+        'evidence_exhibit': 'Evidence Exhibit',
+      };
+
+      $('#litigationForms').innerHTML = data.courtForms.map((f, i) => `
+        <a href="/api/litigation/package/${data.packageId}/forms/${i}" target="_blank" class="form-card">
+          <div class="form-icon">${formIcons[f.type] || '&#128196;'}</div>
+          <div class="form-name">${esc(f.fileName)}</div>
+          <div class="form-type">${formLabels[f.type] || esc(f.type)}</div>
+        </a>
+      `).join('');
+
+      $('#litigationSummary').innerHTML = `
+        <strong>Filing Instructions:</strong>
+        <ol style="margin-top:8px;padding-left:20px;font-size:13px;line-height:1.8;color:var(--text-dim)">
+          <li>Download and print all court forms above</li>
+          <li>Write a check or money order for <strong style="color:var(--text)">$${j.filingFee}</strong> (filing fee)</li>
+          <li>Mail the Complaint, Summons, and Cover Letter to the court clerk via certified mail</li>
+          <li>Mail a copy of the Complaint and Summons to each bureau defendant via certified mail</li>
+          <li>Complete the Proof of Service form with your tracking numbers</li>
+          <li>Keep copies of everything for your records</li>
+          <li>Attend your hearing on the scheduled date with the Evidence Exhibit</li>
+        </ol>
+      `;
+    }
+
+    // ─── Credit Builder ─────────────────────────────────────────────────
+    $('#builderBtn').addEventListener('click', async () => {
+      const btn = $('#builderBtn');
+      btn.disabled = true;
+      btn.textContent = 'Analyzing...';
+
+      const income = parseInt($('#builderIncome').value) || 3000;
+      const rent = parseInt($('#builderRent').value) || undefined;
+      const hasUtilities = $('#builderUtilities').checked;
+      const hasStreaming = $('#builderStreaming').checked;
+
+      try {
+        const res = await fetch('/api/builder/quick', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            monthlyIncome: income,
+            monthlyRent: rent,
+            hasUtilities,
+            hasStreaming,
+          }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        renderBuilderResults(data);
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Analyze My Credit Potential';
+      }
+    });
+
+    function renderBuilderResults(data) {
+      const results = $('#builderResults');
+      results.style.display = 'block';
+
+      const a = data.analysis;
+      $('#builderStats').innerHTML = `
+        <div class="stat-card">
+          <div class="number" style="color:var(--green)">$${a.netCashFlow.toLocaleString()}</div>
+          <div class="label">Net Cash Flow</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" style="color:var(--accent)">$${a.creditCapacity.toLocaleString()}</div>
+          <div class="label">Credit Capacity</div>
+        </div>
+        <div class="stat-card">
+          <div class="number blue">${data.recommendations.length}</div>
+          <div class="label">Products Available</div>
+        </div>
+        <div class="stat-card">
+          <div class="number" style="color:var(--green)">+${data.recommendations.reduce((s, r) => s + r.estimatedScoreImpact, 0)}</div>
+          <div class="label">Est. Score Impact</div>
+        </div>
+      `;
+
+      $('#recCount').textContent = data.recommendations.length;
+
+      const typeLabels = {
+        rent_reporting: 'Rent Reporting',
+        utility_reporting: 'Utility Reporting',
+        streaming_reporting: 'Streaming Reporting',
+        secured_card: 'Secured Card',
+        credit_builder_loan: 'Credit Builder Loan',
+        authorized_user: 'Authorized User',
+      };
+
+      const typeIcons = {
+        rent_reporting: '&#127968;',
+        utility_reporting: '&#9889;',
+        streaming_reporting: '&#127909;',
+        secured_card: '&#128179;',
+        credit_builder_loan: '&#127974;',
+        authorized_user: '&#129309;',
+      };
+
+      $('#recommendationsList').innerHTML = data.recommendations.map(r => {
+        const cost = r.monthlyCost === null ? 'One-time deposit' : r.monthlyCost === 0 ? 'FREE' : `$${r.monthlyCost}/mo`;
+        return `
+          <div class="recommendation-card">
+            <div class="rec-header">
+              <h4>${typeIcons[r.type] || ''} ${esc(r.provider)}</h4>
+              <span class="rec-impact">+${r.estimatedScoreImpact} pts</span>
+            </div>
+            <div class="rec-body">${esc(r.description)}</div>
+            <div class="rec-meta">
+              <span class="rec-tag">${typeLabels[r.type] || esc(r.type)}</span>
+              <span class="rec-tag">${cost}</span>
+              ${r.requirements.map(req => `<span class="rec-tag">${esc(req)}</span>`).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Score projection
+      const totalImpact = data.recommendations.reduce((s, r) => s + r.estimatedScoreImpact, 0);
+      const tiers = [
+        { name: 'Immediate (30 days)', types: ['rent_reporting', 'utility_reporting', 'streaming_reporting', 'authorized_user'] },
+        { name: 'Short-term (60-90 days)', types: ['secured_card'] },
+        { name: 'Medium-term (6+ months)', types: ['credit_builder_loan'] },
+      ];
+
+      let projected = 0;
+      $('#scoreProjection').innerHTML = tiers.map(tier => {
+        const tierRecs = data.recommendations.filter(r => tier.types.includes(r.type));
+        const tierImpact = tierRecs.reduce((s, r) => s + r.estimatedScoreImpact, 0);
+        projected += tierImpact;
+        const pct = totalImpact > 0 ? Math.round((projected / totalImpact) * 100) : 0;
+        return `
+          <div style="margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+              <span style="font-weight:500">${tier.name}</span>
+              <span style="color:var(--accent);font-weight:500">+${tierImpact} pts</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill green" style="width:${pct}%"></div>
+            </div>
+            <div style="font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px">
+              ${tierRecs.map(r => r.provider).join(', ') || 'No actions in this tier'}
+            </div>
+          </div>
+        `;
+      }).join('') + `
+        <div style="text-align:center;margin-top:16px;padding:16px;background:var(--surface-2);border:1px solid var(--border);border-radius:0">
+          <div style="font-size:32px;font-weight:400;color:var(--accent)">+${totalImpact} points</div>
+          <div style="font-size:11px;color:var(--text-dim);margin-top:4px;text-transform:uppercase;letter-spacing:1px">Estimated total score improvement</div>
+        </div>
+      `;
+
+      results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // ─── Documents Tab — Dynamic Document Generator ─────────────────────
+    const DOC_FIELD_LABELS = {
+      client_full_name: 'Full Name',
+      client_ssn: 'SSN (Last 4)',
+      client_address: 'Street Address',
+      client_city: 'City',
+      client_state: 'State',
+      client_zip: 'Zip',
+      client_email: 'Email',
+      client_phone: 'Phone',
+      creditor_name: 'Creditor / Furnisher',
+      account_number: 'Account Number',
+      collection_amount: 'Collection Amount',
+      original_creditor: 'Original Creditor',
+      police_report_number: 'Police Report Number',
+      debt_collector_name: 'Debt Collector Name',
+      debt_collector_address: 'Debt Collector Address',
+      alleged_amount: 'Alleged Amount',
+      bureau_name: 'Bureau Name',
+      bureau_address: 'Bureau Address',
+      current_date: 'Current Date',
+    };
+
+    // Standard fields that already have inputs in Client Profile / Account Details.
+    const DOC_STANDARD_FIELDS = new Set([
+      'client_full_name', 'client_ssn', 'client_address', 'client_city',
+      'client_state', 'client_zip', 'client_email', 'client_phone',
+      'creditor_name', 'account_number',
+      'bureau_name', 'bureau_address', 'current_date',
+    ]);
+
+    let docTemplates = [];
+    let docCurrentTemplate = null;
+    let docCurrentResult = null;
+    let docRenderTimer = null;
+
+    function docLabel(field) {
+      return DOC_FIELD_LABELS[field] || field;
+    }
+
+    function docCollectContext() {
+      const ctx = {};
+      $$('#tab-documents [data-doc-field]').forEach(el => {
+        const key = el.dataset.docField;
+        if (key && el.value !== undefined) {
+          ctx[key] = el.value.trim();
+        }
+      });
+      return ctx;
+    }
+
+    function docRenderExtraFields(template) {
+      const section = $('#docExtraSection');
+      const container = $('#docExtraFields');
+      if (!template) {
+        section.style.display = 'none';
+        container.innerHTML = '';
+        return;
+      }
+      const extras = (template.requiredFields || []).filter(f => !DOC_STANDARD_FIELDS.has(f));
+      if (extras.length === 0) {
+        section.style.display = 'none';
+        container.innerHTML = '';
+        return;
+      }
+      // Preserve any existing values for extras already on the page.
+      const existing = {};
+      $$('#docExtraFields [data-doc-field]').forEach(el => {
+        existing[el.dataset.docField] = el.value;
+      });
+      container.innerHTML = extras.map(field => `
+        <div class="doc-field">
+          <label for="docExtra_${esc(field)}">${esc(docLabel(field))}</label>
+          <input type="text" id="docExtra_${esc(field)}" data-doc-field="${esc(field)}" value="${esc(existing[field] || '')}" />
+        </div>
+      `).join('');
+      section.style.display = 'block';
+      container.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', docScheduleRender);
+      });
+    }
+
+    function docPopulateFormSelect() {
+      const sel = $('#docFormSelect');
+      sel.innerHTML = '<option value="">— Select a dispute template —</option>' +
+        docTemplates.map(t => `<option value="${esc(t.formId)}">${esc(t.formId)}: ${esc(t.name)}</option>`).join('');
+    }
+
+    function docShowFormMeta(template) {
+      const meta = $('#docFormMeta');
+      if (!template) {
+        meta.style.display = 'none';
+        return;
+      }
+      $('#docFormName').textContent = `${template.formId}: ${template.name}`;
+      $('#docFormCategory').textContent = `Category — ${template.category}`;
+      $('#docFormDescription').textContent = template.description;
+      $('#docRequiredTags').innerHTML = (template.requiredFields || [])
+        .map(f => `<span class="doc-required-tag">${esc(f)}</span>`)
+        .join('');
+      meta.style.display = 'block';
+    }
+
+    function docHighlightMissing(content) {
+      // First HTML-escape, then wrap [MISSING: xxx] tokens.
+      const escaped = esc(content);
+      return escaped.replace(/\[MISSING: ([a-zA-Z_][a-zA-Z0-9_]*)\]/g,
+        (_, name) => `<span class="doc-missing-token">[MISSING: ${esc(name)}]</span>`);
+    }
+
+    function docUpdateMissingPanel(missingFields) {
+      const panel = $('#docMissingFields');
+      const list = $('#docMissingList');
+      if (!missingFields || missingFields.length === 0) {
+        panel.style.display = 'none';
+        list.innerHTML = '';
+        return;
+      }
+      panel.style.display = 'block';
+      list.innerHTML = missingFields.map(f => `<li>${esc(docLabel(f))} <span style="color:#9B2C2C">(${esc(f)})</span></li>`).join('');
+    }
+
+    async function docRenderPreview() {
+      const formId = $('#docFormSelect').value;
+      const preview = $('#docPreview');
+      const downloadBtn = $('#docDownloadBtn');
+      const printBtn = $('#docPrintBtn');
+      const status = $('#docStatus');
+
+      if (!formId || !docCurrentTemplate) {
+        preview.textContent = 'Select a form ID above to generate a preview.';
+        downloadBtn.disabled = true;
+        printBtn.disabled = true;
+        docUpdateMissingPanel([]);
+        status.textContent = '';
+        docCurrentResult = null;
+        return;
+      }
+
+      const context = docCollectContext();
+      const bureau = $('#docBureau').value;
+
+      try {
+        const r = await fetch('/api/documents/render', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ formId, context, bureau }),
+        });
+        if (!r.ok) {
+          const err = await r.json().catch(() => ({}));
+          preview.textContent = `Render failed: ${err.error || r.statusText}`;
+          downloadBtn.disabled = true;
+          printBtn.disabled = true;
+          return;
+        }
+        const result = await r.json();
+        docCurrentResult = result;
+        preview.innerHTML = docHighlightMissing(result.content);
+        docUpdateMissingPanel(result.missingFields);
+        downloadBtn.disabled = !result.complete;
+        printBtn.disabled = false;
+        if (result.complete) {
+          status.textContent = `Form ${result.formId} ready. ${result.content.length} characters.`;
+        } else {
+          status.textContent = `${result.missingFields.length} required field(s) missing. Fill them in to enable download.`;
+        }
+      } catch (err) {
+        preview.textContent = `Error: ${err && err.message ? err.message : String(err)}`;
+        downloadBtn.disabled = true;
+        printBtn.disabled = true;
+      }
+    }
+
+    function docScheduleRender() {
+      if (docRenderTimer) clearTimeout(docRenderTimer);
+      docRenderTimer = setTimeout(() => { docRenderPreview(); }, 300);
+    }
+
+    async function docLoadTemplates() {
+      try {
+        const r = await fetch('/api/documents/templates');
+        if (!r.ok) return;
+        const data = await r.json();
+        docTemplates = data.templates || [];
+        docPopulateFormSelect();
+      } catch (_) {
+        // silent — tab simply won't have templates available
+      }
+    }
+
+    function docHandleFormSelect() {
+      const formId = $('#docFormSelect').value;
+      docCurrentTemplate = docTemplates.find(t => t.formId === formId) || null;
+      docShowFormMeta(docCurrentTemplate);
+      docRenderExtraFields(docCurrentTemplate);
+      docRenderPreview();
+    }
+
+    async function docDownload() {
+      const formId = $('#docFormSelect').value;
+      if (!formId) return;
+      const context = docCollectContext();
+      const bureau = $('#docBureau').value;
+      try {
+        const r = await fetch('/api/documents/download', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ formId, context, bureau }),
+        });
+        if (!r.ok) {
+          const err = await r.json().catch(() => ({}));
+          $('#docStatus').textContent = `Download failed: ${err.error || r.statusText}`;
+          return;
+        }
+        const blob = await r.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${formId}-${Date.now()}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        $('#docStatus').textContent = `Downloaded ${formId}.`;
+      } catch (err) {
+        $('#docStatus').textContent = `Error: ${err && err.message ? err.message : String(err)}`;
+      }
+    }
+
+    function docPrint() {
+      if (!docCurrentResult) return;
+      const w = window.open('', '_blank');
+      if (!w) return;
+      const formId = docCurrentResult.formId || '';
+      const formName = docCurrentResult.formName || '';
+      const content = docHighlightMissing(docCurrentResult.content || '');
+      w.document.write(`<!DOCTYPE html><html><head><title>${esc(formId)} — ${esc(formName)}</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&display=swap">
+        <style>
+          body { font-family: 'IBM Plex Mono', monospace; color: #001A33; margin: 32px; line-height: 1.8; font-size: 13px; white-space: pre-wrap; }
+          .doc-missing-token { color: #C53030; }
+        </style></head><body>${content}</body></html>`);
+      w.document.close();
+      w.focus();
+      w.print();
+    }
+
+    // Wire up Documents tab. The script tag sits after the DOM nodes, so
+    // we initialize immediately if the document is already parsed; otherwise
+    // we defer to DOMContentLoaded.
+    function docInit() {
+      docLoadTemplates();
+      $('#docFormSelect').addEventListener('change', docHandleFormSelect);
+      $('#docBureau').addEventListener('change', docScheduleRender);
+      $$('#tab-documents [data-doc-field]').forEach(el => {
+        el.addEventListener('input', docScheduleRender);
+      });
+      $('#docDownloadBtn').addEventListener('click', docDownload);
+      $('#docPrintBtn').addEventListener('click', docPrint);
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', docInit);
+    } else {
+      docInit();
+    }
+  </script>
+</body>
+</html>
