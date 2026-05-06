@@ -32,8 +32,12 @@ litigationRouter.post("/package", (req, res) => {
       email: (body.client?.email as string) || "",
       name: (body.client?.name as string) || "Client",
       phone: (body.client?.phone as string) || null,
+      ssn: (body.client?.ssn as string) || null,
+      street: (body.client?.street as string) || null,
+      city: (body.client?.city as string) || null,
       state: (body.client?.state as string) || "NY",
       county: (body.client?.county as string) || "New York",
+      zip: (body.client?.zip as string) || null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

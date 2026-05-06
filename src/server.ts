@@ -6,6 +6,7 @@ import { log } from "./lib/logger.js";
 import { auditRouter } from "./routes/audit.js";
 import { litigationRouter } from "./routes/litigation.js";
 import { builderRouter } from "./routes/builder.js";
+import { documentsRouter } from "./routes/documents.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -20,6 +21,7 @@ app.use(express.static(path.join(__dirname, "..", "public")));
 app.use("/api/audit", auditRouter);
 app.use("/api/litigation", litigationRouter);
 app.use("/api/builder", builderRouter);
+app.use("/api/documents", documentsRouter);
 
 // Health check
 app.get("/health", (_req, res) => {

@@ -123,8 +123,12 @@ auditRouter.post("/:id/disputes", (req, res) => {
       email: (req.body.email as string) || "client@example.com",
       name: (req.body.name as string) || "Client",
       phone: (req.body.phone as string) || null,
+      ssn: (req.body.ssn as string) || null,
+      street: (req.body.street as string) || null,
+      city: (req.body.city as string) || null,
       state: (req.body.state as string) || "NY",
       county: (req.body.county as string) || "New York",
+      zip: (req.body.zip as string) || null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
