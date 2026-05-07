@@ -501,7 +501,7 @@ export interface MedicalDebtAction {
   id: string;
   profileId: string;
   medicalDebtId: string;
-  rule: "under_500" | "under_12_months" | "ny_state_ban" | "nsa_violation" | "insurance_pending";
+  rule: "under_500" | "under_12_months" | "ny_state_ban" | "nsa_violation" | "insurance_pending" | "standard_pay_for_delete";
   letterContent: string;
   targetBureau: Bureau | null;
   targetFurnisher: string | null;

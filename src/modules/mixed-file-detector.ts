@@ -186,14 +186,14 @@ function checkDuplicateCollections(accounts: CreditAccount[], profile: CreditPro
 function containsNameVariant(text: string, userName: string): boolean {
   const suffixes = ["jr", "sr", "ii", "iii", "iv"];
   const textLower = text.toLowerCase();
-  // Check if text has the user's last name but with a different first name or suffix
   const parts = userName.split(" ");
   const lastName = parts[parts.length - 1] ?? "";
   if (textLower.includes(lastName) && !textLower.includes(userName)) {
     return true;
   }
   for (const suffix of suffixes) {
-    if (textLower.includes(suffix) && !userName.includes(suffix)) {
+    const suffixPattern = new RegExp(`\\b${suffix}\\b`, "i");
+    if (suffixPattern.test(textLower) && !suffixPattern.test(userName)) {
       return true;
     }
   }

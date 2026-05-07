@@ -55,7 +55,7 @@ export function runMedicalDebtEngine(profile: CreditProfile): MedicalDebtResult 
         letterContent = generateInsurancePendingLetter(profile, account);
       } else {
         // Standard — pay-for-delete with medical provider directly
-        rule = "under_500"; // fallback
+        rule = "standard_pay_for_delete";
         letterContent = generateMedicalPayForDeleteLetter(profile, account);
       }
     }
@@ -136,6 +136,12 @@ function generateMedicalAdvisory(profile: CreditProfile, account: CreditAccount,
       impact: "+15-40 points if balance voided",
       priority: "high",
     },
+    standard_pay_for_delete: {
+      condition: `Medical debt "${account.creditorName}" ($${account.balance ?? 0}) — negotiate pay-for-delete with provider directly`,
+      action: "Contact medical provider (not collector) to negotiate pay-for-delete. Provider has more incentive to agree than third-party collector.",
+      impact: "No immediate score gain — prevents further damage",
+      priority: "medium",
+    },
   };
 
   const msg = messages[rule];
@@ -162,6 +168,7 @@ function getImpactForRule(rule: MedicalDebtAction["rule"]): string {
     under_12_months: "+10-30 points",
     insurance_pending: "+15-40 points",
     nsa_violation: "+15-40 points",
+    standard_pay_for_delete: "Prevents further damage",
   };
   return impacts[rule];
 }

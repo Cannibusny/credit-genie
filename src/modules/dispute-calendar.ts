@@ -13,8 +13,8 @@ interface CalendarResult {
 
 // 4-month rolling window categories
 const MONTH_CATEGORIES: Record<number, DisputeCategory[]> = {
-  1: ["payment_history", "account_status"],
-  2: ["credit_limit", "duplicate_listing"],
+  1: ["payment_history", "account_status", "collection"],
+  2: ["credit_limit", "duplicate_listing", "medical_debt"],
   3: ["personal_info", "outdated_negative", "au_issue"],
   4: ["escalation_mov", "escalation_cfpb", "escalation_ag"],
 };

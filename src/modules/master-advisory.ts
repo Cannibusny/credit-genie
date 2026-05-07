@@ -79,23 +79,31 @@ function generateMasterTriggers(profile: CreditProfile, now: Date): AdvisoryItem
   const triggers: AdvisoryItem[] = [];
 
   // IF score drops 20+ points with no new derogatory → utilization spike
+  // Group scores by bureau to avoid false positives from cross-bureau comparison
   const recentScores = profile.scores.filter(s => {
     const d = new Date(s.recordedAt);
     return (now.getTime() - d.getTime()) < 60 * 24 * 60 * 60 * 1000; // last 60 days
   });
-  if (recentScores.length >= 2) {
-    const sorted = recentScores.sort((a, b) => new Date(a.recordedAt).getTime() - new Date(b.recordedAt).getTime());
+  const scoresByBureau = new Map<string, typeof recentScores>();
+  for (const s of recentScores) {
+    const existing = scoresByBureau.get(s.bureau) ?? [];
+    existing.push(s);
+    scoresByBureau.set(s.bureau, existing);
+  }
+  for (const [bureau, scores] of scoresByBureau) {
+    if (scores.length < 2) continue;
+    const sorted = scores.sort((a, b) => new Date(a.recordedAt).getTime() - new Date(b.recordedAt).getTime());
     const latest = sorted[sorted.length - 1];
     const previous = sorted[sorted.length - 2];
     if (latest && previous && previous.score - latest.score >= 20) {
       triggers.push({
-        id: `adv-master-drop-${now.getTime()}`,
+        id: `adv-master-drop-${bureau}-${now.getTime()}`,
         profileId: profile.id,
         module: "master_advisory",
         priority: "critical",
-        condition: `Score dropped ${previous.score - latest.score} points (${previous.score} → ${latest.score}) with no new derogatory accounts`,
+        condition: `Score dropped ${previous.score - latest.score} points on ${bureau} (${previous.score} → ${latest.score}) with no new derogatory accounts`,
         action: "Pull all three bureaus immediately. Likely utilization spike or limit reduction. Run Report Date Optimizer.",
-        specificDetails: `Bureau: ${latest.bureau}. Date: ${latest.recordedAt}. Check for limit reductions, new collections, or utilization spikes.`,
+        specificDetails: `Bureau: ${bureau}. Date: ${latest.recordedAt}. Check for limit reductions, new collections, or utilization spikes.`,
         expectedImpact: "Diagnosis — identifies the cause for targeted fix",
         bureau: latest.bureau,
         timeframe: "Immediate — investigate today",
