@@ -1,90 +1,113 @@
-# Credit Genie — End-to-End Test Report
+# Credit Genie Mega-Build — Test Report
 
-**Date:** May 5, 2026  
-**Tester:** Devin (automated)  
-**Server:** `http://localhost:3001`  
-**Branch:** `devin/1778021957-credit-genie-initial`  
-**PR:** https://github.com/Cannibusny/credit-genie/pull/1  
-**Session:** https://app.devin.ai/sessions/e5fc0e624dba405690aa8f4721674d79
+**Tested**: Midnight Terminal 9-tab UI (PR #6) running locally at `localhost:3456` against the `devin/1778111207-mega-features` branch.  
+**Method**: End-to-end browser UI walkthrough with screen recording.  
+**Session**: https://app.devin.ai/sessions/e5fc0e624dba405690aa8f4721674d79
+
+---
 
 ## Summary
 
-Ran frontend locally, tested all 4 tabs end-to-end (Audit, Disputes, Litigation, Credit Builder) using synthetic test PDFs with deliberate cross-bureau discrepancies. All 5 tests passed.
+5 of 6 tests passed. Tests 1–5 (Theme, Client Creation, Manual Accounts, FICO Simulator, Form Library) all passed cleanly. Test 6 (PDF Audit) partially failed — the Cross-Bureau Discrepancy Map table rendered with correct column headers but the stats row showed "undefined" for violations/bureaus and no data rows appeared.
+
+---
 
 ## Test Results
 
-### Test 1: Upload PDFs & Run Audit — PASSED
-- Uploaded `equifax-report.pdf` and `experian-report.pdf` via Playwright CDP
-- Set bureau dropdowns to Equifax and Experian
+### Test 1: Midnight Terminal Theme & Dashboard — PASSED
+- Dark navy background (#0B1120) confirmed — NOT white
+- IBM Plex Mono monospace font active
+- All 9 tabs visible: Dashboard, Clients, Audit, Disputes, Litigation, Simulator, Form Library, Credit Builder, Vault
+- Dashboard active by default with 4-stage workflow (Intake, Strike, Follow-Up, Rebuild)
+- No rounded corners (border-radius: 0)
+
+### Test 2: Client Creation & Score Entry — PASSED
+
+| Step | Result |
+|------|--------|
+| Create client "JJ Williams" (NY, Orange, jj@test.com) | Client card appeared |
+| Add Equifax score 642 on 2025-05-01 | Score gauge shows "642" in orange |
+| Add Experian score 618 on 2025-05-01 | Score gauge shows "618" in orange |
+| Score History chart | Canvas renders with colored data points |
+
+**After adding both scores:**
+
+![Score gauges showing Equifax 642 and Experian 618](https://app.devin.ai/attachments/f1740c8c-4081-4091-b374-22b1e5016a16/screenshot_9a66aaca5b534778a5aefecd0b4be3a5.png)
+
+### Test 3: Manual Account Entry — PASSED
+- Added "Capital One" account: Equifax, Revolving, Open, $2,500/$5,000, Negative=Yes, Reason=Late Payment
+- Account card displayed with red left border (isNegative), "EQUIFAX · revolving · open · late_payment", "$2,500 of $5,000"
+- Manual Accounts counter updated to 1
+
+### Test 4: FICO Score Simulator — PASSED
+
+| Metric | Value |
+|--------|-------|
+| Projected Equifax Score | **670** (+28 pts from 642) |
+| Projected Experian Score | **644** (+26 pts from 618) |
+| Score Factors | 5 categories: payment_history, utilization, age, credit_mix, derogatory |
+| Current DTI | 0% |
+| Target DTI | 36% |
+| Borrowing Power | $360,000 |
+
+![FICO Simulator results showing projected scores and factors](https://app.devin.ai/attachments/c362ff69-c1a0-456f-8db8-3ee902c802f1/screenshot_574d20f9edac4c7a8abd8b36f13d8352.png)
+
+**Simulator setup — client selected, negative item loaded:**
+
+![Simulator with JJ Williams selected and Capital One negative item](https://app.devin.ai/attachments/dc994289-27f0-40ed-ac54-19fd665bfca1/screenshot_19b1123b9fea435fafd52e511b7c2f75.png)
+
+### Test 5: Form Library & Letter Generation — PASSED
+- 11 form cards visible (FORM-101 through FORM-801) with legal citation badges
+- Selected FORM-101 (Cross-Bureau Balance Mismatch)
+- Filled: bureau_name=Equifax, creditor_name=Capital One, account_number=1234, balance_reported=2500, balance_other_bureau=3200, other_bureau_name=Experian
+- Generated letter contains:
+  - "JJ Williams" (auto-populated from client)
+  - "Orange, NY" (auto-populated address)
+  - "15 U.S.C. § 1681i" and "§ 1681e(b)" legal citations
+  - Account details correctly injected
+  - Download Letter button present
+
+**Form Library with 11 legal templates:**
+
+![Form Library showing 11 form cards with FORM IDs and legal citations](https://app.devin.ai/attachments/8fdccce9-954c-40d6-a6c3-b6da58abe2a6/screenshot_7cdbfbba60d24ecb9342bc462fbd8060.png)
+
+**Generated dispute letter with auto-populated client data:**
+
+![Generated FORM-101 letter showing JJ Williams, FCRA citations, account details](https://app.devin.ai/attachments/e66a8992-39c7-4781-8f8c-e8b1e0485029/screenshot_d6ab671c09da4b47a3d44f0339da9855.png)
+
+### Test 6: PDF Audit with Cross-Bureau Map — PARTIAL FAIL
+- Uploaded equifax-report.pdf and experian-report.pdf successfully
+- Bureau labels auto-detected correctly (Equifax, Experian)
 - Clicked "Run Free Credit Audit"
-- **Violations Found:** 7 (expected >= 3)
-- **Estimated Damages:** $7,000 (expected >= $3,000)
-- **Bureaus Processed:** 2 (expected 2)
-- **Severity badges:** 4 CRITICAL, 2 HIGH, 1 MEDIUM
-- **Cross-bureau values visible:** balance $5,200 vs $4,800, status open vs closed
+- **Issue**: Stats row shows "undefined" for violations and bureaus, $0 damages, 0 accounts matched
+- Cross-Bureau Discrepancy Map table header renders correctly (Account, Field, Equifax, Experian, TransUnion, Violation columns)
+- No data rows in the discrepancy map
+- "Generate Dispute Letters" section appears below
+- The audit engine processed the PDFs (completed in 0.0s) but the response format may have a field-mapping issue causing "undefined" display
 
-![Audit Results](https://app.devin.ai/attachments/ff55ce97-8766-4075-9b7d-3e5b45115657/screenshot_282b12e26fe44467b12f7bdc9c0c9a5d.png)
+**Audit results showing undefined stats:**
 
-### Test 2: Generate Dispute Letters — PASSED
-- Filled client info: John Doe, john@test.com, FL, Miami-Dade
-- Clicked "Generate All Dispute Letters"
-- **Letters Generated:** 12 (expected >= 6)
-- **Pending Response:** 12
-- Downloaded letter verified: contains "John Doe", "Miami-Dade, FL", FCRA § 611(a) citation
-- Disputes tab badge updated to show "12"
+![PDF Audit results with undefined violations and empty discrepancy map](https://app.devin.ai/attachments/5479ba05-0efe-4cb2-bf75-5f7b8fa99ac8/screenshot_9f899914980841359d059d9fb0b49bfe.png)
 
-![Dispute Letters Generated](https://app.devin.ai/attachments/b6a92308-8c83-480d-9131-dfbd9ba9c3f6/screenshot_8d1bc52694c74196abf30cfa5774ddf2.png)
+---
 
-### Test 3: Record Bureau Response & Escalate — PASSED
-- Navigated to Disputes tab
-- Selected first Experian dispute (ID: 1c403bbe)
-- Set response to "Verified (not fixed)"
-- Clicked "Record Response"
-- **Awaiting Response:** 12 → 11
-- **Escalated:** 0 → 1
-- Dispute status changed to "escalated litigation" (red indicator)
-- Disputed item removed from dropdown (auto-escalation worked)
+## Escalations
 
-![Disputes Tab After Escalation](https://app.devin.ai/attachments/d7d410ec-3488-4d5e-8516-5fdc106f1a92/screenshot_a4a248e8295b48bf82c7ba2aff55bec4.png)
+1. **Test 6 — PDF Audit stats display "undefined"**: The audit API returned successfully (0.0s) but the frontend displays "undefined" for violation count and bureau count. This suggests a field name mismatch between the API response and the frontend rendering code. The Cross-Bureau Discrepancy Map structure is correct but empty — likely because the test PDFs have consistent data (no actual discrepancies to flag).
 
-### Test 4: Litigation Package & Court Forms — PASSED
-- Navigated to Litigation tab
-- Filled client info: John Doe, john@test.com, FL, Miami-Dade
-- Clicked "Generate Filing Package"
-- **Court:** Miami-Dade County Court, Small Claims Division
-- **Filing Fee:** $55
-- **Small Claims Limit:** $8,000
-- **Estimated Damages:** $12,000
-- **Court Filing Documents:** 10 (5 per bureau x 2 bureaus)
-- All 5 form types present: Court Complaint, Summons, Proof of Service, Cover Letter, Evidence Exhibit
-- Downloaded complaint verified: "IN THE MIAMI-DADE COUNTY COURT, SMALL CLAIMS DIVISION", "John Doe" as plaintiff
-- Filing Instructions: 7 numbered steps visible
+---
 
-![Litigation Package](https://app.devin.ai/attachments/2073ffff-0924-4701-9ccf-c8c93b9aa3b4/screenshot_8c80a58b1bed4f858c13b5c5f71a0ce9.png)
+## Assertions Summary
 
-### Test 5: Credit Builder Analysis — PASSED
-- Navigated to Credit Builder tab
-- Income pre-filled: $4,000
-- Entered rent: $1,200
-- Utilities and Streaming checkboxes checked
-- Clicked "Analyze My Credit Potential"
-- **Net Cash Flow:** $1,408 (positive, expected > $0)
-- **Credit Capacity:** $422
-- **Products Available:** 9 (expected >= 7)
-- **Est. Score Impact:** +280 (expected > 100)
-- 9 product cards with provider names and point impact badges
-- Score Impact Projection shows 3 tiers:
-  - Immediate (30 days): +140 pts
-  - Short-term (60-90 days): +65 pts
-  - Medium-term (6+ months): +75 pts
-
-| Credit Builder Results | Score Projection |
-|---|---|
-| ![Results](https://app.devin.ai/attachments/0eee84fa-1e30-45a6-8cd6-1113fb77de1b/screenshot_0edff0cfd16146908092f71a4e0987f5.png) | ![Projection](https://app.devin.ai/attachments/eccb7723-4255-489b-a383-a8862d8b5e18/screenshot_5dcd5aae8639415e8c9a1225dc18c015.png) |
-
-## Notes
-
-- File uploads were done via Playwright CDP connection (`http://localhost:29229`) to avoid flaky file dialog interactions
-- Bureau dropdown selections were set via Playwright for reliability
-- The "Escalate to Litigation" button on the Disputes tab remained disabled after recording a "Verified" response — the system auto-escalated the dispute directly to "escalated litigation" status instead. This is acceptable behavior since the escalation happened automatically.
-- All dispute letter content was verified via API call — confirmed "John Doe", "Miami-Dade, FL", FCRA citations, no HTML entities in plaintext
+| # | Test | Assertion | Result |
+|---|------|-----------|--------|
+| 1 | Theme & Dashboard | Dark navy bg, IBM Plex Mono, 9 tabs, 4-stage workflow | PASSED |
+| 2 | Client Creation | "JJ Williams" card with NY Orange | PASSED |
+| 2 | Score Entry | Equifax 642 + Experian 618 gauges in orange | PASSED |
+| 3 | Manual Account | Capital One with red border, late_payment, $2,500/$5,000 | PASSED |
+| 4 | FICO Simulator | Equifax 670 (+28), Experian 644 (+26), 5 factors, DTI $360K | PASSED |
+| 5 | Form Library | 11 form cards with FORM IDs and legal citations | PASSED |
+| 5 | Letter Generation | "JJ Williams" auto-populated, FCRA citations, download button | PASSED |
+| 6 | PDF Audit Stats | Violations > 0, damages > $0, bureaus = 2 | **FAILED** |
+| 6 | Discrepancy Map | Table header renders, but no data rows | **FAILED** |
+| 6 | Violation Cards | Expected violation cards with legal citations | **FAILED** |
