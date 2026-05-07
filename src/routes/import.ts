@@ -1,11 +1,15 @@
-// Credit Report Import — text paste and PDF upload
+// Credit Report Import — text paste and PDF upload (auth-gated, user-scoped)
 import { Router } from "express";
 import multer from "multer";
 import type { CreditAccount, Bureau } from "../types/index.js";
-import { getProfile, updateProfile } from "../lib/store.js";
+import { getProfileForUser, updateProfile } from "../lib/store.js";
 import { parseReportText } from "../modules/report-parser.js";
+import { requireAuth } from "../middleware/auth.js";
 
 export const importRouter = Router();
+
+// All import routes require authentication
+importRouter.use(requireAuth as any);
 
 // Multer config for PDF uploads (stored in memory)
 const upload = multer({
@@ -23,7 +27,7 @@ const upload = multer({
 
 // POST /api/import/:profileId/text — paste raw report text
 importRouter.post("/:profileId/text", (req, res) => {
-  const profile = getProfile(req.params.profileId ?? "");
+  const profile = getProfileForUser(req.params.profileId ?? "", req.userId!);
   if (!profile) return res.status(404).json({ error: "Profile not found" });
 
   const { text, bureau } = req.body;
@@ -33,7 +37,6 @@ importRouter.post("/:profileId/text", (req, res) => {
 
   const parsed = parseReportText(text, (bureau as Bureau) ?? "equifax");
 
-  // Convert parsed accounts to full CreditAccount objects
   const newAccounts: CreditAccount[] = parsed.accounts.map((partial, idx) => ({
     id: `acct-import-${Date.now()}-${idx}-${Math.random().toString(36).slice(2, 6)}`,
     creditorName: partial.creditorName ?? "Unknown",
@@ -68,7 +71,6 @@ importRouter.post("/:profileId/text", (req, res) => {
     source: "import",
   }));
 
-  // Merge into profile (avoid duplicates by creditor name + account number)
   const updated = updateProfile(profile.id, (p) => {
     const existingKeys = new Set(p.accounts.map(a => `${a.creditorName}|${a.accountNumber}`));
     const toAdd = newAccounts.filter(a => !existingKeys.has(`${a.creditorName}|${a.accountNumber}`));
@@ -93,7 +95,7 @@ importRouter.post("/:profileId/text", (req, res) => {
 // POST /api/import/:profileId/pdf — upload PDF credit report
 importRouter.post("/:profileId/pdf", upload.single("file"), async (req, res) => {
   const profileId = Array.isArray(req.params.profileId) ? req.params.profileId[0] : req.params.profileId;
-  const profile = getProfile(profileId ?? "");
+  const profile = getProfileForUser(profileId ?? "", req.userId!);
   if (!profile) return res.status(404).json({ error: "Profile not found" });
 
   const file = req.file;
@@ -104,7 +106,6 @@ importRouter.post("/:profileId/pdf", upload.single("file"), async (req, res) => 
   if (file.mimetype === "text/plain" || file.mimetype === "text/html") {
     text = file.buffer.toString("utf-8");
   } else {
-    // PDF parsing — use pdf-parse
     try {
       const pdfParse = await import("pdf-parse");
       const pdfData = await pdfParse.default(file.buffer);
@@ -120,7 +121,6 @@ importRouter.post("/:profileId/pdf", upload.single("file"), async (req, res) => 
   const bureau = (req.body?.bureau as Bureau) ?? "equifax";
   const parsed = parseReportText(text, bureau);
 
-  // Convert and merge (same logic as text import)
   const newAccounts: CreditAccount[] = parsed.accounts.map((partial, idx) => ({
     id: `acct-import-${Date.now()}-${idx}-${Math.random().toString(36).slice(2, 6)}`,
     creditorName: partial.creditorName ?? "Unknown",

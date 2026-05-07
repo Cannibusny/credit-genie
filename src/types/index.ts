@@ -83,6 +83,7 @@ export type SubscriptionTier = "free" | "builder" | "authority";
 
 export interface CreditProfile {
   id: string;
+  userId: string; // Supabase auth user ID — scopes all data to the logged-in user
   firstName: string;
   lastName: string;
   email: string;

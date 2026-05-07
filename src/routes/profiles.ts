@@ -1,19 +1,23 @@
-// Profile CRUD — Unified Credit Profile management
+// Profile CRUD — Unified Credit Profile management (auth-gated, user-scoped)
 import { Router } from "express";
 import type { CreditProfile, CreditAccount, ScoreEntry } from "../types/index.js";
-import { profiles, createProfile, updateProfile, getAllProfiles, getProfile, getDefaultBureauProfiles } from "../lib/store.js";
+import { createProfile, updateProfile, getProfilesByUser, getProfileForUser, getDefaultBureauProfiles } from "../lib/store.js";
+import { requireAuth } from "../middleware/auth.js";
 
 export const profileRouter = Router();
 
-// List all profiles
-profileRouter.get("/", (_req, res) => {
-  const all = getAllProfiles();
+// All profile routes require authentication
+profileRouter.use(requireAuth as any);
+
+// List profiles (only the logged-in user's profiles)
+profileRouter.get("/", (req, res) => {
+  const all = getProfilesByUser(req.userId!);
   res.json(all);
 });
 
-// Get single profile
+// Get single profile (only if owned by user)
 profileRouter.get("/:id", (req, res) => {
-  const profile = getProfile(req.params.id ?? "");
+  const profile = getProfileForUser(req.params.id ?? "", req.userId!);
   if (!profile) return res.status(404).json({ error: "Profile not found" });
   res.json(profile);
 });
@@ -28,9 +32,10 @@ profileRouter.post("/", (req, res) => {
   const id = `profile-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const profile: CreditProfile = {
     id,
+    userId: req.userId!,
     firstName,
     lastName,
-    email: email ?? "",
+    email: email ?? req.userEmail ?? "",
     phone: phone ?? null,
     ssn: null,
     dob: null,
@@ -55,11 +60,15 @@ profileRouter.post("/", (req, res) => {
   res.status(201).json(profile);
 });
 
-// Update profile
+// Update profile (only if owned by user)
 profileRouter.patch("/:id", (req, res) => {
+  const existing = getProfileForUser(req.params.id ?? "", req.userId!);
+  if (!existing) return res.status(404).json({ error: "Profile not found" });
+
   const updated = updateProfile(req.params.id ?? "", (p) => ({
     ...p,
     ...req.body,
+    userId: p.userId,
     updatedAt: new Date().toISOString(),
   }));
   if (!updated) return res.status(404).json({ error: "Profile not found" });
@@ -68,6 +77,9 @@ profileRouter.patch("/:id", (req, res) => {
 
 // Add score
 profileRouter.post("/:id/scores", (req, res) => {
+  const existing = getProfileForUser(req.params.id ?? "", req.userId!);
+  if (!existing) return res.status(404).json({ error: "Profile not found" });
+
   const { bureau, score, scoreModel, recordedAt } = req.body;
   if (!bureau || score === undefined) {
     return res.status(400).json({ error: "bureau and score are required" });
@@ -95,6 +107,9 @@ profileRouter.post("/:id/scores", (req, res) => {
 
 // Set goal
 profileRouter.post("/:id/goal", (req, res) => {
+  const existing = getProfileForUser(req.params.id ?? "", req.userId!);
+  if (!existing) return res.status(404).json({ error: "Profile not found" });
+
   const { targetScore, targetDate, purpose, description } = req.body;
   const updated = updateProfile(req.params.id ?? "", (p) => ({
     ...p,
@@ -108,6 +123,9 @@ profileRouter.post("/:id/goal", (req, res) => {
 
 // Add account manually
 profileRouter.post("/:id/accounts", (req, res) => {
+  const existing = getProfileForUser(req.params.id ?? "", req.userId!);
+  if (!existing) return res.status(404).json({ error: "Profile not found" });
+
   const body = req.body;
   const account: CreditAccount = {
     id: `acct-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
@@ -155,6 +173,9 @@ profileRouter.post("/:id/accounts", (req, res) => {
 
 // Delete account
 profileRouter.delete("/:id/accounts/:accountId", (req, res) => {
+  const existing = getProfileForUser(req.params.id ?? "", req.userId!);
+  if (!existing) return res.status(404).json({ error: "Profile not found" });
+
   const updated = updateProfile(req.params.id ?? "", (p) => ({
     ...p,
     accounts: p.accounts.filter(a => a.id !== req.params.accountId),
@@ -166,6 +187,9 @@ profileRouter.delete("/:id/accounts/:accountId", (req, res) => {
 
 // Add address
 profileRouter.post("/:id/addresses", (req, res) => {
+  const existing = getProfileForUser(req.params.id ?? "", req.userId!);
+  if (!existing) return res.status(404).json({ error: "Profile not found" });
+
   const { street, city, state, zip, isCurrent } = req.body;
   const updated = updateProfile(req.params.id ?? "", (p) => ({
     ...p,

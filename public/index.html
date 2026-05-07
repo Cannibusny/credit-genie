@@ -46,7 +46,19 @@ nav .tab{padding:12px 16px;color:var(--text2);font-size:11px;text-transform:uppe
 nav .tab:hover{color:var(--text)}
 nav .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
 nav .tier{margin-left:auto;padding:4px 10px;border:1px solid var(--accent);font-size:10px;color:var(--accent);text-transform:uppercase}
+nav .user-info{margin-left:12px;display:flex;align-items:center;gap:8px}
+nav .user-info .email{color:var(--text2);font-size:10px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+nav .user-info button{padding:4px 10px;font-size:10px}
 main{flex:1;overflow-y:auto;padding:20px}
+
+/* Auth screen */
+#auth-screen{position:fixed;inset:0;background:var(--bg);z-index:2000;display:flex;align-items:center;justify-content:center}
+#auth-screen .auth-box{max-width:400px;width:100%;padding:40px}
+#auth-screen h1{font-size:24px;margin-bottom:8px;color:var(--accent)}
+#auth-screen p{color:var(--text2);margin-bottom:24px;font-size:13px;line-height:1.6}
+#auth-screen .form-row{margin-bottom:16px}
+#auth-screen .auth-toggle{color:var(--accent);cursor:pointer;font-size:11px;text-align:center;margin-top:16px}
+#auth-screen .auth-error{color:var(--red);font-size:11px;margin-bottom:12px;display:none}
 
 /* Onboarding */
 #onboarding{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;align-items:center;justify-content:center}
@@ -108,8 +120,21 @@ main{flex:1;overflow-y:auto;padding:20px}
 </head>
 <body>
 <div id="app">
-  <!-- Onboarding overlay -->
-  <div id="onboarding">
+  <!-- Auth screen (login/signup) -->
+  <div id="auth-screen">
+    <div class="auth-box" id="auth-box">
+      <h1>CREDIT GENIE</h1>
+      <p>Adaptive Credit Intelligence Engine</p>
+      <div id="auth-error" class="auth-error"></div>
+      <div class="form-row"><label>Email</label><input id="auth-email" type="email" placeholder="you@email.com"></div>
+      <div class="form-row"><label>Password</label><input id="auth-password" type="password" placeholder="Password"></div>
+      <button class="primary" style="width:100%;margin-top:8px" onclick="handleLogin()">Log In</button>
+      <div class="auth-toggle" onclick="toggleAuthMode()">Don't have an account? Sign up</div>
+    </div>
+  </div>
+
+  <!-- Onboarding overlay (hidden until auth complete) -->
+  <div id="onboarding" style="display:none">
     <div class="screen" id="screen-1">
       <h1>Most credit repair tools show you problems.</h1>
       <p>Credit Genie tells you exactly what to do next — and what it will cost you if you don't.</p>
@@ -132,11 +157,150 @@ main{flex:1;overflow-y:auto;padding:20px}
       <div class="tab" data-tab="documents">Documents</div>
     </div>
     <span class="tier" id="tier-badge">FREE</span>
+    <div class="user-info">
+      <span class="email" id="user-email"></span>
+      <button class="danger" onclick="handleLogout()">Logout</button>
+    </div>
   </nav>
   <main id="main-content" style="display:none"></main>
 </div>
 
 <script>
+// ─── Auth State ─────────────────────────────────────────────────────────────
+let authToken = localStorage.getItem('cg_token');
+let authUser = JSON.parse(localStorage.getItem('cg_user') || 'null');
+let isSignupMode = false;
+
+// Helper: authenticated fetch
+function authFetch(url, opts = {}) {
+  const headers = { ...(opts.headers || {}) };
+  if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+  // Don't set Content-Type for FormData (browser sets multipart boundary)
+  if (!(opts.body instanceof FormData) && !headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json';
+  }
+  return fetch(url, { ...opts, headers });
+}
+
+function toggleAuthMode() {
+  isSignupMode = !isSignupMode;
+  const box = document.getElementById('auth-box');
+  const toggle = box.querySelector('.auth-toggle');
+  const btn = box.querySelector('button.primary');
+  if (isSignupMode) {
+    toggle.textContent = 'Already have an account? Log in';
+    btn.textContent = 'Sign Up';
+    btn.setAttribute('onclick', 'handleSignup()');
+  } else {
+    toggle.textContent = "Don't have an account? Sign up";
+    btn.textContent = 'Log In';
+    btn.setAttribute('onclick', 'handleLogin()');
+  }
+}
+
+function showAuthError(msg) {
+  const el = document.getElementById('auth-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+async function handleLogin() {
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  if (!email || !password) { showAuthError('Email and password required'); return; }
+
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (!res.ok) { showAuthError(data.error || 'Login failed'); return; }
+    authToken = data.accessToken;
+    authUser = data.user;
+    localStorage.setItem('cg_token', authToken);
+    localStorage.setItem('cg_user', JSON.stringify(authUser));
+    document.getElementById('auth-screen').style.display = 'none';
+    onAuthComplete();
+  } catch (err) {
+    showAuthError('Network error. Please try again.');
+  }
+}
+
+async function handleSignup() {
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  if (!email || !password) { showAuthError('Email and password required'); return; }
+  if (password.length < 6) { showAuthError('Password must be at least 6 characters'); return; }
+
+  try {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (!res.ok) { showAuthError(data.error || 'Signup failed'); return; }
+    authToken = data.accessToken;
+    authUser = data.user;
+    localStorage.setItem('cg_token', authToken);
+    localStorage.setItem('cg_user', JSON.stringify(authUser));
+    document.getElementById('auth-screen').style.display = 'none';
+    onAuthComplete();
+  } catch (err) {
+    showAuthError('Network error. Please try again.');
+  }
+}
+
+function handleLogout() {
+  fetch('/api/auth/logout', {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${authToken}` }
+  }).catch(() => {});
+  authToken = null;
+  authUser = null;
+  currentProfile = null;
+  advisories = [];
+  scanResults = null;
+  localStorage.removeItem('cg_token');
+  localStorage.removeItem('cg_user');
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('main-nav').style.display = 'none';
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('onboarding').style.display = 'none';
+  // Reset auth form
+  document.getElementById('auth-email').value = '';
+  document.getElementById('auth-password').value = '';
+  document.getElementById('auth-error').style.display = 'none';
+}
+
+// ─── Post-Auth Flow ─────────────────────────────────────────────────────────
+async function onAuthComplete() {
+  document.getElementById('user-email').textContent = authUser?.email || '';
+  // Check if user already has a profile
+  const res = await authFetch('/api/profiles');
+  if (!res.ok) {
+    // Token might be invalid
+    handleLogout();
+    showAuthError('Session expired. Please log in again.');
+    return;
+  }
+  const profiles = await res.json();
+  if (profiles.length > 0) {
+    currentProfile = profiles[0];
+    document.getElementById('onboarding').style.display = 'none';
+    document.getElementById('main-nav').style.display = 'flex';
+    document.getElementById('main-content').style.display = 'block';
+    const advRes = await authFetch(`/api/modules/${currentProfile.id}/advisories`);
+    if (advRes.ok) advisories = await advRes.json();
+    renderDashboard();
+  } else {
+    // New user — show onboarding
+    document.getElementById('onboarding').style.display = 'flex';
+  }
+}
+
 // ─── State ──────────────────────────────────────────────────────────────────
 let currentProfile = null;
 let advisories = [];
@@ -149,9 +313,9 @@ function nextScreen(num) {
     ob.innerHTML = `<div class="screen" id="screen-2">
       <h1>Let's get started</h1>
       <p>We just need your name and state. No SSN required.</p>
-      <div class="form-row"><label>First Name</label><input id="ob-first" placeholder="First name"></div>
-      <div class="form-row"><label>Last Name</label><input id="ob-last" placeholder="Last name"></div>
-      <div class="form-row"><label>Email</label><input id="ob-email" type="email" placeholder="email@example.com"></div>
+      <div class="form-row"><label>First Name</label><input id="ob-first" placeholder="First name" value="${authUser?.firstName || ''}"></div>
+      <div class="form-row"><label>Last Name</label><input id="ob-last" placeholder="Last name" value="${authUser?.lastName || ''}"></div>
+      <div class="form-row"><label>Email</label><input id="ob-email" type="email" placeholder="email@example.com" value="${authUser?.email || ''}"></div>
       <div class="form-row inline">
         <div><label>State</label><input id="ob-state" placeholder="NY" maxlength="2"></div>
         <div><label>County</label><input id="ob-county" placeholder="Orange"></div>
@@ -195,9 +359,8 @@ async function submitIdentity() {
   const county = document.getElementById('ob-county').value.trim();
   if (!firstName || !lastName || !state) { alert('Name and state required'); return; }
 
-  const res = await fetch('/api/profiles', {
+  const res = await authFetch('/api/profiles', {
     method: 'POST',
-    headers: {'Content-Type':'application/json'},
     body: JSON.stringify({ firstName, lastName, email, state, county })
   });
   currentProfile = await res.json();
@@ -212,48 +375,42 @@ function selectGoal(goal, el) {
 }
 
 async function finishOnboarding() {
-  // Update profile with goal
-  await fetch(`/api/profiles/${currentProfile.id}`, {
+  await authFetch(`/api/profiles/${currentProfile.id}`, {
     method: 'PATCH',
-    headers: {'Content-Type':'application/json'},
     body: JSON.stringify({ goal: selectedGoal })
   });
   currentProfile.goal = selectedGoal;
 
-  // Show scan screen
   const ob = document.getElementById('onboarding');
   ob.innerHTML = `<div class="screen" id="screen-4">
     <h1>Scanning your credit intelligence...</h1>
     <div class="scan-progress">
-      <div class="scan-line" id="sl-1">▸ Payment History</div>
-      <div class="scan-line" id="sl-2">▸ Utilization & Report Dates</div>
-      <div class="scan-line" id="sl-3">▸ Collections & Medical Debt</div>
-      <div class="scan-line" id="sl-4">▸ Mixed Files & Duplicates</div>
-      <div class="scan-line" id="sl-5">▸ Authorized User Accounts</div>
-      <div class="scan-line" id="sl-6">▸ Account Age & Credit Mix</div>
-      <div class="scan-line" id="sl-7">▸ Dormant Card Risk</div>
-      <div class="scan-line" id="sl-8">▸ Bureau Behavior Analysis</div>
+      <div class="scan-line" id="sl-1">&#9654; Payment History</div>
+      <div class="scan-line" id="sl-2">&#9654; Utilization & Report Dates</div>
+      <div class="scan-line" id="sl-3">&#9654; Collections & Medical Debt</div>
+      <div class="scan-line" id="sl-4">&#9654; Mixed Files & Duplicates</div>
+      <div class="scan-line" id="sl-5">&#9654; Authorized User Accounts</div>
+      <div class="scan-line" id="sl-6">&#9654; Account Age & Credit Mix</div>
+      <div class="scan-line" id="sl-7">&#9654; Dormant Card Risk</div>
+      <div class="scan-line" id="sl-8">&#9654; Bureau Behavior Analysis</div>
     </div>
     <p style="color:var(--text2);font-size:11px">Add accounts and scores from the Profile tab to get a full analysis.</p>
   </div>`;
 
-  // Animate scan lines
   for (let i = 1; i <= 8; i++) {
     await new Promise(r => setTimeout(r, 400));
     const el = document.getElementById(`sl-${i}`);
     if (el) { el.classList.add('active'); }
     await new Promise(r => setTimeout(r, 300));
-    if (el) { el.classList.add('done'); el.innerHTML = '✓ ' + el.textContent.slice(2); }
+    if (el) { el.classList.add('done'); el.textContent = '\u2713 ' + el.textContent.slice(2); }
   }
 
   await new Promise(r => setTimeout(r, 500));
 
-  // Run actual scan
-  const scanRes = await fetch(`/api/modules/${currentProfile.id}/scan`, { method: 'POST' });
+  const scanRes = await authFetch(`/api/modules/${currentProfile.id}/scan`, { method: 'POST' });
   scanResults = await scanRes.json();
   advisories = scanResults.advisories || [];
 
-  // Complete onboarding — show main app
   ob.style.display = 'none';
   document.getElementById('main-nav').style.display = 'flex';
   document.getElementById('main-content').style.display = 'block';
@@ -282,7 +439,7 @@ document.addEventListener('click', (e) => {
 function renderImport() {
   const m = document.getElementById('main-content');
   m.innerHTML = `
-    <div class="module-header"><div class="icon">↑</div><div><h2>IMPORT CREDIT REPORT</h2><span style="color:var(--text2);font-size:11px">Paste text or upload PDF — we parse it automatically</span></div></div>
+    <div class="module-header"><div class="icon">&uarr;</div><div><h2>IMPORT CREDIT REPORT</h2><span style="color:var(--text2);font-size:11px">Paste text or upload PDF — we parse it automatically</span></div></div>
 
     <div class="card">
       <h3>Option 1: Paste Report Text</h3>
@@ -345,9 +502,8 @@ async function importText() {
     return;
   }
 
-  const res = await fetch(`/api/import/${currentProfile.id}/text`, {
+  const res = await authFetch(`/api/import/${currentProfile.id}/text`, {
     method: 'POST',
-    headers: {'Content-Type':'application/json'},
     body: JSON.stringify({ text, bureau })
   });
   const data = await res.json();
@@ -366,7 +522,7 @@ async function importPDF() {
   formData.append('file', fileInput.files[0]);
   formData.append('bureau', bureau);
 
-  const res = await fetch(`/api/import/${currentProfile.id}/pdf`, {
+  const res = await authFetch(`/api/import/${currentProfile.id}/pdf`, {
     method: 'POST',
     body: formData
   });
@@ -397,13 +553,12 @@ function showImportResult(data) {
     <button class="primary mt-8" onclick="runFullScan();document.querySelector('[data-tab=dashboard]').click()">Run Full Scan Now</button>
   `;
 
-  // Refresh profile data
   refreshProfile();
 }
 
 async function refreshProfile() {
-  const res = await fetch(`/api/profiles/${currentProfile.id}`);
-  currentProfile = await res.json();
+  const res = await authFetch(`/api/profiles/${currentProfile.id}`);
+  if (res.ok) currentProfile = await res.json();
 }
 
 // ─── Dashboard ──────────────────────────────────────────────────────────────
@@ -413,7 +568,7 @@ function renderDashboard() {
   const latestScores = getLatestScores(scores);
 
   m.innerHTML = `
-    <div class="module-header"><div class="icon">◈</div><div><h2>ADVISORY FEED</h2><span style="color:var(--text2);font-size:11px">${currentProfile?.firstName} ${currentProfile?.lastName} — ${currentProfile?.state}</span></div></div>
+    <div class="module-header"><div class="icon">&#9672;</div><div><h2>ADVISORY FEED</h2><span style="color:var(--text2);font-size:11px">${currentProfile?.firstName} ${currentProfile?.lastName} — ${currentProfile?.state}</span></div></div>
 
     ${scores.length > 0 ? `<div class="score-display">
       ${Object.entries(latestScores).map(([bureau, score]) => `
@@ -451,7 +606,7 @@ function renderDashboard() {
 }
 
 async function runFullScan() {
-  const res = await fetch(`/api/modules/${currentProfile.id}/scan`, { method: 'POST' });
+  const res = await authFetch(`/api/modules/${currentProfile.id}/scan`, { method: 'POST' });
   scanResults = await res.json();
   advisories = scanResults.advisories || [];
   renderDashboard();
@@ -464,7 +619,7 @@ function renderProfile() {
   const scores = currentProfile?.scores || [];
 
   m.innerHTML = `
-    <div class="module-header"><div class="icon">⊕</div><div><h2>CREDIT PROFILE</h2><span style="color:var(--text2);font-size:11px">${currentProfile?.firstName} ${currentProfile?.lastName}</span></div></div>
+    <div class="module-header"><div class="icon">&#8853;</div><div><h2>CREDIT PROFILE</h2><span style="color:var(--text2);font-size:11px">${currentProfile?.firstName} ${currentProfile?.lastName}</span></div></div>
 
     <div class="card">
       <h3>Add Score</h3>
@@ -540,8 +695,8 @@ async function addScore() {
   const score = document.getElementById('score-value').value;
   const date = document.getElementById('score-date').value;
   if (!score) return;
-  const res = await fetch(`/api/profiles/${currentProfile.id}/scores`, {
-    method: 'POST', headers: {'Content-Type':'application/json'},
+  const res = await authFetch(`/api/profiles/${currentProfile.id}/scores`, {
+    method: 'POST',
     body: JSON.stringify({ bureau, score: Number(score), recordedAt: date })
   });
   if (res.ok) {
@@ -572,8 +727,8 @@ async function addAccount() {
     collectionAgency: document.getElementById('acct-collector').value || null,
   };
   if (!body.creditorName) return;
-  const res = await fetch(`/api/profiles/${currentProfile.id}/accounts`, {
-    method: 'POST', headers: {'Content-Type':'application/json'},
+  const res = await authFetch(`/api/profiles/${currentProfile.id}/accounts`, {
+    method: 'POST',
     body: JSON.stringify(body)
   });
   if (res.ok) {
@@ -588,14 +743,14 @@ async function renderOptimizer() {
   const m = document.getElementById('main-content');
   m.innerHTML = '<p style="color:var(--text2)">Running Report Date Optimizer + Dormant Monitor...</p>';
   const [rdoRes, dormRes] = await Promise.all([
-    fetch(`/api/modules/${currentProfile.id}/report-date-optimizer`, {method:'POST'}),
-    fetch(`/api/modules/${currentProfile.id}/dormant-monitor`, {method:'POST'})
+    authFetch(`/api/modules/${currentProfile.id}/report-date-optimizer`, {method:'POST'}),
+    authFetch(`/api/modules/${currentProfile.id}/dormant-monitor`, {method:'POST'})
   ]);
   const rdo = await rdoRes.json();
   const dorm = await dormRes.json();
 
   m.innerHTML = `
-    <div class="module-header"><div class="icon">⏱</div><div><h2>REPORT DATE OPTIMIZER & DORMANT MONITOR</h2></div></div>
+    <div class="module-header"><div class="icon">&#9201;</div><div><h2>REPORT DATE OPTIMIZER & DORMANT MONITOR</h2></div></div>
     <div class="stat-row">
       <div class="stat-box"><div class="value">${rdo.alerts?.length || 0}</div><div class="label">Snapshot Alerts</div></div>
       <div class="stat-box"><div class="value">${dorm.alerts?.length || 0}</div><div class="label">Dormant Cards</div></div>
@@ -606,7 +761,7 @@ async function renderOptimizer() {
     ${(rdo.alerts || []).map(a => `
       <div class="advisory-item high">
         <div class="action">${a.creditorName} — Pay to $${a.targetBalance} before day ${a.snapshotDate}</div>
-        <div class="condition">Current: $${a.currentBalance}/$${a.creditLimit} (${a.currentUtilization}%) → Target: ${a.targetUtilization}%</div>
+        <div class="condition">Current: $${a.currentBalance}/$${a.creditLimit} (${a.currentUtilization}%) &rarr; Target: ${a.targetUtilization}%</div>
         <div class="impact">${a.expectedImpact}</div>
       </div>`).join('')}
     <h3 class="mt-12 mb-8">DORMANT CARD ALERTS</h3>
@@ -623,11 +778,11 @@ async function renderOptimizer() {
 async function renderDisputes() {
   const m = document.getElementById('main-content');
   m.innerHTML = '<p style="color:var(--text2)">Building dispute calendar...</p>';
-  const res = await fetch(`/api/modules/${currentProfile.id}/dispute-calendar`, {method:'POST'});
+  const res = await authFetch(`/api/modules/${currentProfile.id}/dispute-calendar`, {method:'POST'});
   const cal = await res.json();
 
   m.innerHTML = `
-    <div class="module-header"><div class="icon">⚡</div><div><h2>STAGGERED DISPUTE CALENDAR</h2><span style="color:var(--text2);font-size:11px">4-month rolling window — never all bureaus at once</span></div></div>
+    <div class="module-header"><div class="icon">&#9889;</div><div><h2>STAGGERED DISPUTE CALENDAR</h2><span style="color:var(--text2);font-size:11px">4-month rolling window — never all bureaus at once</span></div></div>
     <p style="color:var(--text2);margin-bottom:16px">${cal.summary}</p>
     <div class="stat-row">
       <div class="stat-box"><div class="value">${cal.calendar?.entries?.length || 0}</div><div class="label">Scheduled</div></div>
@@ -647,11 +802,11 @@ async function renderDisputes() {
 async function renderCollections() {
   const m = document.getElementById('main-content');
   m.innerHTML = '<p style="color:var(--text2)">Analyzing collections...</p>';
-  const res = await fetch(`/api/modules/${currentProfile.id}/collections`, {method:'POST'});
+  const res = await authFetch(`/api/modules/${currentProfile.id}/collections`, {method:'POST'});
   const data = await res.json();
 
   m.innerHTML = `
-    <div class="module-header"><div class="icon">$</div><div><h2>PAY-FOR-DELETE NEGOTIATOR</h2><span style="color:var(--text2);font-size:11px">Zombie debt detection • SOL calculator • Graduated offers</span></div></div>
+    <div class="module-header"><div class="icon">$</div><div><h2>PAY-FOR-DELETE NEGOTIATOR</h2><span style="color:var(--text2);font-size:11px">Zombie debt detection &bull; SOL calculator &bull; Graduated offers</span></div></div>
     <p style="color:var(--text2);margin-bottom:16px">${data.summary}</p>
     <div class="stat-row">
       <div class="stat-box"><div class="value">${data.analyses?.length || 0}</div><div class="label">Collections</div></div>
@@ -678,7 +833,7 @@ async function renderCollections() {
 async function renderMedical() {
   const m = document.getElementById('main-content');
   m.innerHTML = '<p style="color:var(--text2)">Running medical debt engine...</p>';
-  const res = await fetch(`/api/modules/${currentProfile.id}/medical-debt`, {method:'POST'});
+  const res = await authFetch(`/api/modules/${currentProfile.id}/medical-debt`, {method:'POST'});
   const data = await res.json();
 
   m.innerHTML = `
@@ -698,11 +853,11 @@ async function renderMedical() {
 async function renderMonitor() {
   const m = document.getElementById('main-content');
   m.innerHTML = '<p style="color:var(--text2)">Running AU Audit & Credit Mix analysis...</p>';
-  const res = await fetch(`/api/modules/${currentProfile.id}/au-audit`, {method:'POST'});
+  const res = await authFetch(`/api/modules/${currentProfile.id}/au-audit`, {method:'POST'});
   const data = await res.json();
 
   m.innerHTML = `
-    <div class="module-header"><div class="icon">◉</div><div><h2>AU AUDIT & CREDIT MIX ADVISOR</h2></div></div>
+    <div class="module-header"><div class="icon">&#9673;</div><div><h2>AU AUDIT & CREDIT MIX ADVISOR</h2></div></div>
     <p style="color:var(--text2);margin-bottom:16px">${data.summary}</p>
 
     <h3 class="mb-8">AUTHORIZED USER ACCOUNTS</h3>
@@ -735,7 +890,7 @@ async function renderMonitor() {
 function renderDocuments() {
   const m = document.getElementById('main-content');
   m.innerHTML = `
-    <div class="module-header"><div class="icon">◷</div><div><h2>GENERATED DOCUMENTS</h2><span style="color:var(--text2);font-size:11px">Letters, complaints, and filings</span></div></div>
+    <div class="module-header"><div class="icon">&#9719;</div><div><h2>GENERATED DOCUMENTS</h2><span style="color:var(--text2);font-size:11px">Letters, complaints, and filings</span></div></div>
     <p style="color:var(--text2)">Documents are generated when you run modules (Collections, Medical, Disputes). Check each module tab to generate letters.</p>
     <button class="primary mt-12" onclick="renderDashboard();document.querySelector('[data-tab=dashboard]').click()">Return to Dashboard</button>
   `;
@@ -756,22 +911,30 @@ function getLatestScores(scores) {
   return result;
 }
 
-// ─── Skip onboarding if profile exists (reload) ─────────────────────────────
-async function checkExistingProfile() {
-  const res = await fetch('/api/profiles');
-  const profiles = await res.json();
-  if (profiles.length > 0) {
-    currentProfile = profiles[0];
-    document.getElementById('onboarding').style.display = 'none';
-    document.getElementById('main-nav').style.display = 'flex';
-    document.getElementById('main-content').style.display = 'block';
-    // Load advisories
-    const advRes = await fetch(`/api/modules/${currentProfile.id}/advisories`);
-    advisories = await advRes.json();
-    renderDashboard();
+// ─── Init: check stored auth ────────────────────────────────────────────────
+async function init() {
+  if (authToken && authUser) {
+    // Verify token is still valid
+    try {
+      const res = await fetch('/api/auth/session', {
+        headers: { 'Authorization': `Bearer ${authToken}` }
+      });
+      if (res.ok) {
+        document.getElementById('auth-screen').style.display = 'none';
+        onAuthComplete();
+        return;
+      }
+    } catch (e) {}
+    // Token invalid — clear and show login
+    localStorage.removeItem('cg_token');
+    localStorage.removeItem('cg_user');
+    authToken = null;
+    authUser = null;
   }
+  // Show login screen
+  document.getElementById('auth-screen').style.display = 'flex';
 }
-checkExistingProfile();
+init();
 </script>
 </body>
 </html>

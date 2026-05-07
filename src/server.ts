@@ -6,6 +6,7 @@ import { log } from "./lib/logger.js";
 import { profileRouter } from "./routes/profiles.js";
 import { modulesRouter } from "./routes/modules.js";
 import { importRouter } from "./routes/import.js";
+import { authRouter } from "./routes/auth.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -16,7 +17,10 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static frontend
 app.use(express.static(path.join(__dirname, "..", "public")));
 
-// API routes
+// Auth routes (no auth required on these)
+app.use("/api/auth", authRouter);
+
+// Protected API routes
 app.use("/api/profiles", profileRouter);
 app.use("/api/modules", modulesRouter);
 app.use("/api/import", importRouter);
@@ -26,7 +30,7 @@ app.get("/health", (_req, res) => {
   res.json({
     status: "ok",
     service: "credit-genie",
-    version: "3.0.0",
+    version: "3.1.0",
     stubs,
     uptime: process.uptime(),
   });
@@ -38,5 +42,5 @@ app.get("*", (_req, res) => {
 });
 
 app.listen(config.PORT, () => {
-  log.info({ port: config.PORT, stubs }, `Credit Genie v3.0.0 running on :${config.PORT}`);
+  log.info({ port: config.PORT, stubs }, `Credit Genie v3.1.0 running on :${config.PORT}`);
 });

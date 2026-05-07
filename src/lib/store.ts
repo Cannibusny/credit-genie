@@ -92,6 +92,16 @@ export function getAllProfiles(): CreditProfile[] {
   return Array.from(profiles.values());
 }
 
+export function getProfilesByUser(userId: string): CreditProfile[] {
+  return Array.from(profiles.values()).filter(p => p.userId === userId);
+}
+
+export function getProfileForUser(id: string, userId: string): CreditProfile | undefined {
+  const profile = profiles.get(id);
+  if (!profile || profile.userId !== userId) return undefined;
+  return profile;
+}
+
 export function createProfile(profile: CreditProfile): CreditProfile {
   profiles.set(profile.id, profile);
   return profile;
