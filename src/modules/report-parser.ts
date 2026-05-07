@@ -65,10 +65,10 @@ function detectBureau(text: string): Bureau | null {
 function extractPersonalInfo(text: string): ParseResult["personalInfo"] {
   const info: ParseResult["personalInfo"] = { name: null, addresses: [], ssn: null };
 
-  // Name extraction
+  // Name extraction (use [ \t] instead of \s to avoid capturing across newlines)
   const namePatterns = [
-    /(?:name|consumer|borrower)[:\s]*([A-Z][A-Za-z]+\s+[A-Z][A-Za-z]+(?:\s+[A-Z][A-Za-z]+)?)/i,
-    /^([A-Z][A-Z]+\s+[A-Z][A-Z]+(?:\s+[A-Z])?)\s*$/m,
+    /(?:name|consumer|borrower)[:\s]*([A-Z][A-Za-z]+[ \t]+[A-Z][A-Za-z]+(?:[ \t]+[A-Z][A-Za-z]+)?)/i,
+    /^([A-Z][A-Z]+[ \t]+[A-Z][A-Z]+(?:[ \t]+[A-Z])?)[ \t]*$/m,
   ];
   for (const pattern of namePatterns) {
     const match = text.match(pattern);
@@ -92,30 +92,20 @@ function extractPersonalInfo(text: string): ParseResult["personalInfo"] {
 function splitIntoAccountSections(text: string): string[] {
   const sections: string[] = [];
 
-  // Try common delimiters between accounts
-  const patterns = [
-    // Separator lines
-    /(?:^|\n)[-=_]{10,}(?:\n)/g,
-    // Account header patterns
-    /(?:^|\n)(?:Account|Creditor|Company)\s*(?:Name|:)/gim,
-    // Tradeline headers
-    /(?:^|\n)(?:REVOLVING|INSTALLMENT|MORTGAGE|COLLECTION|OTHER)\s+ACCOUNTS?/gim,
-  ];
+  // Try splitting by separator lines FIRST (strongest signal of account boundaries)
+  const sepSplit = text.split(/[-=_]{10,}/).filter(c => c.trim().length > 20);
+  if (sepSplit.length > 2) {
+    return filterNonAccountSections(sepSplit);
+  }
 
   // Try splitting by double newlines followed by a capitalized word (common in text reports)
   const chunks = text.split(/\n{2,}(?=[A-Z])/).filter(c => c.trim().length > 20);
   if (chunks.length > 2) {
-    return chunks;
-  }
-
-  // Try splitting by separator lines
-  const sepSplit = text.split(/[-=_]{10,}/).filter(c => c.trim().length > 20);
-  if (sepSplit.length > 2) {
-    return sepSplit;
+    return filterNonAccountSections(chunks);
   }
 
   // Fallback: look for account-like patterns and extract surrounding context
-  const accountStartPattern = /(?:^|\n)([A-Z][A-Z\s&.,'()-]+(?:BANK|CREDIT|FINANCIAL|CAPITAL|AMERICAN|DISCOVER|CHASE|CITI|WELLS|SYNCHRONY|PORTFOLIO|MIDLAND|CAVALRY|ENCORE)[A-Z\s&.,'()-]*)/gm;
+  const accountStartPattern = /(?:^|\n)([A-Z][A-Z\s&.,'()-]+(?:BANK|CREDIT|FINANCIAL|CAPITAL|AMERICAN|DISCOVER|CHASE|CITI|WELLS|SYNCHRONY|PORTFOLIO|MIDLAND|CAVALRY|ENCORE|HOSPITAL|MEDICAL|HEALTH|DOCTOR)[A-Z\s&.,'()-]*)/gm;
   let match;
   const positions: number[] = [];
   while ((match = accountStartPattern.exec(text)) !== null) {
@@ -136,6 +126,23 @@ function splitIntoAccountSections(text: string): string[] {
 
   // Last resort: treat entire text as one section
   return [text];
+}
+
+function filterNonAccountSections(sections: string[]): string[] {
+  return sections.filter(section => {
+    const trimmed = section.trim();
+    // Skip sections that are just report headers or personal info without account data
+    const hasAccountIndicator =
+      /account\s*#/i.test(trimmed) ||
+      /balance[:\s]/i.test(trimmed) ||
+      /(?:credit\s*limit|limit)[:\s]/i.test(trimmed) ||
+      /(?:status|type)[:\s]/i.test(trimmed) ||
+      /(?:date\s*opened|opened)[:\s]/i.test(trimmed) ||
+      /(?:payment|monthly)/i.test(trimmed) ||
+      /(?:collection|derogatory|charge.?off)/i.test(trimmed) ||
+      /(?:revolving|installment|mortgage)/i.test(trimmed);
+    return hasAccountIndicator;
+  });
 }
 
 function parseAccountSection(section: string, bureau: Bureau): Partial<CreditAccount> | null {
