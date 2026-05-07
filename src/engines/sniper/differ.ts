@@ -362,6 +362,8 @@ export function runAudit(
     reports,
     matchedAccounts,
     discrepancies,
+    segmentErrors: [],
+    zombieDebts: [],
     totalViolations,
     estimatedDamages,
     summary,
