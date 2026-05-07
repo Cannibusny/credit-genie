@@ -7,6 +7,9 @@ import { auditRouter } from "./routes/audit.js";
 import { litigationRouter } from "./routes/litigation.js";
 import { builderRouter } from "./routes/builder.js";
 import { documentsRouter } from "./routes/documents.js";
+import { clientRouter } from "./routes/clients.js";
+import { simulatorRouter } from "./routes/simulator.js";
+import { formsRouter } from "./routes/forms.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -22,13 +25,16 @@ app.use("/api/audit", auditRouter);
 app.use("/api/litigation", litigationRouter);
 app.use("/api/builder", builderRouter);
 app.use("/api/documents", documentsRouter);
+app.use("/api/clients", clientRouter);
+app.use("/api/simulator", simulatorRouter);
+app.use("/api/forms", formsRouter);
 
 // Health check
 app.get("/health", (_req, res) => {
   res.json({
     status: "ok",
     service: "credit-genie",
-    version: "0.1.0",
+    version: "0.2.0",
     stubs,
     uptime: process.uptime(),
   });
@@ -40,5 +46,5 @@ app.get("*", (_req, res) => {
 });
 
 app.listen(config.PORT, () => {
-  log.info({ port: config.PORT, stubs }, `Credit Genie running on :${config.PORT}`);
+  log.info({ port: config.PORT, stubs }, `Credit Genie v0.2.0 running on :${config.PORT}`);
 });

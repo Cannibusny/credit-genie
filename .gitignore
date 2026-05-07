@@ -8,3 +8,4 @@ reports/
 generated/
 .DS_Store
 coverage/
+.vercel

@@ -4,34 +4,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Credit Genie — Legal Intelligence System</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&display=swap">
   <style>
-    /* ─── Reset & Base ──────────────────────────────────────────────────── */
+    /* ─── MIDNIGHT TERMINAL THEME ─────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #FFFFFF;
-      --surface: #FFFFFF;
-      --surface-2: #F7F8FA;
-      --surface-3: #EDF0F4;
-      --border: #D0D5DD;
-      --text: #001A33;
-      --text-dim: #4A5568;
-      --accent: #0A4C8F;
-      --accent-glow: none;
-      --green: #0A4C8F;
-      --green-dim: #083D73;
-      --green-glow: none;
-      --red: #C53030;
-      --red-glow: none;
-      --orange: #B7791F;
-      --yellow: #975A16;
-      --blue: #0A4C8F;
+      --bg: #0B1120;
+      --surface: #111827;
+      --surface-2: #1A2332;
+      --surface-3: #1F2B3D;
+      --border: #2A3A50;
+      --border-bright: #3B5068;
+      --text: #E8EDF5;
+      --text-dim: #8899AA;
+      --accent: #3B82F6;
+      --accent-dim: #2563EB;
+      --green: #10B981;
+      --green-dim: #059669;
+      --red: #EF4444;
+      --red-dim: #B91C1C;
+      --orange: #F59E0B;
+      --yellow: #EAB308;
+      --purple: #8B5CF6;
       --radius: 0px;
-      --radius-lg: 0px;
       --font: 'IBM Plex Mono', monospace;
       --mono: 'IBM Plex Mono', monospace;
     }
-
     body {
       font-family: var(--font);
       background: var(--bg);
@@ -40,1826 +38,1473 @@
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
+    .app { max-width: 1280px; margin: 0 auto; padding: 24px 24px; }
 
-    /* ─── Layout ────────────────────────────────────────────────────────── */
-    .app { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
-
-    /* ─── Hero ──────────────────────────────────────────────────────────── */
-    .hero {
-      text-align: center;
-      padding: 40px 0 24px;
-      position: relative;
-    }
-    .hero::before { display: none; }
+    /* ─── Hero ────────────────────────────────────────────────────────── */
+    .hero { text-align: center; padding: 24px 0 16px; }
     .hero-badge {
-      display: inline-block;
-      background: transparent;
-      border: 1px solid var(--text);
-      border-radius: 0;
-      padding: 6px 16px;
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: var(--text);
-      margin-bottom: 16px;
-      position: relative;
-      z-index: 1;
+      display: inline-block; background: transparent; border: 1px solid var(--accent);
+      padding: 4px 14px; font-size: 10px; font-weight: 500; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
     }
     .hero h1 {
-      font-size: clamp(32px, 5vw, 56px);
-      font-weight: 400;
-      line-height: 1.1;
-      color: var(--text);
-      position: relative;
-      z-index: 1;
+      font-size: clamp(28px, 4vw, 48px); font-weight: 300; line-height: 1.1;
+      color: var(--text); letter-spacing: -0.5px;
     }
-    .hero p {
-      font-size: 14px;
-      color: var(--text-dim);
-      max-width: 620px;
-      margin: 16px auto 0;
-      line-height: 1.7;
-      position: relative;
-      z-index: 1;
-    }
+    .hero p { font-size: 12px; color: var(--text-dim); max-width: 600px; margin: 10px auto 0; line-height: 1.7; }
 
-    /* ─── Navigation Tabs ──────────────────────────────────────────────── */
+    /* ─── Navigation ──────────────────────────────────────────────────── */
     .nav-tabs {
-      display: flex;
-      gap: 0;
-      background: #FFFFFF;
-      border: 1px solid var(--border);
-      border-radius: 0;
-      padding: 0;
-      margin: 24px 0 32px;
-      position: relative;
-      z-index: 1;
+      display: flex; gap: 0; background: var(--surface); border: 1px solid var(--border);
+      margin: 16px 0 24px; overflow-x: auto;
     }
     .nav-tab {
-      flex: 1;
-      padding: 12px 16px;
-      background: none;
-      border: none;
-      border-right: 1px solid var(--border);
-      border-radius: 0;
-      color: var(--text-dim);
-      font-size: 12px;
-      font-weight: 400;
-      font-family: var(--font);
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      text-align: center;
-      white-space: nowrap;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      flex: 1; padding: 10px 8px; background: none; border: none;
+      border-right: 1px solid var(--border); color: var(--text-dim);
+      font-size: 11px; font-weight: 400; font-family: var(--font);
+      cursor: pointer; transition: all 0.2s; text-align: center;
+      white-space: nowrap; text-transform: uppercase; letter-spacing: 1px;
+      min-width: 0;
     }
     .nav-tab:last-child { border-right: none; }
     .nav-tab:hover { color: var(--text); background: var(--surface-2); }
-    .nav-tab.active {
-      color: #FFFFFF;
-      background: var(--text);
-      box-shadow: none;
-    }
-    .nav-tab .tab-icon { margin-right: 6px; }
+    .nav-tab.active { color: #FFFFFF; background: var(--accent); }
     .nav-tab .tab-badge {
-      display: inline-block;
-      background: var(--red);
-      color: #FFFFFF;
-      font-size: 10px;
-      font-weight: 500;
-      padding: 1px 6px;
-      border-radius: 0;
-      margin-left: 6px;
+      display: inline-block; background: var(--red); color: #FFF; font-size: 9px;
+      font-weight: 600; padding: 1px 5px; margin-left: 4px;
     }
 
-    /* ─── Tab Content ──────────────────────────────────────────────────── */
-    .tab-content { display: none; animation: fadeIn 0.4s ease; }
+    /* ─── Tab Content ─────────────────────────────────────────────────── */
+    .tab-content { display: none; animation: fadeIn 0.3s ease; }
     .tab-content.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    /* ─── Upload Zone ───────────────────────────────────────────────────── */
-    .upload-zone {
-      border: 1px dashed var(--border);
-      border-radius: 0;
-      padding: 48px 40px;
-      text-align: center;
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
-      background: #FFFFFF;
-      position: relative;
-      overflow: hidden;
-    }
-    .upload-zone:hover, .upload-zone.dragover {
-      border-color: var(--accent);
-      background: var(--surface-2);
-      box-shadow: none;
-    }
-    .upload-zone.has-files { border-color: var(--accent); border-style: solid; }
-    .upload-icon {
-      width: 48px; height: 48px;
-      margin: 0 auto 16px;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
-    }
-    .upload-zone h3 { font-size: 16px; font-weight: 400; margin-bottom: 8px; }
-    .upload-zone p { font-size: 13px; color: var(--text-dim); }
-    .file-list { margin-top: 20px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .file-chip {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--surface-2); border: 1px solid var(--border);
-      border-radius: 0; padding: 6px 12px; font-size: 12px; font-weight: 400;
-    }
-    .file-chip .dot { width: 8px; height: 8px; border-radius: 0; background: var(--accent); }
-    .file-chip .remove { cursor: pointer; opacity: 0.6; transition: opacity 0.2s; margin-left: 4px; }
-    .file-chip .remove:hover { opacity: 1; }
+    /* ─── Cards & Surfaces ────────────────────────────────────────────── */
+    .card { background: var(--surface); border: 1px solid var(--border); padding: 20px; margin-bottom: 12px; }
+    .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .card-title { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); }
 
-    /* ─── Bureau Select ─────────────────────────────────────────────────── */
-    .bureau-selects { margin-top: 16px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .bureau-select {
-      display: flex; align-items: center; gap: 8px;
-      background: #FFFFFF; border: 1px solid var(--border);
-      border-radius: 0; padding: 6px 12px; font-size: 12px; color: var(--text);
-    }
-    .bureau-select select {
-      background: transparent; border: none; color: var(--text);
-      font-size: 12px; font-family: var(--font); outline: none; cursor: pointer;
-    }
-    .bureau-select select option { background: #FFFFFF; }
+    /* ─── Stats Row ───────────────────────────────────────────────────── */
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 20px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); padding: 16px; text-align: center; }
+    .stat-card .number { font-size: 28px; font-weight: 300; line-height: 1; font-family: var(--font); }
+    .stat-card .number.violations { color: var(--red); }
+    .stat-card .number.damages { color: var(--orange); }
+    .stat-card .number.blue { color: var(--accent); }
+    .stat-card .number.green { color: var(--green); }
+    .stat-card .label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); margin-top: 6px; }
 
-    /* ─── Buttons ───────────────────────────────────────────────────────── */
+    /* ─── Buttons ─────────────────────────────────────────────────────── */
     .btn-primary {
-      display: inline-flex; align-items: center; gap: 10px;
-      margin-top: 24px; padding: 12px 32px;
-      background: var(--accent);
-      border: none; border-radius: 0;
-      color: #FFFFFF; font-size: 13px; font-weight: 400; font-family: var(--font);
-      cursor: pointer; transition: background 0.2s;
-      text-transform: uppercase; letter-spacing: 1px;
+      display: inline-flex; align-items: center; gap: 8px; padding: 10px 28px;
+      background: var(--accent); border: none; color: #FFF; font-size: 12px;
+      font-weight: 500; font-family: var(--font); cursor: pointer; transition: background 0.2s;
+      text-transform: uppercase; letter-spacing: 1.5px;
     }
-    .btn-primary:hover { background: var(--green-dim); }
-    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
-    .btn-primary .spinner {
-      width: 14px; height: 14px;
-      border: 2px solid rgba(255,255,255,0.3); border-top-color: #FFFFFF;
-      border-radius: 0; animation: spin 0.6s linear infinite; display: none;
-    }
+    .btn-primary:hover { background: var(--accent-dim); }
+    .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+    .btn-primary .spinner { width: 12px; height: 12px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #FFF; border-radius: 50%; animation: spin 0.6s linear infinite; display: none; }
     .btn-primary.loading .spinner { display: block; }
     .btn-primary.loading .btn-text { display: none; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .btn-green {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 12px 32px;
-      background: var(--accent);
-      border: none; border-radius: 0;
-      color: #FFFFFF; font-size: 13px; font-weight: 400; font-family: var(--font);
-      cursor: pointer; transition: background 0.2s;
-      text-transform: uppercase; letter-spacing: 1px;
-    }
+    .btn-green { display: inline-flex; align-items: center; gap: 8px; padding: 10px 28px; background: var(--green); border: none; color: #FFF; font-size: 12px; font-weight: 500; font-family: var(--font); cursor: pointer; text-transform: uppercase; letter-spacing: 1.5px; }
     .btn-green:hover { background: var(--green-dim); }
-    .btn-green:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-green:disabled { opacity: 0.35; cursor: not-allowed; }
 
     .btn-outline {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 24px;
-      background: transparent;
-      border: 1px solid var(--accent);
-      border-radius: 0;
-      color: var(--accent); font-size: 13px; font-weight: 400; font-family: var(--font);
-      cursor: pointer; transition: background 0.2s, color 0.2s;
-      text-transform: uppercase; letter-spacing: 1px;
+      display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px;
+      background: transparent; border: 1px solid var(--accent); color: var(--accent);
+      font-size: 12px; font-weight: 500; font-family: var(--font); cursor: pointer;
+      text-transform: uppercase; letter-spacing: 1.5px; transition: all 0.2s;
     }
-    .btn-outline:hover { background: var(--accent); color: #FFFFFF; }
-    .btn-outline:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-outline:hover { background: var(--accent); color: #FFF; }
+    .btn-outline:disabled { opacity: 0.35; cursor: not-allowed; }
 
-    .btn-red {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 12px 32px;
-      background: var(--red);
-      border: none; border-radius: 0;
-      color: #FFFFFF; font-size: 13px; font-weight: 400; font-family: var(--font);
-      cursor: pointer; transition: background 0.2s;
-      text-transform: uppercase; letter-spacing: 1px;
-    }
-    .btn-red:hover { background: #9B2424; }
-    .btn-red:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-red { display: inline-flex; align-items: center; gap: 8px; padding: 10px 28px; background: var(--red); border: none; color: #FFF; font-size: 12px; font-weight: 500; font-family: var(--font); cursor: pointer; text-transform: uppercase; letter-spacing: 1.5px; }
+    .btn-red:hover { background: var(--red-dim); }
+    .btn-red:disabled { opacity: 0.35; cursor: not-allowed; }
 
-    /* ─── Stats Row ─────────────────────────────────────────────────────── */
-    .stats-row {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 12px; margin-bottom: 24px;
-    }
-    .stat-card {
-      background: #FFFFFF; border: 1px solid var(--border);
-      border-radius: 0; padding: 20px; text-align: center;
-    }
-    .stat-card .number {
-      font-size: 32px; font-weight: 400; letter-spacing: -0.5px; line-height: 1;
-      font-family: var(--font);
-    }
-    .stat-card .number.violations { color: var(--red); }
-    .stat-card .number.damages { color: var(--accent); }
-    .stat-card .number.accounts { color: var(--text); }
-    .stat-card .number.time { color: var(--text); }
-    .stat-card .number.blue { color: var(--accent); }
-    .stat-card .label {
-      font-size: 11px; font-weight: 500; text-transform: uppercase;
-      letter-spacing: 1px; color: var(--text-dim); margin-top: 6px;
-    }
+    .btn-sm { padding: 6px 14px; font-size: 10px; }
 
-    /* ─── Summary ───────────────────────────────────────────────────────── */
-    .summary-box {
-      background: #FFFFFF; border: 1px solid var(--border);
-      border-radius: 0; padding: 20px; margin-bottom: 24px;
-      font-size: 13px; line-height: 1.7; color: var(--text-dim);
+    /* ─── Inputs ──────────────────────────────────────────────────────── */
+    .form-input, input[type="text"], input[type="email"], input[type="number"], input[type="date"], select, textarea {
+      background: var(--surface-2); border: 1px solid var(--border); padding: 10px 14px;
+      color: var(--text); font-size: 13px; font-family: var(--font); outline: none;
+      width: 100%; transition: border-color 0.2s;
     }
+    .form-input:focus, input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+    ::placeholder { color: var(--text-dim); }
+    select option { background: var(--surface); color: var(--text); }
+    textarea { resize: vertical; min-height: 80px; }
+
+    /* ─── Form Groups ─────────────────────────────────────────────────── */
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
+    .form-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); }
+
+    /* ─── Upload Zone ─────────────────────────────────────────────────── */
+    .upload-zone {
+      border: 1px dashed var(--border-bright); padding: 40px; text-align: center;
+      cursor: pointer; transition: all 0.2s; background: var(--surface);
+    }
+    .upload-zone:hover, .upload-zone.dragover { border-color: var(--accent); background: var(--surface-2); }
+    .upload-zone.has-files { border-color: var(--accent); border-style: solid; }
+    .upload-icon { width: 40px; height: 40px; margin: 0 auto 12px; background: var(--surface-2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .upload-zone h3 { font-size: 14px; font-weight: 400; margin-bottom: 6px; }
+    .upload-zone p { font-size: 12px; color: var(--text-dim); }
+    .file-list { margin-top: 16px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .file-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--surface-2); border: 1px solid var(--border); padding: 5px 10px; font-size: 11px; }
+    .file-chip .dot { width: 6px; height: 6px; background: var(--accent); }
+    .file-chip .remove { cursor: pointer; opacity: 0.5; }
+    .file-chip .remove:hover { opacity: 1; }
+    .bureau-selects { margin-top: 12px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .bureau-select { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border); padding: 5px 10px; font-size: 11px; }
+    .bureau-select select { background: transparent; border: none; color: var(--text); font-size: 11px; font-family: var(--font); cursor: pointer; }
+
+    /* ─── Section Titles ──────────────────────────────────────────────── */
+    .section-title {
+      font-size: 13px; font-weight: 500; margin-bottom: 14px; display: flex;
+      align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 1.5px;
+      color: var(--text-dim); border-bottom: 1px solid var(--border); padding-bottom: 8px;
+    }
+    .section-title .count { background: var(--red); color: #FFF; font-size: 10px; font-weight: 600; padding: 1px 6px; }
+    .section-title .count-green { background: var(--green); color: #FFF; }
+    .section-title .count-accent { background: var(--accent); color: #FFF; }
+
+    /* ─── Violations ──────────────────────────────────────────────────── */
+    .violations-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+    .violation-card { background: var(--surface); border: 1px solid var(--border); padding: 14px; transition: border-color 0.2s; }
+    .violation-card:hover { border-color: var(--accent); }
+    .violation-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .violation-header h4 { font-size: 12px; font-weight: 500; }
+    .severity-badge { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 2px 8px; border: 1px solid; }
+    .severity-critical { color: var(--red); border-color: var(--red); }
+    .severity-high { color: var(--orange); border-color: var(--orange); }
+    .severity-medium { color: var(--yellow); border-color: var(--yellow); }
+    .severity-low { color: var(--text-dim); border-color: var(--text-dim); }
+    .violation-body { margin-top: 6px; font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+    .violation-legal { margin-top: 4px; font-size: 11px; color: var(--accent); }
+    .violation-values { margin-top: 6px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .bureau-value { font-size: 11px; background: var(--surface-2); border: 1px solid var(--border); padding: 3px 8px; }
+    .bureau-value .bureau-name { font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* ─── Summary ─────────────────────────────────────────────────────── */
+    .summary-box { background: var(--surface); border: 1px solid var(--border); padding: 16px; margin-bottom: 20px; font-size: 12px; line-height: 1.7; color: var(--text-dim); }
     .summary-box strong { color: var(--text); font-weight: 500; }
 
-    /* ─── Section Title ─────────────────────────────────────────────────── */
-    .section-title {
-      font-size: 16px; font-weight: 400; margin-bottom: 16px;
-      display: flex; align-items: center; gap: 10px;
-      text-transform: uppercase; letter-spacing: 1px;
-    }
-    .section-title .count {
-      background: var(--red); color: #FFFFFF; font-size: 11px; font-weight: 500;
-      padding: 2px 8px; border-radius: 0;
-    }
-    .section-title .count-green { background: var(--accent); color: #FFFFFF; }
-    .section-title .count-accent { background: var(--accent); color: #FFFFFF; }
+    /* ─── Action Section ──────────────────────────────────────────────── */
+    .action-section { background: var(--surface); border: 1px solid var(--border); padding: 24px; text-align: center; margin-top: 24px; }
+    .action-section h3 { font-size: 14px; font-weight: 400; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1.5px; }
+    .action-section p { color: var(--text-dim); font-size: 12px; margin-bottom: 16px; }
+    .client-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; max-width: 600px; margin: 0 auto 16px; text-align: left; }
 
-    /* ─── Violations ────────────────────────────────────────────────────── */
-    .violations-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
-    .violation-card {
-      background: #FFFFFF; border: 1px solid var(--border);
-      border-radius: 0; padding: 16px; transition: border-color 0.2s;
-    }
-    .violation-card:hover { border-color: var(--accent); }
-    .violation-header {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 12px; flex-wrap: wrap;
-    }
-    .violation-header h4 { font-size: 13px; font-weight: 500; }
-    .severity-badge {
-      font-size: 10px; font-weight: 500; text-transform: uppercase;
-      letter-spacing: 1px; padding: 2px 8px; border-radius: 0;
-      border: 1px solid;
-    }
-    .severity-critical { background: transparent; color: var(--red); border-color: var(--red); }
-    .severity-high { background: transparent; color: var(--orange); border-color: var(--orange); }
-    .severity-medium { background: transparent; color: var(--yellow); border-color: var(--yellow); }
-    .severity-low { background: transparent; color: var(--text-dim); border-color: var(--text-dim); }
-    .violation-body { margin-top: 8px; font-size: 13px; color: var(--text-dim); line-height: 1.6; }
-    .violation-legal { margin-top: 6px; font-size: 12px; font-family: var(--mono); color: var(--accent); }
-    .violation-values { margin-top: 8px; display: flex; gap: 10px; flex-wrap: wrap; }
-    .bureau-value {
-      font-size: 12px; background: var(--surface-2); border: 1px solid var(--border);
-      border-radius: 0; padding: 4px 10px; font-family: var(--mono);
-    }
-    .bureau-value .bureau-name { font-weight: 500; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; }
-
-    /* ─── Dispute Actions ───────────────────────────────────────────────── */
-    .action-section {
-      background: var(--surface-2);
-      border: 1px solid var(--border); border-radius: 0;
-      padding: 28px; text-align: center; margin-top: 32px;
-    }
-    .action-section h3 {
-      font-size: 16px; font-weight: 400; margin-bottom: 6px;
-      text-transform: uppercase; letter-spacing: 1px;
-    }
-    .action-section p { color: var(--text-dim); font-size: 13px; margin-bottom: 20px; }
-    .client-form {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 10px; max-width: 600px; margin: 0 auto 20px; text-align: left;
-    }
-    .client-form input, .form-input {
-      background: #FFFFFF; border: 1px solid var(--border);
-      border-radius: 0; padding: 10px 14px; color: var(--text);
-      font-size: 13px; font-family: var(--font); outline: none;
-      transition: border-color 0.2s; width: 100%;
-    }
-    .client-form input:focus, .form-input:focus { border-color: var(--accent); }
-    .client-form input::placeholder, .form-input::placeholder { color: var(--text-dim); }
-
-    /* ─── Dispute Results ───────────────────────────────────────────────── */
-    .dispute-results { margin-top: 20px; display: none; animation: fadeIn 0.5s ease; }
-    .dispute-results.visible { display: block; }
-
-    /* ─── Cards ──────────────────────────────────────────────────────────── */
-    .card {
-      background: #FFFFFF; border: 1px solid var(--border);
-      border-radius: 0; padding: 20px; margin-bottom: 12px;
-    }
-    .card-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 12px;
-    }
-    .card-title {
-      font-size: 14px; font-weight: 400;
-      text-transform: uppercase; letter-spacing: 1px;
-    }
-
-    /* ─── Dispute Tracker ───────────────────────────────────────────────── */
-    .dispute-tracker { display: flex; flex-direction: column; gap: 10px; }
-    .dispute-item {
-      background: #FFFFFF; border: 1px solid var(--border);
-      border-radius: 0; padding: 16px; display: flex;
-      align-items: center; gap: 16px; transition: border-color 0.2s;
-    }
+    /* ─── Dispute Tracker ─────────────────────────────────────────────── */
+    .dispute-tracker { display: flex; flex-direction: column; gap: 8px; }
+    .dispute-item { background: var(--surface); border: 1px solid var(--border); padding: 14px; display: flex; align-items: center; gap: 14px; transition: border-color 0.2s; }
     .dispute-item:hover { border-color: var(--accent); }
-    .dispute-status {
-      width: 8px; height: 8px; border-radius: 0; flex-shrink: 0;
-    }
+    .dispute-status { width: 8px; height: 8px; flex-shrink: 0; }
     .status-pending { background: var(--yellow); }
-    .status-sent { background: var(--blue); }
+    .status-sent { background: var(--accent); }
     .status-verified { background: var(--orange); }
-    .status-deleted { background: var(--accent); }
+    .status-deleted { background: var(--green); }
     .status-escalated { background: var(--red); }
     .dispute-info { flex: 1; }
-    .dispute-info h4 { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
-    .dispute-info p { font-size: 12px; color: var(--text-dim); }
-    .dispute-deadline {
-      font-size: 12px; font-weight: 400; font-family: var(--mono);
-      padding: 4px 10px; border-radius: 0;
-      border: 1px solid;
-    }
-    .deadline-ok { background: transparent; color: var(--accent); border-color: var(--accent); }
-    .deadline-warning { background: transparent; color: var(--yellow); border-color: var(--yellow); }
-    .deadline-expired { background: transparent; color: var(--red); border-color: var(--red); }
+    .dispute-info h4 { font-size: 12px; font-weight: 500; margin-bottom: 2px; }
+    .dispute-info p { font-size: 11px; color: var(--text-dim); }
+    .dispute-deadline { font-size: 11px; font-weight: 400; padding: 3px 8px; border: 1px solid; }
+    .deadline-ok { color: var(--green); border-color: var(--green); }
+    .deadline-warning { color: var(--yellow); border-color: var(--yellow); }
+    .deadline-expired { color: var(--red); border-color: var(--red); }
 
-    /* ─── Litigation Package ────────────────────────────────────────────── */
-    .litigation-forms { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
-    .form-card {
-      background: #FFFFFF; border: 1px solid var(--border);
-      border-radius: 0; padding: 16px; text-align: center;
-      transition: border-color 0.2s; cursor: pointer; text-decoration: none; color: var(--text);
-      display: block;
-    }
+    /* ─── Litigation ──────────────────────────────────────────────────── */
+    .litigation-forms { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+    .form-card { background: var(--surface); border: 1px solid var(--border); padding: 14px; text-align: center; cursor: pointer; text-decoration: none; color: var(--text); display: block; transition: border-color 0.2s; }
     .form-card:hover { border-color: var(--accent); }
-    .form-card .form-icon { font-size: 24px; margin-bottom: 8px; }
-    .form-card .form-name { font-size: 13px; font-weight: 500; }
-    .form-card .form-type { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
+    .form-card .form-icon { font-size: 20px; margin-bottom: 6px; }
+    .form-card .form-name { font-size: 12px; font-weight: 500; }
+    .form-card .form-type { font-size: 10px; color: var(--text-dim); margin-top: 3px; text-transform: uppercase; letter-spacing: 1px; }
 
-    /* ─── Credit Builder ────────────────────────────────────────────────── */
-    .builder-form {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px; max-width: 700px; margin: 0 auto 24px;
-    }
-    .form-group { display: flex; flex-direction: column; gap: 4px; }
-    .form-group label {
-      font-size: 11px; font-weight: 500; color: var(--text-dim);
-      text-transform: uppercase; letter-spacing: 1px;
-    }
-    .form-group .checkbox-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; }
-    .form-group .checkbox-row input[type="checkbox"] { accent-color: var(--accent); width: 14px; height: 14px; }
-
-    .recommendation-card {
-      background: #FFFFFF; border: 1px solid var(--border);
-      border-radius: 0; padding: 16px; margin-bottom: 10px;
-      transition: border-color 0.2s;
-    }
+    /* ─── Recommendation Cards ────────────────────────────────────────── */
+    .recommendation-card { background: var(--surface); border: 1px solid var(--border); padding: 14px; margin-bottom: 8px; transition: border-color 0.2s; }
     .recommendation-card:hover { border-color: var(--accent); }
-    .rec-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-    .rec-header h4 { font-size: 13px; font-weight: 500; }
-    .rec-impact {
-      font-size: 12px; font-weight: 500; color: var(--accent);
-      background: transparent; border: 1px solid var(--accent);
-      padding: 2px 8px; border-radius: 0;
-      text-transform: uppercase; letter-spacing: 1px;
-    }
-    .rec-body { font-size: 13px; color: var(--text-dim); line-height: 1.5; margin-bottom: 8px; }
-    .rec-meta { display: flex; gap: 12px; flex-wrap: wrap; }
-    .rec-tag {
-      font-size: 11px; font-weight: 400; background: var(--surface-2);
-      border: 1px solid var(--border); border-radius: 0; padding: 3px 10px;
-      color: var(--text-dim);
-      text-transform: uppercase; letter-spacing: 0.5px;
-    }
+    .rec-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .rec-header h4 { font-size: 12px; font-weight: 500; }
+    .rec-impact { font-size: 10px; font-weight: 600; color: var(--green); border: 1px solid var(--green); padding: 2px 6px; text-transform: uppercase; letter-spacing: 1px; }
+    .rec-body { font-size: 12px; color: var(--text-dim); line-height: 1.5; margin-bottom: 6px; }
+    .rec-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+    .rec-tag { font-size: 10px; background: var(--surface-2); border: 1px solid var(--border); padding: 2px 8px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
 
-    /* ─── Progress Bar ──────────────────────────────────────────────────── */
-    .progress-bar {
-      width: 100%; height: 4px; background: var(--surface-3);
-      border-radius: 0; overflow: hidden; margin: 8px 0;
-    }
-    .progress-fill { height: 100%; border-radius: 0; transition: width 0.5s ease; }
-    .progress-fill.green { background: var(--accent); }
+    /* ─── Score Gauge ─────────────────────────────────────────────────── */
+    .score-display { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; justify-content: center; margin-bottom: 20px; }
+    .score-gauge { text-align: center; }
+    .score-number { font-size: 48px; font-weight: 300; line-height: 1; }
+    .score-bureau { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-dim); margin-top: 4px; }
+    .score-delta { font-size: 14px; font-weight: 500; margin-top: 2px; }
+    .score-delta.positive { color: var(--green); }
+    .score-delta.negative { color: var(--red); }
+
+    /* ─── Progress Bar ────────────────────────────────────────────────── */
+    .progress-bar { width: 100%; height: 4px; background: var(--surface-3); overflow: hidden; margin: 6px 0; }
+    .progress-fill { height: 100%; transition: width 0.5s ease; }
+    .progress-fill.green { background: var(--green); }
     .progress-fill.accent { background: var(--accent); }
     .progress-fill.orange { background: var(--orange); }
 
-    /* ─── Empty State ───────────────────────────────────────────────────── */
-    .empty-state {
-      text-align: center; padding: 48px 24px; color: var(--text-dim);
-    }
-    .empty-state .empty-icon { font-size: 40px; margin-bottom: 16px; opacity: 0.5; }
-    .empty-state h3 {
-      font-size: 16px; font-weight: 400; color: var(--text); margin-bottom: 8px;
-      text-transform: uppercase; letter-spacing: 1px;
-    }
-    .empty-state p { font-size: 13px; max-width: 460px; margin: 0 auto; line-height: 1.6; }
+    /* ─── Score Factor Bars ───────────────────────────────────────────── */
+    .factor-list { display: flex; flex-direction: column; gap: 10px; }
+    .factor-item { }
+    .factor-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+    .factor-name { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); }
+    .factor-impact { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+    .factor-impact.high_positive, .factor-impact.positive { color: var(--green); }
+    .factor-impact.neutral { color: var(--text-dim); }
+    .factor-impact.negative { color: var(--orange); }
+    .factor-impact.high_negative { color: var(--red); }
+    .factor-bar { height: 6px; background: var(--surface-3); }
+    .factor-bar-fill { height: 100%; transition: width 0.5s ease; }
 
-    /* ─── Responsive ────────────────────────────────────────────────────── */
+    /* ─── Workflow Stages ─────────────────────────────────────────────── */
+    .workflow-stages { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+    .workflow-stage { background: var(--surface); border: 1px solid var(--border); padding: 14px; text-align: center; transition: all 0.2s; position: relative; }
+    .workflow-stage.active { border-color: var(--accent); background: var(--surface-2); }
+    .workflow-stage.completed { border-color: var(--green); }
+    .workflow-stage .stage-num { font-size: 20px; font-weight: 300; color: var(--text-dim); }
+    .workflow-stage.active .stage-num { color: var(--accent); }
+    .workflow-stage.completed .stage-num { color: var(--green); }
+    .workflow-stage .stage-name { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-dim); margin-top: 4px; }
+    .workflow-stage.active .stage-name { color: var(--text); }
+
+    /* ─── Form Library ────────────────────────────────────────────────── */
+    .form-library { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+    .form-lib-card { background: var(--surface); border: 1px solid var(--border); padding: 14px; cursor: pointer; transition: all 0.2s; }
+    .form-lib-card:hover { border-color: var(--accent); }
+    .form-lib-id { font-size: 10px; color: var(--accent); font-weight: 600; letter-spacing: 1px; margin-bottom: 4px; }
+    .form-lib-name { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+    .form-lib-desc { font-size: 11px; color: var(--text-dim); line-height: 1.5; margin-bottom: 6px; }
+    .form-lib-codes { display: flex; gap: 4px; flex-wrap: wrap; }
+    .form-lib-code { font-size: 9px; border: 1px solid var(--border); padding: 1px 6px; color: var(--accent); }
+
+    /* ─── Cross-Bureau Map ────────────────────────────────────────────── */
+    .bureau-map { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 20px; }
+    .bureau-map th { background: var(--surface-2); border: 1px solid var(--border); padding: 8px 10px; text-align: left; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 10px; color: var(--text-dim); }
+    .bureau-map td { border: 1px solid var(--border); padding: 8px 10px; }
+    .bureau-map tr:hover td { background: var(--surface-2); }
+    .bureau-map .mismatch { background: rgba(239, 68, 68, 0.1); color: var(--red); font-weight: 500; }
+
+    /* ─── Alert Banner ────────────────────────────────────────────────── */
+    .alert-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .alert-item { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 10px 14px; display: flex; align-items: center; gap: 10px; font-size: 12px; }
+    .alert-item.alert-warning { border-left-color: var(--orange); }
+    .alert-item.alert-danger { border-left-color: var(--red); }
+    .alert-item.alert-success { border-left-color: var(--green); }
+    .alert-time { font-size: 10px; color: var(--text-dim); white-space: nowrap; }
+
+    /* ─── Empty State ─────────────────────────────────────────────────── */
+    .empty-state { text-align: center; padding: 48px 24px; color: var(--text-dim); }
+    .empty-state .empty-icon { font-size: 36px; margin-bottom: 12px; opacity: 0.4; }
+    .empty-state h3 { font-size: 14px; font-weight: 400; color: var(--text); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1.5px; }
+    .empty-state p { font-size: 12px; max-width: 440px; margin: 0 auto; line-height: 1.6; }
+
+    /* ─── Document Preview ────────────────────────────────────────────── */
+    .doc-preview { border: 1px solid var(--border); background: var(--surface); padding: 24px; font-size: 12px; line-height: 1.8; min-height: 300px; white-space: pre-wrap; word-break: break-word; }
+
+    /* ─── Responsive ──────────────────────────────────────────────────── */
     @media (max-width: 768px) {
       .nav-tabs { flex-wrap: wrap; }
-      .nav-tab { font-size: 11px; padding: 10px 12px; }
+      .nav-tab { font-size: 10px; padding: 8px 6px; }
+      .workflow-stages { grid-template-columns: repeat(2, 1fr); }
+      .form-grid-3 { grid-template-columns: 1fr; }
     }
     @media (max-width: 640px) {
-      .app { padding: 20px 16px; }
-      .hero { padding: 24px 0 16px; }
-      .upload-zone { padding: 32px 20px; }
+      .app { padding: 16px 12px; }
       .stats-row { grid-template-columns: repeat(2, 1fr); }
     }
 
-    /* ─── Scrollbar ─────────────────────────────────────────────────────── */
+    /* ─── Scrollbar ───────────────────────────────────────────────────── */
     ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: #FFFFFF; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 0; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); }
 
-    /* ─── Documents Tab (industrial aesthetic) ──────────────────────────── */
-    .doc-section {
-      margin-bottom: 24px;
-    }
-    .doc-section-title {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 14px;
-      font-weight: 400;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: #001A33;
-      border-bottom: 1px solid #D0D5DD;
-      padding-bottom: 8px;
-      margin-bottom: 16px;
-    }
-    .doc-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-    .doc-grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-    @media (max-width: 768px) {
-      .doc-grid, .doc-grid-3 { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 480px) {
-      .doc-grid, .doc-grid-3 { grid-template-columns: 1fr; }
-    }
-    .doc-field {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .doc-field label {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
-      font-weight: 400;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #4A5568;
-    }
-    .doc-field input,
-    .doc-field select {
-      border: 1px solid #D0D5DD;
-      border-radius: 0;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 13px;
-      padding: 10px 14px;
-      background: #FFFFFF;
-      color: #001A33;
-      width: 100%;
-      outline: none;
-    }
-    .doc-field input:focus,
-    .doc-field select:focus {
-      border-color: #0A4C8F;
-    }
-    .doc-form-selector {
-      border: 1px solid #0A4C8F;
-      border-radius: 0;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 13px;
-      padding: 10px 14px;
-      background: #FFFFFF;
-      color: #001A33;
-      width: 100%;
-      cursor: pointer;
-      outline: none;
-    }
-    .doc-form-meta {
-      margin-top: 12px;
-      padding: 12px 14px;
-      border: 1px solid #D0D5DD;
-      background: #F7F8FA;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 12px;
-      color: #001A33;
-    }
-    .doc-form-meta .doc-form-name {
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-size: 12px;
-      margin-bottom: 4px;
-    }
-    .doc-form-meta .doc-form-category {
-      color: #4A5568;
-      font-size: 11px;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .doc-form-meta .doc-form-description {
-      color: #4A5568;
-      font-size: 12px;
-      line-height: 1.6;
-      margin-bottom: 8px;
-    }
-    .doc-form-meta .doc-required-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-    .doc-required-tag {
-      display: inline-block;
-      border: 1px solid #D0D5DD;
-      padding: 2px 8px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px;
-      color: #4A5568;
-      text-transform: lowercase;
-      letter-spacing: 0.5px;
-      background: #FFFFFF;
-    }
-    .doc-missing-fields {
-      border: 1px solid #D0D5DD;
-      border-left: 3px solid #C53030;
-      background: #FFF5F5;
-      padding: 12px 14px;
-      margin-bottom: 16px;
-      font-family: 'IBM Plex Mono', monospace;
-    }
-    .doc-missing-fields .doc-missing-title {
-      color: #C53030;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 6px;
-    }
-    .doc-missing-fields ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .doc-missing-fields li {
-      color: #C53030;
-      font-size: 12px;
-      line-height: 1.7;
-    }
-    .doc-missing-fields li::before {
-      content: "• ";
-      color: #C53030;
-      font-weight: 600;
-    }
-    .doc-preview {
-      border: 1px solid #D0D5DD;
-      background: #FFFFFF;
-      padding: 32px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 13px;
-      line-height: 1.8;
-      color: #001A33;
-      min-height: 400px;
-      white-space: pre-wrap;
-      word-break: break-word;
-      overflow-x: auto;
-    }
-    .doc-preview .doc-missing-token {
-      color: #C53030;
-      background: #FFF5F5;
-      padding: 2px 4px;
-      border: 1px solid #FED7D7;
-    }
-    .doc-actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 16px;
-      flex-wrap: wrap;
-    }
-    .doc-btn-primary {
-      background: #0A4C8F;
-      color: #FFFFFF;
-      border: none;
-      border-radius: 0;
-      padding: 12px 32px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 13px;
-      font-weight: 400;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      cursor: pointer;
-    }
-    .doc-btn-primary:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-    .doc-btn-secondary {
-      background: transparent;
-      border: 1px solid #0A4C8F;
-      color: #0A4C8F;
-      border-radius: 0;
-      padding: 12px 32px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 13px;
-      font-weight: 400;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      cursor: pointer;
-    }
-    .doc-status {
-      margin-top: 12px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 12px;
-      color: #4A5568;
-    }
-
+    /* ─── Print ───────────────────────────────────────────────────────── */
     @media print {
-      body { background: #FFFFFF; }
-      .app > *:not(#tab-documents) { display: none !important; }
-      .nav-tabs,
-      .hero,
-      .doc-client-form,
-      .doc-form-selector-section,
-      .doc-missing-fields,
-      .doc-actions,
-      .doc-status { display: none !important; }
-      #tab-documents .doc-section:not(.doc-preview-section) { display: none !important; }
-      .doc-preview {
-        border: none !important;
-        padding: 0 !important;
-        background: #FFFFFF !important;
-        color: #000000 !important;
-      }
-      .doc-preview .doc-missing-token {
-        color: #C53030 !important;
-        background: transparent !important;
-        border: none !important;
-      }
+      body { background: #FFF; color: #000; }
+      .nav-tabs, .hero { display: none !important; }
+      .card, .stat-card, .doc-preview { background: #FFF; border-color: #CCC; color: #000; }
     }
   </style>
 </head>
 <body>
   <div class="app">
-    <!-- Hero -->
     <div class="hero">
       <div class="hero-badge">ADgorhythms Legal Intelligence</div>
       <h1>Credit Genie</h1>
-      <p>Upload your credit reports. Every reporting violation is identified, statutory dispute letters are generated, and court filings are prepared if the bureaus fail to comply.</p>
+      <p>Upload credit reports or enter data manually. Every reporting violation is identified, dispute letters are generated, and court filings are prepared.</p>
     </div>
 
-    <!-- Navigation -->
     <nav class="nav-tabs">
-      <button class="nav-tab active" data-tab="audit"><span class="tab-icon">&#128270;</span> Audit</button>
-      <button class="nav-tab" data-tab="disputes"><span class="tab-icon">&#128233;</span> Disputes <span class="tab-badge" id="disputeBadge" style="display:none">0</span></button>
-      <button class="nav-tab" data-tab="litigation"><span class="tab-icon">&#9878;</span> Litigation</button>
-      <button class="nav-tab" data-tab="builder"><span class="tab-icon">&#128200;</span> Credit Builder</button>
-      <button class="nav-tab" data-tab="documents"><span class="tab-icon">&#128196;</span> Documents</button>
+      <button class="nav-tab active" data-tab="dashboard">Dashboard</button>
+      <button class="nav-tab" data-tab="clients">Clients</button>
+      <button class="nav-tab" data-tab="audit">Audit</button>
+      <button class="nav-tab" data-tab="disputes">Disputes <span class="tab-badge" id="disputeBadge" style="display:none">0</span></button>
+      <button class="nav-tab" data-tab="litigation">Litigation</button>
+      <button class="nav-tab" data-tab="simulator">Simulator</button>
+      <button class="nav-tab" data-tab="forms">Form Library</button>
+      <button class="nav-tab" data-tab="builder">Credit Builder</button>
+      <button class="nav-tab" data-tab="vault">Vault</button>
     </nav>
 
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <!-- TAB 1: AUDIT -->
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <div class="tab-content active" id="tab-audit">
+    <!-- ═══ TAB: DASHBOARD ═══════════════════════════════════════════════ -->
+    <div class="tab-content active" id="tab-dashboard">
+      <div id="dashboardWelcome">
+        <div class="workflow-stages" id="workflowStages">
+          <div class="workflow-stage active" data-stage="intake">
+            <div class="stage-num">01</div>
+            <div class="stage-name">Intake</div>
+          </div>
+          <div class="workflow-stage" data-stage="strike">
+            <div class="stage-num">02</div>
+            <div class="stage-name">Strike</div>
+          </div>
+          <div class="workflow-stage" data-stage="follow_up">
+            <div class="stage-num">03</div>
+            <div class="stage-name">Follow-Up</div>
+          </div>
+          <div class="workflow-stage" data-stage="rebuild">
+            <div class="stage-num">04</div>
+            <div class="stage-name">Rebuild</div>
+          </div>
+        </div>
+
+        <div class="stats-row" id="dashStats">
+          <div class="stat-card"><div class="number blue" id="dashClients">0</div><div class="label">Clients</div></div>
+          <div class="stat-card"><div class="number violations" id="dashViolations">0</div><div class="label">Violations</div></div>
+          <div class="stat-card"><div class="number damages" id="dashDamages">$0</div><div class="label">Est. Damages</div></div>
+          <div class="stat-card"><div class="number green" id="dashLetters">0</div><div class="label">Letters Sent</div></div>
+          <div class="stat-card"><div class="number blue" id="dashDeleted">0</div><div class="label">Items Deleted</div></div>
+        </div>
+
+        <div class="alert-list" id="dashAlerts"></div>
+
+        <div class="section-title">Score Overview</div>
+        <div id="dashScores" class="score-display">
+          <div class="empty-state"><p>Add a client and enter scores to see the overview.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: CLIENTS ═════════════════════════════════════════════════ -->
+    <div class="tab-content" id="tab-clients">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <div class="section-title" style="margin:0; border:none; padding:0;">Client Profiles</div>
+        <button class="btn-primary btn-sm" onclick="showAddClient()">+ Add Client</button>
+      </div>
+
+      <div id="addClientForm" style="display:none;" class="card">
+        <div class="card-title" style="margin-bottom:12px;">New Client Intake</div>
+        <div class="form-grid">
+          <div class="form-group"><label>Full Name *</label><input type="text" id="newClientName" placeholder="John Doe" /></div>
+          <div class="form-group"><label>Email</label><input type="email" id="newClientEmail" placeholder="email@example.com" /></div>
+          <div class="form-group"><label>Phone</label><input type="text" id="newClientPhone" placeholder="(555) 555-5555" /></div>
+          <div class="form-group"><label>Last 4 SSN</label><input type="text" id="newClientSSN" placeholder="1234" maxlength="4" /></div>
+          <div class="form-group"><label>Date of Birth</label><input type="date" id="newClientDOB" /></div>
+          <div class="form-group"><label>Street</label><input type="text" id="newClientStreet" placeholder="123 Main St" /></div>
+          <div class="form-group"><label>City</label><input type="text" id="newClientCity" placeholder="New York" /></div>
+          <div class="form-group"><label>State</label><input type="text" id="newClientState" placeholder="NY" maxlength="2" /></div>
+          <div class="form-group"><label>County</label><input type="text" id="newClientCounty" placeholder="Orange" /></div>
+          <div class="form-group"><label>Zip</label><input type="text" id="newClientZip" placeholder="10001" maxlength="5" /></div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn-green btn-sm" onclick="createClient()">Save Client</button>
+          <button class="btn-outline btn-sm" onclick="hideAddClient()">Cancel</button>
+        </div>
+      </div>
+
+      <div id="clientList"></div>
+
+      <div id="clientDetail" style="display:none;">
+        <button class="btn-outline btn-sm" onclick="showClientList()" style="margin-bottom:12px;">&larr; Back to Clients</button>
+        <div id="clientDetailContent"></div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: AUDIT ═══════════════════════════════════════════════════ -->
+    <div class="tab-content" id="tab-audit">
       <div class="upload-zone" id="uploadZone">
         <div class="upload-icon">&#128196;</div>
-        <h3>Drop your credit reports here</h3>
-        <p>Upload PDFs from Equifax, Experian, and TransUnion (up to 3 files)</p>
+        <h3>Drop credit reports here</h3>
+        <p>Upload PDFs from Equifax, Experian, TransUnion — or enter accounts manually below</p>
         <input type="file" id="fileInput" accept=".pdf" multiple hidden />
         <div class="file-list" id="fileList"></div>
         <div class="bureau-selects" id="bureauSelects"></div>
       </div>
-
       <div style="text-align:center">
         <button class="btn-primary" id="auditBtn" disabled>
           <span class="spinner"></span>
           <span class="btn-text">Run Free Credit Audit</span>
         </button>
       </div>
-
-      <div id="auditResults" style="display:none; margin-top:32px;">
+      <div id="auditResults" style="display:none; margin-top:24px;">
         <div class="stats-row" id="statsRow"></div>
         <div class="summary-box" id="summaryBox"></div>
-        <div class="section-title">
-          Violations Found <span class="count" id="violationCount">0</span>
-        </div>
-        <div class="violations-list" id="violationsList"></div>
 
+        <!-- Cross-Bureau Discrepancy Map -->
+        <div class="section-title">Cross-Bureau Discrepancy Map</div>
+        <div style="overflow-x:auto; margin-bottom:24px;">
+          <table class="bureau-map" id="bureauMap">
+            <thead><tr><th>Account</th><th>Field</th><th>Equifax</th><th>Experian</th><th>TransUnion</th><th>Violation</th></tr></thead>
+            <tbody id="bureauMapBody"></tbody>
+          </table>
+        </div>
+
+        <div class="section-title">Violations Found <span class="count" id="violationCount">0</span></div>
+        <div class="violations-list" id="violationsList"></div>
         <div class="action-section">
           <h3>Generate Dispute Letters</h3>
           <p>One click. Every violation. Legally cited. Ready to send.</p>
           <div class="client-form">
-            <input type="text" id="clientName" placeholder="Your full name" />
-            <input type="email" id="clientEmail" placeholder="Email address" />
-            <input type="text" id="clientState" placeholder="State (e.g. NY)" maxlength="2" />
+            <input type="text" id="clientName" placeholder="Full name" />
+            <input type="email" id="clientEmail" placeholder="Email" />
+            <input type="text" id="clientState" placeholder="State (NY)" maxlength="2" />
             <input type="text" id="clientCounty" placeholder="County" />
           </div>
           <button class="btn-green" id="disputeBtn" disabled>Generate All Dispute Letters</button>
-          <div class="dispute-results" id="disputeResults"></div>
+          <div class="dispute-results" id="disputeResults" style="display:none;"></div>
         </div>
       </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <!-- TAB 2: DISPUTES -->
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- ═══ TAB: DISPUTES ════════════════════════════════════════════════ -->
     <div class="tab-content" id="tab-disputes">
       <div id="disputesEmpty" class="empty-state">
         <div class="empty-icon">&#128233;</div>
         <h3>No Active Disputes</h3>
-        <p>Run a credit audit first, then generate dispute letters. Your active disputes and their 30-day deadlines will appear here.</p>
+        <p>Run a credit audit first, then generate dispute letters. Active disputes and 30-day deadlines appear here.</p>
       </div>
-
       <div id="disputesActive" style="display:none">
         <div class="stats-row" id="disputeStats"></div>
-
-        <div class="section-title" style="margin-top:24px">
-          Active Disputes <span class="count count-accent" id="activeDisputeCount">0</span>
-        </div>
-
+        <div class="section-title" style="margin-top:16px">Active Disputes <span class="count count-accent" id="activeDisputeCount">0</span></div>
         <div class="dispute-tracker" id="disputeTracker"></div>
-
-        <div class="action-section" style="margin-top:24px" id="escalateSection">
-          <h3>Bureau Didn't Fix It?</h3>
-          <p>If a bureau verified but didn't correct the error, escalate to litigation. The Genie prepares your Small Claims filing package automatically.</p>
-          <button class="btn-red" id="escalateBtn" disabled>Escalate to Litigation</button>
-        </div>
-
-        <div class="action-section" style="margin-top:16px" id="recordResponseSection">
-          <h3>Record Bureau Response</h3>
-          <p>When a bureau responds to your dispute, record it here to update the tracker.</p>
-          <div class="client-form" style="max-width:400px">
-            <select class="form-input" id="responseDisputeId">
-              <option value="">Select dispute...</option>
-            </select>
-            <select class="form-input" id="responseStatus">
-              <option value="">Response type...</option>
-              <option value="verified">Verified (not fixed)</option>
-              <option value="deleted">Deleted (removed)</option>
-              <option value="updated">Updated (corrected)</option>
+        <div class="action-section" style="margin-top:16px" id="escalateSection">
+          <h3>Bureau Response</h3>
+          <p>Log bureau responses. If verified but not corrected, auto-triggers MOV letter then litigation.</p>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;">
+            <select id="responseDisputeId" style="max-width:300px;"><option value="">Select dispute...</option></select>
+            <select id="responseType">
+              <option value="deleted">Deleted</option>
+              <option value="updated">Updated</option>
+              <option value="verified">Verified (Not Fixed)</option>
             </select>
           </div>
-          <button class="btn-outline" id="recordResponseBtn" style="margin-top:12px">Record Response</button>
+          <button class="btn-primary btn-sm" id="recordResponseBtn">Record Response</button>
         </div>
       </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <!-- TAB 3: LITIGATION -->
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- ═══ TAB: LITIGATION ══════════════════════════════════════════════ -->
     <div class="tab-content" id="tab-litigation">
       <div id="litigationEmpty" class="empty-state">
         <div class="empty-icon">&#9878;</div>
         <h3>No Litigation Packages</h3>
-        <p>When bureaus fail to correct errors after your disputes, escalate them here. The Genie generates a full Small Claims filing package including complaint, summons, proof of service, cover letter, and evidence exhibit.</p>
+        <p>When a bureau responds "Verified" but fails to correct, the system auto-escalates here with Small Claims filing packages.</p>
       </div>
-
       <div id="litigationActive" style="display:none">
-        <div class="card" style="margin-bottom:24px">
-          <div class="card-header">
-            <span class="card-title">Jurisdiction Info</span>
-          </div>
-          <div id="jurisdictionInfo"></div>
-        </div>
-
-        <div class="section-title">
-          Court Filing Documents <span class="count count-green" id="formCount">0</span>
-        </div>
-
+        <div class="stats-row" id="litigationStats"></div>
+        <div class="section-title">Court Filing Package</div>
         <div class="litigation-forms" id="litigationForms"></div>
-
-        <div class="summary-box" style="margin-top:24px" id="litigationSummary"></div>
-      </div>
-
-      <!-- Manual Litigation Generator -->
-      <div class="action-section" style="margin-top:24px">
-        <h3>Generate Litigation Package</h3>
-        <p>Manually create a Small Claims filing package for any jurisdiction.</p>
-        <div class="client-form" style="max-width:600px">
-          <input type="text" id="litClientName" placeholder="Your full name" />
-          <input type="email" id="litClientEmail" placeholder="Email address" />
-          <input type="text" id="litClientState" placeholder="State (e.g. NY)" maxlength="2" />
-          <input type="text" id="litClientCounty" placeholder="County" />
-        </div>
-        <button class="btn-red" id="manualLitBtn" disabled>Generate Filing Package</button>
-        <p style="font-size:12px;color:var(--text-dim);margin-top:8px">Requires active disputes from the Disputes tab</p>
       </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <!-- TAB 4: CREDIT BUILDER -->
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <div class="tab-content" id="tab-builder">
-      <div class="card" style="margin-bottom:24px">
-        <div class="card-header">
-          <span class="card-title">Quick Credit Assessment</span>
-        </div>
-        <p style="font-size:13px;color:var(--text-dim);margin-bottom:16px">
-          Tell us about your finances and we'll recommend the fastest path to better credit. No bank login required.
-        </p>
-        <div class="builder-form">
+    <!-- ═══ TAB: SIMULATOR ═══════════════════════════════════════════════ -->
+    <div class="tab-content" id="tab-simulator">
+      <div class="section-title">FICO Score Simulator</div>
+      <p style="font-size:12px;color:var(--text-dim);margin-bottom:16px;">Toggle negative items on/off to see predicted score impact. Enter your income for DTI analysis and mortgage borrowing power.</p>
+
+      <div class="card">
+        <div class="card-title">Select Client</div>
+        <div class="form-grid" style="margin-top:8px;">
+          <div class="form-group">
+            <label>Client</label>
+            <select id="simClientId"><option value="">Select client...</option></select>
+          </div>
           <div class="form-group">
             <label>Monthly Income</label>
-            <input type="number" class="form-input" id="builderIncome" placeholder="$4,000" value="4000" />
+            <input type="number" id="simIncome" placeholder="5000" />
           </div>
-          <div class="form-group">
-            <label>Monthly Rent</label>
-            <input type="number" class="form-input" id="builderRent" placeholder="$1,200" />
-          </div>
-          <div class="form-group">
-            <label>Utilities</label>
-            <div class="checkbox-row">
-              <input type="checkbox" id="builderUtilities" checked />
-              <span style="font-size:13px">I pay electric/gas/water</span>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Streaming</label>
-            <div class="checkbox-row">
-              <input type="checkbox" id="builderStreaming" checked />
-              <span style="font-size:13px">Netflix, Spotify, etc.</span>
-            </div>
-          </div>
-        </div>
-        <div style="text-align:center">
-          <button class="btn-green" id="builderBtn">Analyze My Credit Potential</button>
         </div>
       </div>
 
-      <div id="builderResults" style="display:none">
-        <div class="stats-row" id="builderStats"></div>
-
-        <div class="section-title" style="margin-top:24px">
-          Recommended Actions <span class="count count-green" id="recCount">0</span>
+      <div id="simScenarios" class="card" style="display:none;">
+        <div class="card-title">What-If Scenarios</div>
+        <div id="simItemList" style="margin-top:8px;"></div>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn-primary btn-sm" onclick="runSimulation()">Run Simulation</button>
+          <button class="btn-outline btn-sm" onclick="clearSimulation()">Clear All</button>
         </div>
+      </div>
 
-        <div id="recommendationsList"></div>
+      <div id="simResults" style="display:none; margin-top:16px;">
+        <div class="section-title">Projected Scores</div>
+        <div class="score-display" id="simScoreDisplay"></div>
 
-        <div class="card" style="margin-top:24px">
-          <div class="card-header">
-            <span class="card-title">Score Impact Projection</span>
-          </div>
-          <div id="scoreProjection"></div>
+        <div class="section-title">Score Factors</div>
+        <div class="factor-list" id="simFactors"></div>
+
+        <div id="simDTI" style="display:none; margin-top:16px;">
+          <div class="section-title">DTI Analysis</div>
+          <div class="stats-row" id="simDTIStats"></div>
+          <div id="simPayoffOrder"></div>
         </div>
       </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <!-- TAB 5: DOCUMENTS — Dynamic Document Generator -->
-    <!-- ═══════════════════════════════════════════════════════════════════ -->
-    <div class="tab-content" id="tab-documents">
-      <div class="doc-section doc-client-form">
-        <div class="doc-section-title">Client Profile</div>
-        <div class="doc-grid">
-          <div class="doc-field">
-            <label for="docClientFullName">Full Name</label>
-            <input type="text" id="docClientFullName" data-doc-field="client_full_name" placeholder="Jane Q. Consumer" />
-          </div>
-          <div class="doc-field">
-            <label for="docClientSsn">SSN (Last 4)</label>
-            <input type="text" id="docClientSsn" data-doc-field="client_ssn" maxlength="4" placeholder="1234" />
-          </div>
-          <div class="doc-field">
-            <label for="docClientEmail">Email</label>
-            <input type="email" id="docClientEmail" data-doc-field="client_email" placeholder="jane@example.com" />
-          </div>
-          <div class="doc-field">
-            <label for="docClientPhone">Phone</label>
-            <input type="text" id="docClientPhone" data-doc-field="client_phone" placeholder="555-0123" />
-          </div>
+    <!-- ═══ TAB: FORM LIBRARY ════════════════════════════════════════════ -->
+    <div class="tab-content" id="tab-forms">
+      <div class="section-title">Form ID System</div>
+      <p style="font-size:12px;color:var(--text-dim);margin-bottom:16px;">Select a form, pick a client, and the Genie auto-populates legal codes, account numbers, and personal data. One-click generation.</p>
+
+      <div class="form-grid" style="margin-bottom:16px;">
+        <div class="form-group">
+          <label>Filter by Category</label>
+          <select id="formCategoryFilter" onchange="filterForms()">
+            <option value="">All Categories</option>
+            <option value="Data Integrity">Data Integrity</option>
+            <option value="Late Payments">Late Payments</option>
+            <option value="Collections">Collections</option>
+            <option value="Metro 2 Violations">Metro 2 Violations</option>
+            <option value="Follow-Up">Follow-Up (MOV)</option>
+            <option value="Goodwill">Goodwill</option>
+            <option value="Escalation">Escalation (CFPB)</option>
+            <option value="Litigation">Litigation</option>
+          </select>
         </div>
-        <div class="doc-grid" style="margin-top:16px">
-          <div class="doc-field">
-            <label for="docClientStreet">Street</label>
-            <input type="text" id="docClientStreet" data-doc-field="client_address" placeholder="123 Main St" />
-          </div>
-          <div class="doc-field">
-            <label for="docClientCity">City</label>
-            <input type="text" id="docClientCity" data-doc-field="client_city" placeholder="New York" />
-          </div>
-          <div class="doc-field">
-            <label for="docClientState">State</label>
-            <input type="text" id="docClientState" data-doc-field="client_state" maxlength="2" placeholder="NY" />
-          </div>
-          <div class="doc-field">
-            <label for="docClientZip">Zip</label>
-            <input type="text" id="docClientZip" data-doc-field="client_zip" placeholder="10001" />
-          </div>
+        <div class="form-group">
+          <label>Client</label>
+          <select id="formClientId"><option value="">Select client...</option></select>
         </div>
       </div>
 
-      <div class="doc-section">
-        <div class="doc-section-title">Account Details</div>
-        <div class="doc-grid-3">
-          <div class="doc-field">
-            <label for="docCreditorName">Creditor / Furnisher</label>
-            <input type="text" id="docCreditorName" data-doc-field="creditor_name" placeholder="Capital One Bank" />
+      <div class="form-library" id="formLibrary"></div>
+
+      <div id="formRenderSection" style="display:none;margin-top:16px;">
+        <div class="section-title" id="formRenderTitle">Render Form</div>
+        <div class="card">
+          <div id="formVariables"></div>
+          <div style="margin-top:12px;display:flex;gap:8px;">
+            <button class="btn-green btn-sm" onclick="renderForm()">Generate Letter</button>
+            <button class="btn-outline btn-sm" onclick="closeFormRender()">Cancel</button>
           </div>
-          <div class="doc-field">
-            <label for="docAccountNumber">Account Number</label>
-            <input type="text" id="docAccountNumber" data-doc-field="account_number" placeholder="****1234" />
-          </div>
-          <div class="doc-field">
-            <label for="docBureau">Bureau</label>
-            <select id="docBureau">
-              <option value="equifax">Equifax</option>
-              <option value="experian">Experian</option>
-              <option value="transunion">TransUnion</option>
-            </select>
-          </div>
+        </div>
+        <div class="doc-preview" id="formPreview" style="display:none;margin-top:12px;"></div>
+        <div style="margin-top:8px;display:none;" id="formDownloadSection">
+          <button class="btn-outline btn-sm" onclick="downloadFormLetter()">Download Letter</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: CREDIT BUILDER ══════════════════════════════════════════ -->
+    <div class="tab-content" id="tab-builder">
+      <div class="section-title">Credit Builder Analysis</div>
+      <div class="card">
+        <div class="form-grid">
+          <div class="form-group"><label>Monthly Income</label><input type="number" id="builderIncome" placeholder="5000" /></div>
+          <div class="form-group"><label>Monthly Rent</label><input type="number" id="builderRent" placeholder="1500" /></div>
+          <div class="form-group"><label>Monthly Utilities</label><input type="number" id="builderUtilities" placeholder="200" /></div>
+          <div class="form-group"><label>Monthly Subscriptions</label><input type="number" id="builderSubs" placeholder="50" /></div>
+        </div>
+        <div style="text-align:center;margin-top:12px;">
+          <button class="btn-primary btn-sm" id="builderBtn">Analyze Cash Flow</button>
+        </div>
+      </div>
+      <div id="builderResults" style="display:none;margin-top:16px;">
+        <div class="stats-row" id="builderStats"></div>
+        <div class="section-title">Tradeline Recommendations</div>
+        <div id="builderRecs"></div>
+        <div class="section-title" style="margin-top:16px;">Score Projection</div>
+        <div id="builderProjection"></div>
+      </div>
+    </div>
+
+    <!-- ═══ TAB: VAULT ═══════════════════════════════════════════════════ -->
+    <div class="tab-content" id="tab-vault">
+      <div class="section-title">Client Vault</div>
+      <p style="font-size:12px;color:var(--text-dim);margin-bottom:16px;">Secure document storage for IDs, Social Security cards, utility bills, and dispute evidence. Documents auto-attach to dispute letters.</p>
+
+      <div class="form-grid" style="margin-bottom:16px;">
+        <div class="form-group">
+          <label>Client</label>
+          <select id="vaultClientId"><option value="">Select client...</option></select>
+        </div>
+        <div class="form-group">
+          <label>Document Type</label>
+          <select id="vaultDocType">
+            <option value="id">Government ID</option>
+            <option value="ssn_card">Social Security Card</option>
+            <option value="utility_bill">Utility Bill</option>
+            <option value="credit_report">Credit Report</option>
+            <option value="dispute_letter">Dispute Letter</option>
+            <option value="court_document">Court Document</option>
+            <option value="mail_receipt">Certified Mail Receipt</option>
+            <option value="other">Other</option>
+          </select>
         </div>
       </div>
 
-      <div class="doc-section" id="docExtraSection" style="display:none">
-        <div class="doc-section-title">Form-Specific Fields</div>
-        <div class="doc-grid-3" id="docExtraFields"></div>
+      <div class="upload-zone" id="vaultUploadZone" style="margin-bottom:16px;">
+        <div class="upload-icon">&#128274;</div>
+        <h3>Drop documents here</h3>
+        <p>Upload IDs, bills, receipts — they auto-attach to dispute letters for this client</p>
+        <input type="file" id="vaultFileInput" multiple hidden />
       </div>
 
-      <div class="doc-section doc-form-selector-section">
-        <div class="doc-section-title">Select Form ID</div>
-        <select id="docFormSelect" class="doc-form-selector">
-          <option value="">— Select a dispute template —</option>
-        </select>
-        <div id="docFormMeta" class="doc-form-meta" style="display:none">
-          <div class="doc-form-name" id="docFormName"></div>
-          <div class="doc-form-category" id="docFormCategory"></div>
-          <div class="doc-form-description" id="docFormDescription"></div>
-          <div class="doc-required-tags" id="docRequiredTags"></div>
-        </div>
-      </div>
-
-      <div class="doc-missing-fields" id="docMissingFields" style="display:none">
-        <div class="doc-missing-title">⚠ Missing Required Fields</div>
-        <ul id="docMissingList"></ul>
-      </div>
-
-      <div class="doc-section doc-preview-section">
-        <div class="doc-section-title">Document Preview</div>
-        <div class="doc-preview" id="docPreview">Select a form ID above to generate a preview.</div>
-        <div class="doc-actions">
-          <button class="doc-btn-primary" id="docDownloadBtn" disabled>Download Letter</button>
-          <button class="doc-btn-secondary" id="docPrintBtn" disabled>Print</button>
-        </div>
-        <div class="doc-status" id="docStatus"></div>
-      </div>
+      <div id="vaultDocList"></div>
     </div>
   </div>
 
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- JAVASCRIPT -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
   <script>
-    // ─── State ──────────────────────────────────────────────────────────
-    let files = [];
+    // ─── State ────────────────────────────────────────────────────────
     let currentAuditId = null;
     let currentDisputes = [];
-    let currentAuditData = null;
-    let currentLitigationPkg = null;
+    let selectedFiles = [];
+    let bureauSelections = {};
+    let allClients = [];
+    let activeClientId = null;
+    let allForms = [];
+    let selectedFormId = null;
+    let renderedFormContent = '';
 
-    const $ = (s) => document.querySelector(s);
-    const $$ = (s) => document.querySelectorAll(s);
-    function esc(s) { const d = document.createElement('div'); d.textContent = String(s ?? ''); return d.innerHTML; }
-
-    // ─── Tab Navigation ─────────────────────────────────────────────────
-    $$('.nav-tab').forEach(tab => {
+    // ─── Tab Navigation ──────────────────────────────────────────────
+    document.querySelectorAll('.nav-tab').forEach(tab => {
       tab.addEventListener('click', () => {
-        $$('.nav-tab').forEach(t => t.classList.remove('active'));
-        $$('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         tab.classList.add('active');
-        const target = tab.dataset.tab;
-        $(`#tab-${target}`).classList.add('active');
+        document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+        if (tab.dataset.tab === 'clients') loadClients();
+        if (tab.dataset.tab === 'forms') loadForms();
+        if (tab.dataset.tab === 'simulator') loadSimulatorClients();
+        if (tab.dataset.tab === 'dashboard') refreshDashboard();
       });
     });
 
-    function switchTab(tabName) {
-      $$('.nav-tab').forEach(t => {
-        t.classList.toggle('active', t.dataset.tab === tabName);
-      });
-      $$('.tab-content').forEach(c => c.classList.remove('active'));
-      $(`#tab-${tabName}`).classList.add('active');
+    // ─── CLIENT MANAGEMENT ───────────────────────────────────────────
+    function showAddClient() { document.getElementById('addClientForm').style.display = 'block'; }
+    function hideAddClient() { document.getElementById('addClientForm').style.display = 'none'; }
+
+    async function createClient() {
+      const data = {
+        name: document.getElementById('newClientName').value,
+        email: document.getElementById('newClientEmail').value,
+        phone: document.getElementById('newClientPhone').value,
+        ssn: document.getElementById('newClientSSN').value,
+        dob: document.getElementById('newClientDOB').value,
+        street: document.getElementById('newClientStreet').value,
+        city: document.getElementById('newClientCity').value,
+        state: document.getElementById('newClientState').value,
+        county: document.getElementById('newClientCounty').value,
+        zip: document.getElementById('newClientZip').value,
+      };
+      if (!data.name) return alert('Name is required');
+      const res = await fetch('/api/clients', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data) });
+      if (res.ok) { hideAddClient(); loadClients(); }
     }
 
-    // ─── Upload Zone ────────────────────────────────────────────────────
-    const zone = $('#uploadZone');
-    const fileInput = $('#fileInput');
-    const auditBtn = $('#auditBtn');
-
-    zone.addEventListener('click', () => fileInput.click());
-    zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('dragover'); });
-    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
-    zone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      zone.classList.remove('dragover');
-      handleFiles([...e.dataTransfer.files].filter(f => f.type === 'application/pdf'));
-    });
-    fileInput.addEventListener('change', () => handleFiles([...fileInput.files]));
-
-    function handleFiles(newFiles) {
-      files = [...files, ...newFiles].slice(0, 3);
-      renderFiles();
-      auditBtn.disabled = files.length === 0;
-      if (files.length > 0) zone.classList.add('has-files');
-      else zone.classList.remove('has-files');
-    }
-
-    function renderFiles() {
-      const list = $('#fileList');
-      const selects = $('#bureauSelects');
-      list.innerHTML = files.map((f, i) => `
-        <span class="file-chip">
-          <span class="dot"></span>
-          ${esc(f.name)}
-          <span class="remove" onclick="removeFile(${i})">&times;</span>
-        </span>
-      `).join('');
-      selects.innerHTML = files.map((f, i) => `
-        <div class="bureau-select">
-          <span>${esc(f.name.split('.')[0].substring(0, 15))}</span>
-          <select id="bureau-${i}">
-            <option value="">Auto-detect</option>
-            <option value="equifax">Equifax</option>
-            <option value="experian">Experian</option>
-            <option value="transunion">TransUnion</option>
-          </select>
+    async function loadClients() {
+      const res = await fetch('/api/clients');
+      const data = await res.json();
+      allClients = data.clients || [];
+      updateClientSelectors();
+      const list = document.getElementById('clientList');
+      if (allClients.length === 0) {
+        list.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128100;</div><h3>No Clients Yet</h3><p>Add your first client to start tracking scores and disputes.</p></div>';
+        return;
+      }
+      list.innerHTML = allClients.map(c => `
+        <div class="card" style="cursor:pointer;" onclick="showClientDetail('${c.id}')">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div style="font-size:14px;font-weight:500;">${esc(c.name)}</div>
+              <div style="font-size:11px;color:var(--text-dim);margin-top:2px;">${esc(c.email || 'No email')} &middot; ${esc(c.state || '')} ${esc(c.county || '')}</div>
+            </div>
+            <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;">View &rarr;</div>
+          </div>
         </div>
       `).join('');
     }
 
-    window.removeFile = (i) => {
-      files.splice(i, 1);
-      renderFiles();
-      auditBtn.disabled = files.length === 0;
-      if (files.length === 0) zone.classList.remove('has-files');
-    };
+    function showClientList() {
+      document.getElementById('clientDetail').style.display = 'none';
+      document.getElementById('clientList').style.display = 'block';
+      document.querySelector('#tab-clients > div:first-child').style.display = 'flex';
+      document.getElementById('addClientForm').style.display = 'none';
+      loadClients();
+    }
 
-    // ─── Run Audit ──────────────────────────────────────────────────────
-    auditBtn.addEventListener('click', async () => {
-      if (files.length === 0) return;
-      auditBtn.classList.add('loading');
-      auditBtn.disabled = true;
+    async function showClientDetail(clientId) {
+      activeClientId = clientId;
+      document.getElementById('clientList').style.display = 'none';
+      document.querySelector('#tab-clients > div:first-child').style.display = 'none';
+      document.getElementById('addClientForm').style.display = 'none';
+      document.getElementById('clientDetail').style.display = 'block';
 
-      const formData = new FormData();
-      files.forEach((f, i) => {
-        formData.append('reports', f);
-        const sel = $(`#bureau-${i}`);
-        formData.append('bureaus', (sel && sel.value) ? sel.value : '');
-      });
+      const res = await fetch('/api/clients/' + clientId);
+      const data = await res.json();
+      const c = data.client;
+      const scores = data.scores || [];
+      const goal = data.goal;
+      const accounts = data.accounts || [];
 
-      try {
-        const res = await fetch('/api/audit', { method: 'POST', body: formData });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Audit failed');
-        currentAuditId = data.auditId;
-        currentAuditData = data;
-        renderAuditResults(data);
-      } catch (err) {
-        alert(err.message);
-      } finally {
-        auditBtn.classList.remove('loading');
-        auditBtn.disabled = false;
+      const latestScores = {};
+      for (const bureau of ['equifax','experian','transunion']) {
+        const b = scores.filter(s => s.bureau === bureau).sort((a,b) => new Date(b.recordedAt) - new Date(a.recordedAt));
+        if (b[0]) latestScores[bureau] = b[0].score;
       }
+
+      let html = `
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div>
+              <div style="font-size:18px;font-weight:400;">${esc(c.name)}</div>
+              <div style="font-size:11px;color:var(--text-dim);margin-top:4px;">
+                ${esc(c.email || '')} ${c.phone ? '&middot; ' + esc(c.phone) : ''}<br>
+                ${[c.street, c.city, c.county ? c.county + ', ' + c.state : c.state, c.zip].filter(Boolean).join(' &middot; ')}
+                ${c.ssn ? ' &middot; SSN: ***' + esc(c.ssn) : ''}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Score Entry -->
+        <div class="section-title" style="margin-top:16px;">Score Tracker</div>
+        <div class="score-display">
+          ${['equifax','experian','transunion'].map(b => `
+            <div class="score-gauge">
+              <div class="score-number" style="color:${latestScores[b] ? (latestScores[b] >= 680 ? 'var(--green)' : latestScores[b] >= 580 ? 'var(--orange)' : 'var(--red)') : 'var(--text-dim)'}">
+                ${latestScores[b] || '---'}
+              </div>
+              <div class="score-bureau">${b}</div>
+            </div>
+          `).join('')}
+        </div>
+        ${goal ? `<div style="text-align:center;font-size:11px;color:var(--text-dim);margin-bottom:12px;">Goal: ${goal.targetScore} &middot; ${esc(goal.purpose || '')}</div>` : ''}
+
+        <div class="card">
+          <div class="card-title">Add Score</div>
+          <div class="form-grid" style="margin-top:8px;">
+            <div class="form-group"><label>Bureau</label>
+              <select id="scoreEntryBureau"><option value="equifax">Equifax</option><option value="experian">Experian</option><option value="transunion">TransUnion</option></select>
+            </div>
+            <div class="form-group"><label>Score</label><input type="number" id="scoreEntryValue" placeholder="642" min="300" max="850" /></div>
+            <div class="form-group"><label>Date</label><input type="date" id="scoreEntryDate" /></div>
+          </div>
+          <button class="btn-primary btn-sm" style="margin-top:8px;" onclick="addScore('${c.id}')">Add Score</button>
+        </div>
+
+        <div class="card" style="margin-top:4px;">
+          <div class="card-title">Set Goal</div>
+          <div class="form-grid" style="margin-top:8px;">
+            <div class="form-group"><label>Target Score</label><input type="number" id="goalScore" placeholder="680" value="${goal ? goal.targetScore : ''}" /></div>
+            <div class="form-group"><label>Purpose</label><input type="text" id="goalPurpose" placeholder="SBA Loan / Mortgage" value="${goal ? esc(goal.purpose) : ''}" /></div>
+          </div>
+          <button class="btn-outline btn-sm" style="margin-top:8px;" onclick="setGoal('${c.id}')">Set Goal</button>
+        </div>
+
+        ${scores.length > 0 ? `
+          <div class="section-title" style="margin-top:16px;">Score History</div>
+          <div class="card">
+            <canvas id="scoreChart" height="200"></canvas>
+          </div>
+        ` : ''}
+
+        <!-- Manual Accounts -->
+        <div class="section-title" style="margin-top:16px;">Manual Accounts <span class="count count-accent">${accounts.length}</span></div>
+        <div class="card">
+          <div class="card-title">Add Account Manually</div>
+          <div class="form-grid" style="margin-top:8px;">
+            <div class="form-group"><label>Creditor Name *</label><input type="text" id="acctCreditor" placeholder="Capital One" /></div>
+            <div class="form-group"><label>Account # (last 4)</label><input type="text" id="acctNumber" placeholder="1234" maxlength="4" /></div>
+            <div class="form-group"><label>Bureau</label>
+              <select id="acctBureau"><option value="equifax">Equifax</option><option value="experian">Experian</option><option value="transunion">TransUnion</option></select>
+            </div>
+            <div class="form-group"><label>Type</label>
+              <select id="acctType"><option value="revolving">Revolving</option><option value="installment">Installment</option><option value="mortgage">Mortgage</option><option value="collection">Collection</option><option value="other">Other</option></select>
+            </div>
+            <div class="form-group"><label>Status</label>
+              <select id="acctStatus"><option value="open">Open</option><option value="closed">Closed</option><option value="collection">Collection</option><option value="charge_off">Charge Off</option><option value="paid">Paid</option></select>
+            </div>
+            <div class="form-group"><label>Balance</label><input type="number" id="acctBalance" placeholder="2500" /></div>
+            <div class="form-group"><label>Credit Limit</label><input type="number" id="acctLimit" placeholder="5000" /></div>
+            <div class="form-group"><label>Monthly Payment</label><input type="number" id="acctPayment" placeholder="75" /></div>
+            <div class="form-group"><label>Negative?</label>
+              <select id="acctNegative"><option value="false">No</option><option value="true">Yes</option></select>
+            </div>
+            <div class="form-group"><label>Negative Reason</label>
+              <select id="acctNegReason"><option value="">N/A</option><option value="late_payment">Late Payment</option><option value="collection">Collection</option><option value="charge_off">Charge Off</option><option value="repossession">Repossession</option><option value="bankruptcy">Bankruptcy</option><option value="inquiry">Hard Inquiry</option></select>
+            </div>
+          </div>
+          <button class="btn-primary btn-sm" style="margin-top:8px;" onclick="addAccount('${c.id}')">Add Account</button>
+        </div>
+
+        ${accounts.length > 0 ? `
+          <div style="margin-top:8px;">
+            ${accounts.map(a => `
+              <div class="card" style="border-left:3px solid ${a.isNegative ? 'var(--red)' : 'var(--green)'};">
+                <div style="display:flex;justify-content:space-between;">
+                  <div>
+                    <div style="font-size:13px;font-weight:500;">${esc(a.creditorName)}</div>
+                    <div style="font-size:11px;color:var(--text-dim);">${a.bureau.toUpperCase()} &middot; ${a.accountType} &middot; ${a.accountStatus}${a.isNegative ? ' &middot; <span style="color:var(--red);">' + esc(a.negativeReason || 'negative') + '</span>' : ''}</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="font-size:14px;font-weight:400;">$${(a.balance || 0).toLocaleString()}</div>
+                    <div style="font-size:10px;color:var(--text-dim);">of $${(a.creditLimit || 0).toLocaleString()}</div>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+
+        <!-- Notes -->
+        <div class="section-title" style="margin-top:16px;">Notes</div>
+        <div class="card">
+          <textarea id="newNote" placeholder="Add a note..." style="margin-bottom:8px;"></textarea>
+          <button class="btn-outline btn-sm" onclick="addNote('${c.id}')">Add Note</button>
+        </div>
+        ${(c.notes || []).slice().reverse().map(n => `
+          <div class="card" style="font-size:12px;padding:12px;">
+            <div style="color:var(--text-dim);font-size:10px;margin-bottom:4px;">${new Date(n.createdAt).toLocaleDateString()}</div>
+            ${esc(n.content)}
+          </div>
+        `).join('')}
+      `;
+      document.getElementById('clientDetailContent').innerHTML = html;
+
+      // Draw score chart if scores exist
+      if (scores.length > 0) drawScoreChart(scores);
+    }
+
+    async function addScore(clientId) {
+      const bureau = document.getElementById('scoreEntryBureau').value;
+      const score = parseInt(document.getElementById('scoreEntryValue').value);
+      const recordedAt = document.getElementById('scoreEntryDate').value || new Date().toISOString().split('T')[0];
+      if (!score || score < 300 || score > 850) return alert('Enter a score between 300-850');
+      await fetch('/api/clients/' + clientId + '/scores', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ bureau, score, recordedAt })
+      });
+      showClientDetail(clientId);
+    }
+
+    async function setGoal(clientId) {
+      const targetScore = parseInt(document.getElementById('goalScore').value);
+      const purpose = document.getElementById('goalPurpose').value;
+      if (!targetScore) return alert('Enter a target score');
+      await fetch('/api/clients/' + clientId + '/goal', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ targetScore, purpose })
+      });
+      showClientDetail(clientId);
+    }
+
+    async function addAccount(clientId) {
+      const data = {
+        creditorName: document.getElementById('acctCreditor').value,
+        accountNumber: document.getElementById('acctNumber').value,
+        bureau: document.getElementById('acctBureau').value,
+        accountType: document.getElementById('acctType').value,
+        accountStatus: document.getElementById('acctStatus').value,
+        balance: parseInt(document.getElementById('acctBalance').value) || null,
+        creditLimit: parseInt(document.getElementById('acctLimit').value) || null,
+        monthlyPayment: parseInt(document.getElementById('acctPayment').value) || null,
+        isNegative: document.getElementById('acctNegative').value === 'true',
+        negativeReason: document.getElementById('acctNegReason').value || null,
+      };
+      if (!data.creditorName) return alert('Creditor name required');
+      await fetch('/api/clients/' + clientId + '/accounts', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(data)
+      });
+      showClientDetail(clientId);
+    }
+
+    async function addNote(clientId) {
+      const content = document.getElementById('newNote').value;
+      if (!content) return;
+      await fetch('/api/clients/' + clientId + '/notes', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ content })
+      });
+      showClientDetail(clientId);
+    }
+
+    function updateClientSelectors() {
+      const selectors = ['simClientId', 'formClientId', 'vaultClientId'];
+      for (const id of selectors) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const val = el.value;
+        el.innerHTML = '<option value="">Select client...</option>' +
+          allClients.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
+        if (val) el.value = val;
+      }
+    }
+
+    // ─── SCORE CHART (Canvas) ────────────────────────────────────────
+    function drawScoreChart(scores) {
+      const canvas = document.getElementById('scoreChart');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const W = canvas.width = canvas.parentElement.clientWidth - 40;
+      const H = canvas.height = 200;
+      ctx.clearRect(0, 0, W, H);
+
+      const bureauColors = { equifax: '#EF4444', experian: '#3B82F6', transunion: '#10B981' };
+      const pad = { top: 20, right: 20, bottom: 30, left: 40 };
+      const plotW = W - pad.left - pad.right;
+      const plotH = H - pad.top - pad.bottom;
+
+      const allScoreValues = scores.map(s => s.score);
+      const minS = Math.min(...allScoreValues) - 20;
+      const maxS = Math.max(...allScoreValues) + 20;
+      const allDates = scores.map(s => new Date(s.recordedAt).getTime());
+      const minD = Math.min(...allDates);
+      const maxD = Math.max(...allDates);
+      const rangeD = maxD - minD || 1;
+
+      // Grid
+      ctx.strokeStyle = '#2A3A50'; ctx.lineWidth = 0.5;
+      for (let i = 0; i <= 4; i++) {
+        const y = pad.top + (plotH / 4) * i;
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y); ctx.stroke();
+        ctx.fillStyle = '#8899AA'; ctx.font = '10px IBM Plex Mono';
+        ctx.fillText(Math.round(maxS - ((maxS - minS) / 4) * i), 2, y + 4);
+      }
+
+      for (const bureau of ['equifax', 'experian', 'transunion']) {
+        const bs = scores.filter(s => s.bureau === bureau).sort((a, b) => new Date(a.recordedAt) - new Date(b.recordedAt));
+        if (bs.length < 1) continue;
+        ctx.strokeStyle = bureauColors[bureau]; ctx.lineWidth = 2;
+        ctx.beginPath();
+        bs.forEach((s, i) => {
+          const x = pad.left + ((new Date(s.recordedAt).getTime() - minD) / rangeD) * plotW;
+          const y = pad.top + plotH - ((s.score - minS) / (maxS - minS)) * plotH;
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        });
+        ctx.stroke();
+        // Dots
+        bs.forEach(s => {
+          const x = pad.left + ((new Date(s.recordedAt).getTime() - minD) / rangeD) * plotW;
+          const y = pad.top + plotH - ((s.score - minS) / (maxS - minS)) * plotH;
+          ctx.fillStyle = bureauColors[bureau];
+          ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI * 2); ctx.fill();
+        });
+      }
+
+      // Legend
+      let lx = pad.left;
+      for (const [b, c] of Object.entries(bureauColors)) {
+        ctx.fillStyle = c; ctx.fillRect(lx, H - 12, 10, 3);
+        ctx.fillStyle = '#8899AA'; ctx.font = '9px IBM Plex Mono';
+        ctx.fillText(b.toUpperCase(), lx + 14, H - 8);
+        lx += 90;
+      }
+    }
+
+    // ─── SIMULATOR ───────────────────────────────────────────────────
+    function loadSimulatorClients() { updateClientSelectors(); }
+
+    document.getElementById('simClientId')?.addEventListener('change', async function() {
+      const cid = this.value;
+      if (!cid) { document.getElementById('simScenarios').style.display = 'none'; return; }
+      const res = await fetch('/api/clients/' + cid + '/accounts');
+      const data = await res.json();
+      const accts = data.accounts || [];
+      const negatives = accts.filter(a => a.isNegative);
+
+      document.getElementById('simScenarios').style.display = 'block';
+      const list = document.getElementById('simItemList');
+      if (negatives.length === 0) {
+        list.innerHTML = '<div style="font-size:12px;color:var(--text-dim);">No negative items found. Add accounts with negative marks in the Clients tab first.</div>';
+        return;
+      }
+      list.innerHTML = negatives.map(a => `
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);">
+          <input type="checkbox" class="sim-item" data-id="${a.id}" data-action="remove_item" checked style="accent-color:var(--accent);" />
+          <div style="flex:1;">
+            <div style="font-size:12px;font-weight:500;">${esc(a.creditorName)}</div>
+            <div style="font-size:10px;color:var(--text-dim);">${a.bureau.toUpperCase()} &middot; ${esc(a.negativeReason || a.accountStatus)} &middot; $${(a.balance||0).toLocaleString()}</div>
+          </div>
+        </div>
+      `).join('') + `
+        <div style="margin-top:10px;font-size:11px;color:var(--text-dim);">
+          Uncheck items to see what happens if they stay. Checked items = removed from report.
+        </div>
+      `;
+    });
+
+    async function runSimulation() {
+      const clientId = document.getElementById('simClientId').value;
+      if (!clientId) return alert('Select a client');
+      const items = document.querySelectorAll('.sim-item:checked');
+      const scenarios = Array.from(items).map(el => ({
+        action: el.dataset.action,
+        accountId: el.dataset.id,
+        targetBalance: null,
+        description: 'Remove item'
+      }));
+      const monthlyIncome = parseInt(document.getElementById('simIncome').value) || null;
+      const res = await fetch('/api/simulator/predict', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ clientId, scenarios, monthlyIncome })
+      });
+      const data = await res.json();
+      document.getElementById('simResults').style.display = 'block';
+
+      // Scores
+      const sd = document.getElementById('simScoreDisplay');
+      sd.innerHTML = ['equifax','experian','transunion'].map(b => {
+        const cur = data.currentScore?.[b];
+        const proj = data.projectedScore?.[b];
+        const delta = data.scoreDelta?.[b];
+        if (!cur && !proj) return '';
+        return `<div class="score-gauge">
+          <div class="score-number" style="color:var(--green);">${proj || '---'}</div>
+          <div class="score-bureau">${b}</div>
+          ${delta ? `<div class="score-delta positive">+${delta} pts</div>` : ''}
+          ${cur ? `<div style="font-size:10px;color:var(--text-dim);">from ${cur}</div>` : ''}
+        </div>`;
+      }).join('');
+
+      // Factors
+      const fl = document.getElementById('simFactors');
+      fl.innerHTML = (data.factors || []).map(f => `
+        <div class="factor-item">
+          <div class="factor-header">
+            <span class="factor-name">${f.category.replace(/_/g,' ')}</span>
+            <span class="factor-impact ${f.impact}">${f.impact.replace(/_/g,' ')}</span>
+          </div>
+          <div class="factor-bar"><div class="factor-bar-fill" style="width:${f.weight}%;background:${
+            f.impact.includes('positive') ? 'var(--green)' : f.impact.includes('negative') ? 'var(--red)' : 'var(--text-dim)'
+          };"></div></div>
+          <div style="font-size:10px;color:var(--text-dim);margin-top:2px;">${esc(f.description)}</div>
+        </div>
+      `).join('');
+
+      // DTI
+      if (data.dtiAnalysis) {
+        document.getElementById('simDTI').style.display = 'block';
+        const d = data.dtiAnalysis;
+        document.getElementById('simDTIStats').innerHTML = `
+          <div class="stat-card"><div class="number ${d.currentDTI > 36 ? 'violations' : 'green'}">${d.currentDTI}%</div><div class="label">Current DTI</div></div>
+          <div class="stat-card"><div class="number blue">${d.targetDTI}%</div><div class="label">Target DTI</div></div>
+          <div class="stat-card"><div class="number green">$${d.borrowingPower.toLocaleString()}</div><div class="label">Borrowing Power</div></div>
+          <div class="stat-card"><div class="number damages">$${d.totalMonthlyDebt.toLocaleString()}</div><div class="label">Monthly Debt</div></div>
+        `;
+        document.getElementById('simPayoffOrder').innerHTML = d.debtPayoffOrder.length > 0 ?
+          '<div class="card-title" style="margin:12px 0 8px;">Debt Payoff Priority (Snowball)</div>' +
+          d.debtPayoffOrder.map((p,i) => `
+            <div class="card" style="padding:10px;border-left:3px solid var(--accent);">
+              <div style="display:flex;justify-content:space-between;">
+                <div><span style="color:var(--accent);font-weight:600;">#${i+1}</span> ${esc(p.creditor)}</div>
+                <div style="font-size:12px;">$${p.balance.toLocaleString()} @ $${p.monthlyPayment}/mo</div>
+              </div>
+            </div>
+          `).join('') : '';
+      }
+    }
+
+    function clearSimulation() {
+      document.getElementById('simResults').style.display = 'none';
+      document.querySelectorAll('.sim-item').forEach(el => el.checked = true);
+    }
+
+    // ─── FORM LIBRARY ────────────────────────────────────────────────
+    async function loadForms() {
+      const res = await fetch('/api/forms');
+      const data = await res.json();
+      allForms = data.forms || [];
+      renderFormLibrary(allForms);
+      updateClientSelectors();
+    }
+
+    function filterForms() {
+      const cat = document.getElementById('formCategoryFilter').value;
+      const filtered = cat ? allForms.filter(f => f.category === cat) : allForms;
+      renderFormLibrary(filtered);
+    }
+
+    function renderFormLibrary(forms) {
+      document.getElementById('formLibrary').innerHTML = forms.map(f => `
+        <div class="form-lib-card" onclick="selectForm('${f.formId}')">
+          <div class="form-lib-id">${esc(f.formId)}</div>
+          <div class="form-lib-name">${esc(f.name)}</div>
+          <div class="form-lib-desc">${esc(f.description)}</div>
+          <div class="form-lib-codes">${f.legalCodes.map(c => `<span class="form-lib-code">${esc(c)}</span>`).join('')}</div>
+        </div>
+      `).join('');
+    }
+
+    async function selectForm(formId) {
+      selectedFormId = formId;
+      const form = allForms.find(f => f.formId === formId);
+      if (!form) return;
+      document.getElementById('formRenderSection').style.display = 'block';
+      document.getElementById('formRenderTitle').textContent = form.formId + ' — ' + form.name;
+      document.getElementById('formPreview').style.display = 'none';
+      document.getElementById('formDownloadSection').style.display = 'none';
+
+      const vars = document.getElementById('formVariables');
+      const skip = ['client_name','client_address','date'];
+      const fields = form.requiredFields.filter(f => !skip.includes(f));
+      vars.innerHTML = `<div class="form-grid">${fields.map(f => `
+        <div class="form-group"><label>${f.replace(/_/g,' ')}</label><input type="text" id="fvar_${f}" placeholder="${f}" /></div>
+      `).join('')}</div>`;
+    }
+
+    async function renderForm() {
+      if (!selectedFormId) return;
+      const form = allForms.find(f => f.formId === selectedFormId);
+      if (!form) return;
+      const variables = { clientId: document.getElementById('formClientId').value };
+      for (const f of form.requiredFields) {
+        const el = document.getElementById('fvar_' + f);
+        if (el) variables[f] = el.value;
+      }
+      const res = await fetch('/api/forms/' + selectedFormId + '/render', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(variables)
+      });
+      const data = await res.json();
+      renderedFormContent = data.content;
+      document.getElementById('formPreview').style.display = 'block';
+      document.getElementById('formPreview').textContent = data.content;
+      document.getElementById('formDownloadSection').style.display = 'block';
+    }
+
+    function closeFormRender() {
+      document.getElementById('formRenderSection').style.display = 'none';
+      selectedFormId = null;
+    }
+
+    function downloadFormLetter() {
+      if (!renderedFormContent) return;
+      const blob = new Blob([renderedFormContent], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = (selectedFormId || 'letter') + '.txt';
+      a.click();
+    }
+
+    // ─── AUDIT (existing, preserved) ─────────────────────────────────
+    const uploadZone = document.getElementById('uploadZone');
+    const fileInput = document.getElementById('fileInput');
+    const auditBtn = document.getElementById('auditBtn');
+    const disputeBtn = document.getElementById('disputeBtn');
+
+    uploadZone.addEventListener('click', () => fileInput.click());
+    uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+    uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('dragover'); handleFiles(e.dataTransfer.files); });
+    fileInput.addEventListener('change', e => handleFiles(e.target.files));
+
+    function handleFiles(files) {
+      for (const f of files) {
+        if (f.type !== 'application/pdf') continue;
+        if (selectedFiles.length >= 3) break;
+        selectedFiles.push(f);
+      }
+      renderFileList();
+    }
+
+    function renderFileList() {
+      const fl = document.getElementById('fileList');
+      const bs = document.getElementById('bureauSelects');
+      fl.innerHTML = selectedFiles.map((f, i) => `
+        <span class="file-chip"><span class="dot"></span>${esc(f.name)}<span class="remove" onclick="removeFile(${i})">&times;</span></span>
+      `).join('');
+      bs.innerHTML = selectedFiles.map((f, i) => {
+        const guess = f.name.toLowerCase();
+        let def = 'equifax';
+        if (guess.includes('experian')) def = 'experian';
+        if (guess.includes('transunion') || guess.includes('trans')) def = 'transunion';
+        bureauSelections[i] = bureauSelections[i] || def;
+        return `<span class="bureau-select">${esc(f.name.slice(0,20))}:
+          <select onchange="bureauSelections[${i}]=this.value">
+            <option value="equifax" ${bureauSelections[i]==='equifax'?'selected':''}>Equifax</option>
+            <option value="experian" ${bureauSelections[i]==='experian'?'selected':''}>Experian</option>
+            <option value="transunion" ${bureauSelections[i]==='transunion'?'selected':''}>TransUnion</option>
+          </select></span>`;
+      }).join('');
+      auditBtn.disabled = selectedFiles.length === 0;
+      if (selectedFiles.length > 0) uploadZone.classList.add('has-files');
+      else uploadZone.classList.remove('has-files');
+    }
+
+    function removeFile(i) {
+      selectedFiles.splice(i, 1);
+      delete bureauSelections[i];
+      const newSel = {};
+      Object.keys(bureauSelections).forEach((k, idx) => { newSel[idx] = bureauSelections[k]; });
+      bureauSelections = newSel;
+      renderFileList();
+    }
+
+    auditBtn.addEventListener('click', async () => {
+      auditBtn.classList.add('loading'); auditBtn.disabled = true;
+      const fd = new FormData();
+      selectedFiles.forEach((f, i) => { fd.append('reports', f); fd.append('bureaus', bureauSelections[i] || 'equifax'); });
+      try {
+        const res = await fetch('/api/audit', { method: 'POST', body: fd });
+        const data = await res.json();
+        currentAuditId = data.auditId;
+        renderAuditResults(data);
+      } catch (e) { alert('Audit failed: ' + e.message); }
+      auditBtn.classList.remove('loading'); auditBtn.disabled = false;
     });
 
     function renderAuditResults(data) {
-      const results = $('#auditResults');
-      results.style.display = 'block';
-
-      $('#statsRow').innerHTML = `
-        <div class="stat-card">
-          <div class="number violations">${data.totalViolations}</div>
-          <div class="label">Violations Found</div>
-        </div>
-        <div class="stat-card">
-          <div class="number damages">$${data.estimatedDamages.toLocaleString()}</div>
-          <div class="label">Estimated Damages</div>
-        </div>
-        <div class="stat-card">
-          <div class="number accounts">${data.accountsAnalyzed}</div>
-          <div class="label">Accounts Analyzed</div>
-        </div>
-        <div class="stat-card">
-          <div class="number time">${data.bureausProcessed.length}</div>
-          <div class="label">Bureaus Processed</div>
-        </div>
+      document.getElementById('auditResults').style.display = 'block';
+      const sr = document.getElementById('statsRow');
+      sr.innerHTML = `
+        <div class="stat-card"><div class="number violations">${data.violations}</div><div class="label">Violations</div></div>
+        <div class="stat-card"><div class="number damages">$${(data.estimatedDamages||0).toLocaleString()}</div><div class="label">Est. Damages</div></div>
+        <div class="stat-card"><div class="number blue">${data.bureausAnalyzed}</div><div class="label">Bureaus</div></div>
+        <div class="stat-card"><div class="number blue">${data.accountsMatched||0}</div><div class="label">Accounts Matched</div></div>
       `;
+      document.getElementById('summaryBox').innerHTML = data.summary;
+      document.getElementById('violationCount').textContent = data.violations;
 
-      $('#summaryBox').innerHTML = `<strong>Audit Summary:</strong> ${esc(data.summary)}`;
-      $('#violationCount').textContent = data.totalViolations;
-      $('#violationsList').innerHTML = data.discrepancies.map(d => `
+      // Cross-Bureau Map
+      const tbody = document.getElementById('bureauMapBody');
+      tbody.innerHTML = (data.discrepancies || []).map(d => {
+        const eq = d.values?.equifax ?? '—';
+        const ex = d.values?.experian ?? '—';
+        const tu = d.values?.transunion ?? '—';
+        const vals = [eq, ex, tu].filter(v => v !== '—');
+        const allSame = vals.every(v => v === vals[0]);
+        return `<tr>
+          <td>${esc(d.accountMatch?.creditorName || '')}</td>
+          <td>${esc(d.field)}</td>
+          <td class="${!allSame && eq !== '—' ? 'mismatch' : ''}">${esc(String(eq))}</td>
+          <td class="${!allSame && ex !== '—' ? 'mismatch' : ''}">${esc(String(ex))}</td>
+          <td class="${!allSame && tu !== '—' ? 'mismatch' : ''}">${esc(String(tu))}</td>
+          <td style="font-size:10px;">${esc(d.legalBasis || d.violationType)}</td>
+        </tr>`;
+      }).join('');
+
+      const vl = document.getElementById('violationsList');
+      vl.innerHTML = (data.discrepancies || []).map(d => `
         <div class="violation-card">
           <div class="violation-header">
-            <h4>${esc(d.description)}</h4>
-            <span class="severity-badge severity-${esc(d.severity)}">${esc(d.severity)}</span>
+            <h4>${esc(d.accountMatch?.creditorName || 'Unknown')} — ${esc(d.field)}</h4>
+            <span class="severity-badge severity-${d.severity}">${d.severity}</span>
           </div>
-          <div class="violation-body">
-            <strong>Type:</strong> ${esc(d.violationType.replace(/_/g, ' '))}
-            &nbsp;&middot;&nbsp;
-            <strong>Field:</strong> ${esc(d.field)}
-          </div>
+          <div class="violation-body">${esc(d.description)}</div>
           <div class="violation-legal">${esc(d.legalBasis)}</div>
           <div class="violation-values">
-            ${Object.entries(d.values).map(([b, v]) =>
-              `<span class="bureau-value"><span class="bureau-name">${esc(b)}:</span> ${esc(v)}</span>`
-            ).join('')}
+            ${Object.entries(d.values || {}).map(([b, v]) => `<span class="bureau-value"><span class="bureau-name">${b}:</span> ${esc(String(v ?? 'N/A'))}</span>`).join('')}
           </div>
         </div>
       `).join('');
-
-      $('#disputeBtn').disabled = data.totalViolations === 0;
-      results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      disputeBtn.disabled = data.violations === 0;
     }
 
-    // ─── Generate Disputes ──────────────────────────────────────────────
-    $('#disputeBtn').addEventListener('click', async () => {
+    // Dispute generation
+    disputeBtn.addEventListener('click', async () => {
       if (!currentAuditId) return;
-      const btn = $('#disputeBtn');
-      btn.disabled = true;
-      btn.textContent = 'Generating...';
-
+      disputeBtn.disabled = true; disputeBtn.textContent = 'Generating...';
+      const body = {
+        name: document.getElementById('clientName').value || 'Client',
+        email: document.getElementById('clientEmail').value,
+        state: document.getElementById('clientState').value || 'NY',
+        county: document.getElementById('clientCounty').value || 'New York',
+      };
       try {
-        const res = await fetch(`/api/audit/${currentAuditId}/disputes`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: $('#clientName').value || 'Client',
-            email: $('#clientEmail').value || '',
-            state: $('#clientState').value || 'NY',
-            county: $('#clientCounty').value || 'New York',
-          }),
-        });
+        const res = await fetch('/api/audit/' + currentAuditId + '/disputes', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
-        currentDisputes = data.disputes;
-        renderDisputeGenResults(data);
-        updateDisputeTracker();
-        updateDisputeBadge();
-      } catch (err) {
-        alert(err.message);
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Generate All Dispute Letters';
-      }
+        currentDisputes = data.disputes || [];
+        const dr = document.getElementById('disputeResults');
+        dr.style.display = 'block';
+        dr.innerHTML = `
+          <div class="stats-row" style="margin-top:16px;">
+            <div class="stat-card"><div class="number green">${data.totalLetters}</div><div class="label">Letters Generated</div></div>
+            <div class="stat-card"><div class="number blue">${data.bureausTargeted}</div><div class="label">Bureaus Targeted</div></div>
+          </div>
+          ${(data.letters || []).map(l => `
+            <div class="card" style="margin-bottom:8px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div><strong>${esc(l.fileName)}</strong><div style="font-size:10px;color:var(--text-dim);">${l.type}</div></div>
+                <a href="javascript:void(0)" onclick="downloadLetter('${currentAuditId}','${l.fileName}')" class="btn-outline btn-sm">Download</a>
+              </div>
+            </div>
+          `).join('')}
+        `;
+        // Update disputes tab
+        const badge = document.getElementById('disputeBadge');
+        badge.textContent = currentDisputes.length; badge.style.display = 'inline';
+        renderDisputesTab();
+      } catch (e) { alert('Failed: ' + e.message); }
+      disputeBtn.disabled = false; disputeBtn.textContent = 'Generate All Dispute Letters';
     });
 
-    function renderDisputeGenResults(data) {
-      const el = $('#disputeResults');
-      el.classList.add('visible');
-      el.innerHTML = `
-        <div class="stats-row" style="margin-top:20px">
-          <div class="stat-card">
-            <div class="number" style="color:var(--green)">${data.disputesCreated}</div>
-            <div class="label">Letters Generated</div>
-          </div>
-          <div class="stat-card">
-            <div class="number" style="color:var(--yellow)">${data.disputes.filter(d => d.status === 'pending_response').length}</div>
-            <div class="label">Pending Response</div>
-          </div>
-        </div>
-        <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center">
-          ${data.letters.map((l, i) => `
-            <a href="/api/audit/${currentAuditId}/letters/${i}" target="_blank" class="form-card" style="padding:12px 16px;min-width:auto">
-              <span class="form-name">${esc(l.fileName)}</span>
-            </a>
-          `).join('')}
-        </div>
-        <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--text-dim)">
-          Letters generated! Go to the <a href="#" onclick="switchTab('disputes');return false" style="color:var(--accent)">Disputes tab</a> to track responses and deadlines.
-        </p>
-      `;
+    async function downloadLetter(auditId, fileName) {
+      const res = await fetch('/api/audit/' + auditId + '/letters/' + encodeURIComponent(fileName));
+      const blob = await res.blob();
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = fileName; a.click();
     }
 
-    // ─── Dispute Tracker ────────────────────────────────────────────────
-    function updateDisputeBadge() {
-      const badge = $('#disputeBadge');
-      const pending = currentDisputes.filter(d => d.status === 'pending_response');
-      if (pending.length > 0) {
-        badge.style.display = 'inline-block';
-        badge.textContent = pending.length;
-      } else {
-        badge.style.display = 'none';
-      }
-    }
-
-    function updateDisputeTracker() {
-      if (currentDisputes.length === 0) {
-        $('#disputesEmpty').style.display = 'block';
-        $('#disputesActive').style.display = 'none';
-        return;
-      }
-
-      $('#disputesEmpty').style.display = 'none';
-      $('#disputesActive').style.display = 'block';
-
-      const pending = currentDisputes.filter(d => d.status === 'pending_response');
-      const resolved = currentDisputes.filter(d => ['deleted', 'updated'].includes(d.status));
-      const escalated = currentDisputes.filter(d => ['verified', 'escalated_litigation'].includes(d.status));
-
-      $('#disputeStats').innerHTML = `
-        <div class="stat-card">
-          <div class="number" style="color:var(--blue)">${currentDisputes.length}</div>
-          <div class="label">Total Disputes</div>
-        </div>
-        <div class="stat-card">
-          <div class="number" style="color:var(--yellow)">${pending.length}</div>
-          <div class="label">Awaiting Response</div>
-        </div>
-        <div class="stat-card">
-          <div class="number" style="color:var(--green)">${resolved.length}</div>
-          <div class="label">Resolved</div>
-        </div>
-        <div class="stat-card">
-          <div class="number" style="color:var(--red)">${escalated.length}</div>
-          <div class="label">Escalated</div>
-        </div>
+    // ─── DISPUTES TAB ────────────────────────────────────────────────
+    function renderDisputesTab() {
+      if (currentDisputes.length === 0) return;
+      document.getElementById('disputesEmpty').style.display = 'none';
+      document.getElementById('disputesActive').style.display = 'block';
+      const ds = document.getElementById('disputeStats');
+      const pending = currentDisputes.filter(d => d.status === 'pending_response' || d.status === 'draft').length;
+      const resolved = currentDisputes.filter(d => d.status === 'deleted' || d.status === 'updated').length;
+      const verified = currentDisputes.filter(d => d.status === 'verified' || d.status === 'escalated_litigation').length;
+      ds.innerHTML = `
+        <div class="stat-card"><div class="number blue">${currentDisputes.length}</div><div class="label">Total</div></div>
+        <div class="stat-card"><div class="number damages">${pending}</div><div class="label">Pending</div></div>
+        <div class="stat-card"><div class="number green">${resolved}</div><div class="label">Resolved</div></div>
+        <div class="stat-card"><div class="number violations">${verified}</div><div class="label">Verified/Escalated</div></div>
       `;
+      document.getElementById('activeDisputeCount').textContent = currentDisputes.length;
+      const progressPct = currentDisputes.length > 0 ? Math.round((resolved / currentDisputes.length) * 100) : 0;
 
-      $('#activeDisputeCount').textContent = currentDisputes.length;
-
-      const tracker = $('#disputeTracker');
-      tracker.innerHTML = currentDisputes.map(d => {
+      const dt = document.getElementById('disputeTracker');
+      dt.innerHTML = `
+        <div style="margin-bottom:12px;">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);">
+            <span>${resolved} of ${currentDisputes.length} resolved</span><span>${progressPct}%</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill green" style="width:${progressPct}%"></div></div>
+        </div>
+      ` + currentDisputes.map(d => {
         const statusClass = d.status === 'pending_response' ? 'status-pending' :
-                           d.status === 'verified' ? 'status-verified' :
-                           d.status === 'deleted' || d.status === 'updated' ? 'status-deleted' :
-                           d.status === 'escalated_litigation' ? 'status-escalated' : 'status-sent';
-
+          d.status === 'deleted' ? 'status-deleted' : d.status === 'verified' ? 'status-verified' :
+          d.status === 'escalated_litigation' ? 'status-escalated' : 'status-sent';
         let deadline = '';
         if (d.responseDeadline) {
-          const days = Math.ceil((new Date(d.responseDeadline) - new Date()) / (1000 * 60 * 60 * 24));
-          if (days <= 0) deadline = `<span class="dispute-deadline deadline-expired">EXPIRED</span>`;
-          else if (days <= 5) deadline = `<span class="dispute-deadline deadline-warning">${days}d left</span>`;
-          else deadline = `<span class="dispute-deadline deadline-ok">${days}d left</span>`;
+          const days = Math.ceil((new Date(d.responseDeadline) - new Date()) / 86400000);
+          const cls = days <= 0 ? 'deadline-expired' : days <= 7 ? 'deadline-warning' : 'deadline-ok';
+          deadline = `<span class="dispute-deadline ${cls}">${days <= 0 ? 'EXPIRED' : days + 'd left'}</span>`;
         }
-
-        return `
-          <div class="dispute-item">
-            <div class="dispute-status ${statusClass}"></div>
-            <div class="dispute-info">
-              <h4>${esc(d.bureau.charAt(0).toUpperCase() + d.bureau.slice(1))} — Dispute</h4>
-              <p>Status: ${esc(d.status.replace(/_/g, ' '))} &middot; ID: ${esc(d.id.substring(0, 8))}</p>
-            </div>
-            ${deadline}
+        return `<div class="dispute-item">
+          <div class="dispute-status ${statusClass}"></div>
+          <div class="dispute-info">
+            <h4>${esc(d.bureau.toUpperCase())} — Round ${d.round || 1}</h4>
+            <p>${d.status.replace(/_/g,' ')}${d.formId ? ' &middot; ' + d.formId : ''}</p>
           </div>
-        `;
+          ${deadline}
+        </div>`;
       }).join('');
 
-      // Update response dropdown
-      const select = $('#responseDisputeId');
-      select.innerHTML = '<option value="">Select dispute...</option>' +
-        pending.map(d => `<option value="${esc(d.id)}">${esc(d.bureau)} — ${esc(d.id.substring(0, 8))}</option>`).join('');
-
-      // Enable escalate button if any are verified
-      const verifiedDisputes = currentDisputes.filter(d => d.status === 'verified');
-      $('#escalateBtn').disabled = verifiedDisputes.length === 0;
-      $('#manualLitBtn').disabled = currentDisputes.length === 0;
+      // Response selector
+      const sel = document.getElementById('responseDisputeId');
+      sel.innerHTML = '<option value="">Select dispute...</option>' +
+        currentDisputes.filter(d => d.status === 'pending_response').map(d =>
+          `<option value="${d.id}">${d.bureau.toUpperCase()} — ${d.discrepancyId.slice(0,8)}</option>`
+        ).join('');
     }
 
-    // ─── Record Response ────────────────────────────────────────────────
-    $('#recordResponseBtn').addEventListener('click', async () => {
-      const disputeId = $('#responseDisputeId').value;
-      const status = $('#responseStatus').value;
-      if (!disputeId || !status) {
-        alert('Select a dispute and response type');
-        return;
-      }
-
-      const dispute = currentDisputes.find(d => d.id === disputeId);
-      if (!dispute) return;
-
-      try {
-        const res = await fetch('/api/litigation/respond', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            dispute,
-            responseStatus: status,
-            responseContent: `Bureau responded: ${status}`,
-          }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
-
-        // Update local state
-        const idx = currentDisputes.findIndex(d => d.id === disputeId);
-        if (idx >= 0) {
-          currentDisputes[idx].status = data.dispute.status;
-          currentDisputes[idx].responseReceivedAt = data.dispute.responseReceivedAt;
-        }
-
-        updateDisputeTracker();
-        updateDisputeBadge();
-        alert(data.message);
-      } catch (err) {
-        alert(err.message);
-      }
+    document.getElementById('recordResponseBtn')?.addEventListener('click', async () => {
+      const disputeId = document.getElementById('responseDisputeId').value;
+      const response = document.getElementById('responseType').value;
+      if (!disputeId) return alert('Select a dispute');
+      await fetch('/api/audit/' + currentAuditId + '/disputes/' + disputeId + '/response', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ response, auditId: currentAuditId })
+      });
+      // Reload disputes
+      const res = await fetch('/api/audit/' + currentAuditId);
+      const data = await res.json();
+      if (data.disputes) { currentDisputes = data.disputes; renderDisputesTab(); }
     });
 
-    // ─── Escalate to Litigation ─────────────────────────────────────────
-    $('#escalateBtn').addEventListener('click', async () => {
-      const verifiedDisputes = currentDisputes.filter(d => d.status === 'verified' || d.status === 'escalated_litigation');
-      if (verifiedDisputes.length === 0) {
-        alert('No disputes eligible for escalation. Mark a dispute as "Verified (not fixed)" first.');
-        return;
-      }
-      await generateLitigationPackage(verifiedDisputes);
-    });
-
-    $('#manualLitBtn').addEventListener('click', async () => {
-      const name = $('#litClientName').value;
-      const state = $('#litClientState').value;
-      if (!name || !state) {
-        alert('Fill in at least your name and state.');
-        return;
-      }
-      await generateLitigationPackage(currentDisputes);
-    });
-
-    async function generateLitigationPackage(disputes) {
-      const name = $('#litClientName').value || $('#clientName').value || 'Client';
-      const email = $('#litClientEmail').value || $('#clientEmail').value || '';
-      const state = $('#litClientState').value || $('#clientState').value || 'NY';
-      const county = $('#litClientCounty').value || $('#clientCounty').value || 'New York';
-
-      try {
-        const res = await fetch('/api/litigation/package', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            client: { name, email, state, county },
-            disputes,
-          }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
-        currentLitigationPkg = data;
-        renderLitigationPackage(data);
-        switchTab('litigation');
-      } catch (err) {
-        alert(err.message);
-      }
-    }
-
-    function renderLitigationPackage(data) {
-      $('#litigationEmpty').style.display = 'none';
-      $('#litigationActive').style.display = 'block';
-
-      const j = data.jurisdiction;
-      $('#jurisdictionInfo').innerHTML = `
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px">
-          <div><span style="color:var(--text-dim);font-size:12px">Court</span><br><strong style="font-size:13px">${esc(j.courtName)}</strong></div>
-          <div><span style="color:var(--text-dim);font-size:12px">Filing Fee</span><br><strong style="font-size:13px">$${j.filingFee}</strong></div>
-          <div><span style="color:var(--text-dim);font-size:12px">Small Claims Limit</span><br><strong style="font-size:13px">$${j.smallClaimsLimit.toLocaleString()}</strong></div>
-          <div><span style="color:var(--text-dim);font-size:12px">Estimated Damages</span><br><strong style="font-size:13px;color:var(--green)">$${data.estimatedDamages.toLocaleString()}</strong></div>
-        </div>
+    // ─── CREDIT BUILDER ──────────────────────────────────────────────
+    document.getElementById('builderBtn')?.addEventListener('click', async () => {
+      const body = {
+        monthlyIncome: parseInt(document.getElementById('builderIncome').value) || 0,
+        rentPayment: parseInt(document.getElementById('builderRent').value) || 0,
+        utilityPayments: parseInt(document.getElementById('builderUtilities').value) || 0,
+        subscriptions: parseInt(document.getElementById('builderSubs').value) || 0,
+      };
+      const res = await fetch('/api/builder/analyze', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      const data = await res.json();
+      document.getElementById('builderResults').style.display = 'block';
+      const bs = document.getElementById('builderStats');
+      bs.innerHTML = `
+        <div class="stat-card"><div class="number green">$${(data.cashFlow?.creditCapacity||0).toLocaleString()}</div><div class="label">Credit Capacity</div></div>
+        <div class="stat-card"><div class="number blue">${(data.recommendations||[]).length}</div><div class="label">Products</div></div>
+        <div class="stat-card"><div class="number green">+${(data.recommendations||[]).reduce((s,r)=>s+r.estimatedScoreImpact,0)}</div><div class="label">Potential Pts</div></div>
       `;
-
-      $('#formCount').textContent = data.courtFormsCount;
-
-      const formIcons = {
-        'court_complaint': '&#128220;',
-        'summons': '&#128276;',
-        'proof_of_service': '&#128203;',
-        'cover_letter': '&#9993;',
-        'evidence_exhibit': '&#128269;',
-      };
-      const formLabels = {
-        'court_complaint': 'Court Complaint',
-        'summons': 'Summons',
-        'proof_of_service': 'Proof of Service',
-        'cover_letter': 'Cover Letter',
-        'evidence_exhibit': 'Evidence Exhibit',
-      };
-
-      $('#litigationForms').innerHTML = data.courtForms.map((f, i) => `
-        <a href="/api/litigation/package/${data.packageId}/forms/${i}" target="_blank" class="form-card">
-          <div class="form-icon">${formIcons[f.type] || '&#128196;'}</div>
-          <div class="form-name">${esc(f.fileName)}</div>
-          <div class="form-type">${formLabels[f.type] || esc(f.type)}</div>
-        </a>
+      document.getElementById('builderRecs').innerHTML = (data.recommendations || []).map(r => `
+        <div class="recommendation-card">
+          <div class="rec-header"><h4>${esc(r.provider)}</h4><span class="rec-impact">+${r.estimatedScoreImpact} pts</span></div>
+          <div class="rec-body">${esc(r.description)}</div>
+          <div class="rec-meta">
+            <span class="rec-tag">${r.type.replace(/_/g,' ')}</span>
+            ${r.monthlyCost !== null ? `<span class="rec-tag">$${r.monthlyCost}/mo</span>` : ''}
+          </div>
+        </div>
       `).join('');
-
-      $('#litigationSummary').innerHTML = `
-        <strong>Filing Instructions:</strong>
-        <ol style="margin-top:8px;padding-left:20px;font-size:13px;line-height:1.8;color:var(--text-dim)">
-          <li>Download and print all court forms above</li>
-          <li>Write a check or money order for <strong style="color:var(--text)">$${j.filingFee}</strong> (filing fee)</li>
-          <li>Mail the Complaint, Summons, and Cover Letter to the court clerk via certified mail</li>
-          <li>Mail a copy of the Complaint and Summons to each bureau defendant via certified mail</li>
-          <li>Complete the Proof of Service form with your tracking numbers</li>
-          <li>Keep copies of everything for your records</li>
-          <li>Attend your hearing on the scheduled date with the Evidence Exhibit</li>
-        </ol>
-      `;
-    }
-
-    // ─── Credit Builder ─────────────────────────────────────────────────
-    $('#builderBtn').addEventListener('click', async () => {
-      const btn = $('#builderBtn');
-      btn.disabled = true;
-      btn.textContent = 'Analyzing...';
-
-      const income = parseInt($('#builderIncome').value) || 3000;
-      const rent = parseInt($('#builderRent').value) || undefined;
-      const hasUtilities = $('#builderUtilities').checked;
-      const hasStreaming = $('#builderStreaming').checked;
-
-      try {
-        const res = await fetch('/api/builder/quick', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            monthlyIncome: income,
-            monthlyRent: rent,
-            hasUtilities,
-            hasStreaming,
-          }),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error);
-        renderBuilderResults(data);
-      } catch (err) {
-        alert(err.message);
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Analyze My Credit Potential';
-      }
     });
 
-    function renderBuilderResults(data) {
-      const results = $('#builderResults');
-      results.style.display = 'block';
-
-      const a = data.analysis;
-      $('#builderStats').innerHTML = `
-        <div class="stat-card">
-          <div class="number" style="color:var(--green)">$${a.netCashFlow.toLocaleString()}</div>
-          <div class="label">Net Cash Flow</div>
-        </div>
-        <div class="stat-card">
-          <div class="number" style="color:var(--accent)">$${a.creditCapacity.toLocaleString()}</div>
-          <div class="label">Credit Capacity</div>
-        </div>
-        <div class="stat-card">
-          <div class="number blue">${data.recommendations.length}</div>
-          <div class="label">Products Available</div>
-        </div>
-        <div class="stat-card">
-          <div class="number" style="color:var(--green)">+${data.recommendations.reduce((s, r) => s + r.estimatedScoreImpact, 0)}</div>
-          <div class="label">Est. Score Impact</div>
-        </div>
-      `;
-
-      $('#recCount').textContent = data.recommendations.length;
-
-      const typeLabels = {
-        rent_reporting: 'Rent Reporting',
-        utility_reporting: 'Utility Reporting',
-        streaming_reporting: 'Streaming Reporting',
-        secured_card: 'Secured Card',
-        credit_builder_loan: 'Credit Builder Loan',
-        authorized_user: 'Authorized User',
-      };
-
-      const typeIcons = {
-        rent_reporting: '&#127968;',
-        utility_reporting: '&#9889;',
-        streaming_reporting: '&#127909;',
-        secured_card: '&#128179;',
-        credit_builder_loan: '&#127974;',
-        authorized_user: '&#129309;',
-      };
-
-      $('#recommendationsList').innerHTML = data.recommendations.map(r => {
-        const cost = r.monthlyCost === null ? 'One-time deposit' : r.monthlyCost === 0 ? 'FREE' : `$${r.monthlyCost}/mo`;
-        return `
-          <div class="recommendation-card">
-            <div class="rec-header">
-              <h4>${typeIcons[r.type] || ''} ${esc(r.provider)}</h4>
-              <span class="rec-impact">+${r.estimatedScoreImpact} pts</span>
-            </div>
-            <div class="rec-body">${esc(r.description)}</div>
-            <div class="rec-meta">
-              <span class="rec-tag">${typeLabels[r.type] || esc(r.type)}</span>
-              <span class="rec-tag">${cost}</span>
-              ${r.requirements.map(req => `<span class="rec-tag">${esc(req)}</span>`).join('')}
+    // ─── VAULT ───────────────────────────────────────────────────────
+    const vaultZone = document.getElementById('vaultUploadZone');
+    const vaultInput = document.getElementById('vaultFileInput');
+    if (vaultZone && vaultInput) {
+      vaultZone.addEventListener('click', () => vaultInput.click());
+      vaultZone.addEventListener('dragover', e => { e.preventDefault(); vaultZone.classList.add('dragover'); });
+      vaultZone.addEventListener('dragleave', () => vaultZone.classList.remove('dragover'));
+      vaultZone.addEventListener('drop', e => { e.preventDefault(); vaultZone.classList.remove('dragover'); handleVaultFiles(e.dataTransfer.files); });
+      vaultInput.addEventListener('change', e => handleVaultFiles(e.target.files));
+    }
+    function handleVaultFiles(files) {
+      const clientId = document.getElementById('vaultClientId').value;
+      const docType = document.getElementById('vaultDocType').value;
+      if (!clientId) { alert('Select a client first'); return; }
+      const list = document.getElementById('vaultDocList');
+      for (const f of files) {
+        list.innerHTML += `
+          <div class="card" style="border-left:3px solid var(--green);padding:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <div style="font-size:12px;font-weight:500;">${esc(f.name)}</div>
+                <div style="font-size:10px;color:var(--text-dim);">${docType.replace(/_/g,' ')} &middot; ${(f.size/1024).toFixed(1)} KB</div>
+              </div>
+              <span style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1px;">Stored</span>
             </div>
           </div>
         `;
-      }).join('');
-
-      // Score projection
-      const totalImpact = data.recommendations.reduce((s, r) => s + r.estimatedScoreImpact, 0);
-      const tiers = [
-        { name: 'Immediate (30 days)', types: ['rent_reporting', 'utility_reporting', 'streaming_reporting', 'authorized_user'] },
-        { name: 'Short-term (60-90 days)', types: ['secured_card'] },
-        { name: 'Medium-term (6+ months)', types: ['credit_builder_loan'] },
-      ];
-
-      let projected = 0;
-      $('#scoreProjection').innerHTML = tiers.map(tier => {
-        const tierRecs = data.recommendations.filter(r => tier.types.includes(r.type));
-        const tierImpact = tierRecs.reduce((s, r) => s + r.estimatedScoreImpact, 0);
-        projected += tierImpact;
-        const pct = totalImpact > 0 ? Math.round((projected / totalImpact) * 100) : 0;
-        return `
-          <div style="margin-bottom:16px">
-            <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
-              <span style="font-weight:500">${tier.name}</span>
-              <span style="color:var(--accent);font-weight:500">+${tierImpact} pts</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill green" style="width:${pct}%"></div>
-            </div>
-            <div style="font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.5px">
-              ${tierRecs.map(r => r.provider).join(', ') || 'No actions in this tier'}
-            </div>
-          </div>
-        `;
-      }).join('') + `
-        <div style="text-align:center;margin-top:16px;padding:16px;background:var(--surface-2);border:1px solid var(--border);border-radius:0">
-          <div style="font-size:32px;font-weight:400;color:var(--accent)">+${totalImpact} points</div>
-          <div style="font-size:11px;color:var(--text-dim);margin-top:4px;text-transform:uppercase;letter-spacing:1px">Estimated total score improvement</div>
-        </div>
-      `;
-
-      results.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    // ─── Documents Tab — Dynamic Document Generator ─────────────────────
-    const DOC_FIELD_LABELS = {
-      client_full_name: 'Full Name',
-      client_ssn: 'SSN (Last 4)',
-      client_address: 'Street Address',
-      client_city: 'City',
-      client_state: 'State',
-      client_zip: 'Zip',
-      client_email: 'Email',
-      client_phone: 'Phone',
-      creditor_name: 'Creditor / Furnisher',
-      account_number: 'Account Number',
-      collection_amount: 'Collection Amount',
-      original_creditor: 'Original Creditor',
-      police_report_number: 'Police Report Number',
-      debt_collector_name: 'Debt Collector Name',
-      debt_collector_address: 'Debt Collector Address',
-      alleged_amount: 'Alleged Amount',
-      bureau_name: 'Bureau Name',
-      bureau_address: 'Bureau Address',
-      current_date: 'Current Date',
-    };
-
-    // Standard fields that already have inputs in Client Profile / Account Details.
-    const DOC_STANDARD_FIELDS = new Set([
-      'client_full_name', 'client_ssn', 'client_address', 'client_city',
-      'client_state', 'client_zip', 'client_email', 'client_phone',
-      'creditor_name', 'account_number',
-      'bureau_name', 'bureau_address', 'current_date',
-    ]);
-
-    let docTemplates = [];
-    let docCurrentTemplate = null;
-    let docCurrentResult = null;
-    let docRenderTimer = null;
-
-    function docLabel(field) {
-      return DOC_FIELD_LABELS[field] || field;
-    }
-
-    function docCollectContext() {
-      const ctx = {};
-      $$('#tab-documents [data-doc-field]').forEach(el => {
-        const key = el.dataset.docField;
-        if (key && el.value !== undefined) {
-          ctx[key] = el.value.trim();
-        }
-      });
-      return ctx;
-    }
-
-    function docRenderExtraFields(template) {
-      const section = $('#docExtraSection');
-      const container = $('#docExtraFields');
-      if (!template) {
-        section.style.display = 'none';
-        container.innerHTML = '';
-        return;
       }
-      const extras = (template.requiredFields || []).filter(f => !DOC_STANDARD_FIELDS.has(f));
-      if (extras.length === 0) {
-        section.style.display = 'none';
-        container.innerHTML = '';
-        return;
-      }
-      // Preserve any existing values for extras already on the page.
-      const existing = {};
-      $$('#docExtraFields [data-doc-field]').forEach(el => {
-        existing[el.dataset.docField] = el.value;
-      });
-      container.innerHTML = extras.map(field => `
-        <div class="doc-field">
-          <label for="docExtra_${esc(field)}">${esc(docLabel(field))}</label>
-          <input type="text" id="docExtra_${esc(field)}" data-doc-field="${esc(field)}" value="${esc(existing[field] || '')}" />
-        </div>
-      `).join('');
-      section.style.display = 'block';
-      container.querySelectorAll('input').forEach(input => {
-        input.addEventListener('input', docScheduleRender);
-      });
     }
 
-    function docPopulateFormSelect() {
-      const sel = $('#docFormSelect');
-      sel.innerHTML = '<option value="">— Select a dispute template —</option>' +
-        docTemplates.map(t => `<option value="${esc(t.formId)}">${esc(t.formId)}: ${esc(t.name)}</option>`).join('');
-    }
-
-    function docShowFormMeta(template) {
-      const meta = $('#docFormMeta');
-      if (!template) {
-        meta.style.display = 'none';
-        return;
-      }
-      $('#docFormName').textContent = `${template.formId}: ${template.name}`;
-      $('#docFormCategory').textContent = `Category — ${template.category}`;
-      $('#docFormDescription').textContent = template.description;
-      $('#docRequiredTags').innerHTML = (template.requiredFields || [])
-        .map(f => `<span class="doc-required-tag">${esc(f)}</span>`)
-        .join('');
-      meta.style.display = 'block';
-    }
-
-    function docHighlightMissing(content) {
-      // First HTML-escape, then wrap [MISSING: xxx] tokens.
-      const escaped = esc(content);
-      return escaped.replace(/\[MISSING: ([a-zA-Z_][a-zA-Z0-9_]*)\]/g,
-        (_, name) => `<span class="doc-missing-token">[MISSING: ${esc(name)}]</span>`);
-    }
-
-    function docUpdateMissingPanel(missingFields) {
-      const panel = $('#docMissingFields');
-      const list = $('#docMissingList');
-      if (!missingFields || missingFields.length === 0) {
-        panel.style.display = 'none';
-        list.innerHTML = '';
-        return;
-      }
-      panel.style.display = 'block';
-      list.innerHTML = missingFields.map(f => `<li>${esc(docLabel(f))} <span style="color:#9B2C2C">(${esc(f)})</span></li>`).join('');
-    }
-
-    async function docRenderPreview() {
-      const formId = $('#docFormSelect').value;
-      const preview = $('#docPreview');
-      const downloadBtn = $('#docDownloadBtn');
-      const printBtn = $('#docPrintBtn');
-      const status = $('#docStatus');
-
-      if (!formId || !docCurrentTemplate) {
-        preview.textContent = 'Select a form ID above to generate a preview.';
-        downloadBtn.disabled = true;
-        printBtn.disabled = true;
-        docUpdateMissingPanel([]);
-        status.textContent = '';
-        docCurrentResult = null;
-        return;
-      }
-
-      const context = docCollectContext();
-      const bureau = $('#docBureau').value;
-
+    // ─── DASHBOARD ───────────────────────────────────────────────────
+    async function refreshDashboard() {
       try {
-        const r = await fetch('/api/documents/render', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ formId, context, bureau }),
-        });
-        if (!r.ok) {
-          const err = await r.json().catch(() => ({}));
-          preview.textContent = `Render failed: ${err.error || r.statusText}`;
-          downloadBtn.disabled = true;
-          printBtn.disabled = true;
-          return;
-        }
-        const result = await r.json();
-        docCurrentResult = result;
-        preview.innerHTML = docHighlightMissing(result.content);
-        docUpdateMissingPanel(result.missingFields);
-        downloadBtn.disabled = !result.complete;
-        printBtn.disabled = false;
-        if (result.complete) {
-          status.textContent = `Form ${result.formId} ready. ${result.content.length} characters.`;
-        } else {
-          status.textContent = `${result.missingFields.length} required field(s) missing. Fill them in to enable download.`;
-        }
-      } catch (err) {
-        preview.textContent = `Error: ${err && err.message ? err.message : String(err)}`;
-        downloadBtn.disabled = true;
-        printBtn.disabled = true;
-      }
+        const res = await fetch('/api/clients');
+        const data = await res.json();
+        allClients = data.clients || [];
+        document.getElementById('dashClients').textContent = allClients.length;
+        updateClientSelectors();
+      } catch(e) {}
     }
 
-    function docScheduleRender() {
-      if (docRenderTimer) clearTimeout(docRenderTimer);
-      docRenderTimer = setTimeout(() => { docRenderPreview(); }, 300);
+    // ─── Utility ─────────────────────────────────────────────────────
+    function esc(s) {
+      if (s == null) return '';
+      const d = document.createElement('div');
+      d.textContent = String(s);
+      return d.innerHTML;
     }
 
-    async function docLoadTemplates() {
-      try {
-        const r = await fetch('/api/documents/templates');
-        if (!r.ok) return;
-        const data = await r.json();
-        docTemplates = data.templates || [];
-        docPopulateFormSelect();
-      } catch (_) {
-        // silent — tab simply won't have templates available
-      }
-    }
-
-    function docHandleFormSelect() {
-      const formId = $('#docFormSelect').value;
-      docCurrentTemplate = docTemplates.find(t => t.formId === formId) || null;
-      docShowFormMeta(docCurrentTemplate);
-      docRenderExtraFields(docCurrentTemplate);
-      docRenderPreview();
-    }
-
-    async function docDownload() {
-      const formId = $('#docFormSelect').value;
-      if (!formId) return;
-      const context = docCollectContext();
-      const bureau = $('#docBureau').value;
-      try {
-        const r = await fetch('/api/documents/download', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ formId, context, bureau }),
-        });
-        if (!r.ok) {
-          const err = await r.json().catch(() => ({}));
-          $('#docStatus').textContent = `Download failed: ${err.error || r.statusText}`;
-          return;
-        }
-        const blob = await r.blob();
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${formId}-${Date.now()}.txt`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        $('#docStatus').textContent = `Downloaded ${formId}.`;
-      } catch (err) {
-        $('#docStatus').textContent = `Error: ${err && err.message ? err.message : String(err)}`;
-      }
-    }
-
-    function docPrint() {
-      if (!docCurrentResult) return;
-      const w = window.open('', '_blank');
-      if (!w) return;
-      const formId = docCurrentResult.formId || '';
-      const formName = docCurrentResult.formName || '';
-      const content = docHighlightMissing(docCurrentResult.content || '');
-      w.document.write(`<!DOCTYPE html><html><head><title>${esc(formId)} — ${esc(formName)}</title>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&display=swap">
-        <style>
-          body { font-family: 'IBM Plex Mono', monospace; color: #001A33; margin: 32px; line-height: 1.8; font-size: 13px; white-space: pre-wrap; }
-          .doc-missing-token { color: #C53030; }
-        </style></head><body>${content}</body></html>`);
-      w.document.close();
-      w.focus();
-      w.print();
-    }
-
-    // Wire up Documents tab. The script tag sits after the DOM nodes, so
-    // we initialize immediately if the document is already parsed; otherwise
-    // we defer to DOMContentLoaded.
-    function docInit() {
-      docLoadTemplates();
-      $('#docFormSelect').addEventListener('change', docHandleFormSelect);
-      $('#docBureau').addEventListener('change', docScheduleRender);
-      $$('#tab-documents [data-doc-field]').forEach(el => {
-        el.addEventListener('input', docScheduleRender);
-      });
-      $('#docDownloadBtn').addEventListener('click', docDownload);
-      $('#docPrintBtn').addEventListener('click', docPrint);
-    }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', docInit);
-    } else {
-      docInit();
-    }
+    // ─── Init ────────────────────────────────────────────────────────
+    refreshDashboard();
   </script>
 </body>
 </html>

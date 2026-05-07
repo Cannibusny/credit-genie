@@ -147,11 +147,16 @@ export function parseAccounts(text: string): ParsedAccount[] {
       creditLimit: parseMoney(limitMatch?.[1]),
       dateOpened: openedMatch?.[1] ?? null,
       dateReported: reportedMatch?.[1] ?? null,
+      dateClosed: null,
+      dateOfLastActivity: null,
       dateOfFirstDelinquency: dofdMatch?.[1] ?? null,
       paymentHistory,
       highBalance: parseMoney(highMatch?.[1]),
       monthlyPayment: parseMoney(monthlyMatch?.[1]),
       remarks,
+      originalCreditor: null,
+      collectionAgency: null,
+      metro2SegmentId: null,
     });
   }
 

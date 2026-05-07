@@ -76,6 +76,8 @@ Enclosures:
 - Copy of credit report highlighting disputed late payment entry
 - Copy of government-issued ID
 - Proof of address`,
+  legalCodes: [],
+  attackType: "bureau" as const,
   requiredFields: [
     "client_full_name",
     "client_ssn",
@@ -159,6 +161,8 @@ Enclosures:
 - Copy of credit report highlighting disputed collection entry
 - Copy of government-issued ID
 - Proof of address`,
+  legalCodes: [],
+  attackType: "bureau" as const,
   requiredFields: [
     "client_full_name",
     "client_ssn",
@@ -244,6 +248,8 @@ Enclosures:
 - Copy of credit report highlighting disputed charge-off
 - Copy of government-issued ID
 - Proof of address`,
+  legalCodes: [],
+  attackType: "bureau" as const,
   requiredFields: [
     "client_full_name",
     "client_ssn",
@@ -333,6 +339,8 @@ Enclosures:
 - Police Report (#{{police_report_number}})
 - Copy of government-issued ID
 - Proof of address`,
+  legalCodes: [],
+  attackType: "bureau" as const,
   requiredFields: [
     "client_full_name",
     "client_ssn",
@@ -406,6 +414,8 @@ Phone: {{client_phone}}
 Enclosures:
 - Copy of government-issued ID
 - Proof of address`,
+  legalCodes: [],
+  attackType: "bureau" as const,
   requiredFields: [
     "client_full_name",
     "client_ssn",
@@ -493,6 +503,8 @@ Enclosures:
 - Copy of credit report highlighting the disputed item
 - Copy of government-issued ID
 - Proof of address`,
+  legalCodes: [],
+  attackType: "bureau" as const,
   requiredFields: [
     "client_full_name",
     "client_ssn",
@@ -578,6 +590,8 @@ Enclosures:
 - Copy of disputed account entry
 - Copy of government-issued ID
 - Proof of address`,
+  legalCodes: [],
+  attackType: "bureau" as const,
   requiredFields: [
     "client_full_name",
     "client_ssn",
@@ -666,6 +680,8 @@ Phone: {{client_phone}}
 Enclosures:
 - Copy of government-issued ID
 - Proof of address`,
+  legalCodes: [],
+  attackType: "bureau" as const,
   requiredFields: [
     "client_full_name",
     "client_ssn",
