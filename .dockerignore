@@ -1,0 +1,11 @@
+node_modules
+src
+*.md
+*.ts
+!dist
+.git
+.env*
+test-data
+screencasts
+screenshots
+eng.traineddata
