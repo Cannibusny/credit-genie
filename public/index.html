@@ -99,8 +99,8 @@ main{flex:1;overflow-y:auto;padding:24px 28px}
 #auth-screen .auth-divider span{position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--navy);padding:0 12px;font-size:10px;color:var(--white30);text-transform:uppercase;letter-spacing:1px}
 
 /* ─── ONBOARDING ─── */
-#onboarding{position:fixed;inset:0;background:var(--navy);z-index:1000;display:flex;align-items:center;justify-content:center}
-#onboarding .screen{max-width:560px;width:100%;padding:48px}
+#onboarding{position:fixed;inset:0;background:var(--navy);z-index:1000;display:flex;align-items:center;justify-content:center;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#onboarding .screen{max-width:680px;width:100%;padding:48px;max-height:none;margin:auto}
 #onboarding h1{font-size:28px;font-weight:800;margin-bottom:16px;line-height:1.3;letter-spacing:-0.5px}
 #onboarding p{color:var(--white50);margin-bottom:24px;font-size:14px;line-height:1.7}
 #onboarding .state-alert{background:var(--green-dim);border:1px solid var(--green);padding:14px 16px;color:var(--green);margin:16px 0;font-size:12px;font-weight:500;border-radius:var(--radius)}
@@ -177,6 +177,22 @@ main{flex:1;overflow-y:auto;padding:24px 28px}
 .metro2-field .field-value.warn{color:var(--amber)}
 .metro2-violation{padding:12px 16px;border-left:3px solid var(--red);background:var(--red-dim);margin:8px 0;font-size:11px;border-radius:var(--radius)}
 .metro2-violation .code{font-family:var(--mono);font-weight:700;color:var(--red);margin-bottom:2px}
+.remediation-plan{margin-top:24px;border:2px solid var(--blue);background:linear-gradient(135deg,var(--navy2),var(--blue-glow));padding:24px}
+.remediation-plan h3{color:var(--blue-bright);margin-bottom:16px;font-size:14px;letter-spacing:1px}
+.fix-card{background:var(--navy);border:1px solid var(--border);padding:16px;margin-bottom:12px;border-left:3px solid var(--blue)}
+.fix-card .fix-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.fix-card .fix-code{font-family:var(--mono);font-weight:700;color:var(--red);font-size:12px}
+.fix-card .fix-form{font-family:var(--mono);font-size:11px;color:var(--blue-bright)}
+.fix-card .fix-what{font-size:12px;color:var(--white90);margin-bottom:6px}
+.fix-card .fix-who{font-size:11px;color:var(--white50);margin-bottom:6px}
+.fix-card .fix-timeline{font-size:10px;color:var(--amber);font-family:var(--mono);margin-bottom:12px}
+.fix-card .fix-citation{font-size:10px;color:var(--white30);font-family:var(--mono);margin-bottom:12px}
+.btn-start-fix{background:var(--blue);color:var(--white);border:none;padding:10px 20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;cursor:pointer;font-family:var(--font);width:100%;transition:background .12s}
+.btn-start-fix:hover{background:var(--blue-light)}
+.fix-letter-preview{background:var(--navy3);border:1px solid var(--border);padding:16px;margin-top:12px;font-family:var(--mono);font-size:10px;line-height:1.7;color:var(--white70);white-space:pre-wrap;max-height:300px;overflow-y:auto;display:none}
+.fix-status{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:3px 8px;font-family:var(--mono)}
+.fix-status.queued{color:var(--amber);border:1px solid var(--amber);background:var(--amber-dim)}
+.fix-status.ready{color:var(--green);border:1px solid var(--green);background:var(--green-dim)}
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:768px){
@@ -365,6 +381,7 @@ function showMetro2Demo() {
 
       <div id="metro2-fields"></div>
       <div id="metro2-violations" style="margin-top:16px"></div>
+      <div id="metro2-remediation"></div>
     </div>
 
     <div style="margin-top:24px;display:flex;gap:12px">
@@ -389,13 +406,41 @@ function showMetro2Demo() {
   ];
 
   const violations = [
-    { code: 'METRO2-BAL-001', desc: 'Balance date is 16 months stale. FCRA requires current reporting within 30 days of account activity.' },
-    { code: 'METRO2-SEG-003', desc: 'Compliance condition code "XB" is not a valid Metro 2 segment identifier. Furnisher error.' },
-    { code: 'METRO2-LIM-002', desc: 'Reported high balance ($5,100) exceeds credit limit ($5,000). Data integrity violation.' },
+    {
+      code: 'METRO2-BAL-001',
+      desc: 'Balance date is 16 months stale. FCRA requires current reporting within 30 days of account activity.',
+      form: 'Form-221',
+      formName: 'FCRA Section 611 — Initial Dispute',
+      sendTo: 'Equifax Information Services LLC, P.O. Box 740256, Atlanta, GA 30374',
+      citation: '15 U.S.C. § 1681i — Procedure in case of disputed accuracy',
+      timeline: 'Bureau has 30 days to investigate and respond per FCRA §611(a)(1)',
+      action: 'Demand reinvestigation of stale balance date. If not corrected within 30 days, item must be deleted.'
+    },
+    {
+      code: 'METRO2-SEG-003',
+      desc: 'Compliance condition code "XB" is not a valid Metro 2 segment identifier. Furnisher error.',
+      form: 'Form-222',
+      formName: 'Method of Verification Demand',
+      sendTo: 'Capital One (Data Furnisher) + All Three Bureaus',
+      citation: '15 U.S.C. § 1681s-2(b) — Duties of furnishers upon notice of dispute',
+      timeline: 'Furnisher must investigate within 30 days of receiving notice from bureau',
+      action: 'Demand furnisher correct invalid Metro 2 segment code. If unresolved, escalate to CFPB.'
+    },
+    {
+      code: 'METRO2-LIM-002',
+      desc: 'Reported high balance ($5,100) exceeds credit limit ($5,000). Data integrity violation.',
+      form: 'Form-221',
+      formName: 'FCRA Section 611 — Initial Dispute',
+      sendTo: 'All Three Bureaus (Equifax, Experian, TransUnion)',
+      citation: '15 U.S.C. § 1681e(b) — Accuracy of report',
+      timeline: 'Bureau has 30 days to investigate. Furnisher must correct or delete.',
+      action: 'Dispute inaccurate high balance figure. Request correction to match actual credit limit.'
+    },
   ];
 
   const fieldsContainer = document.getElementById('metro2-fields');
   const violationsContainer = document.getElementById('metro2-violations');
+  const remediationContainer = document.getElementById('metro2-remediation');
   let i = 0;
 
   function showNextField() {
@@ -404,6 +449,30 @@ function showMetro2Demo() {
       setTimeout(() => {
         violationsContainer.innerHTML = `<h3 style="color:var(--red);margin-bottom:8px">VIOLATIONS DETECTED</h3>` +
           violations.map(v => `<div class="metro2-violation"><div class="code">${v.code}</div><div>${v.desc}</div></div>`).join('');
+
+        // Show remediation plan after violations
+        setTimeout(() => {
+          remediationContainer.innerHTML = `
+            <div class="remediation-plan">
+              <h3>REMEDIATION PLAN — ${violations.length} FIXES READY</h3>
+              <p style="font-size:12px;color:var(--white60);margin-bottom:16px">Credit Genie identified ${violations.length} violations and mapped each to the correct dispute form, recipient, and legal citation. Click <strong>Start Fix</strong> to generate the letter.</p>
+              ${violations.map((v, idx) => `
+                <div class="fix-card" id="fix-card-${idx}">
+                  <div class="fix-header">
+                    <span class="fix-code">${v.code}</span>
+                    <span class="fix-form">${v.form}</span>
+                  </div>
+                  <div class="fix-what"><strong>What's wrong:</strong> ${v.desc}</div>
+                  <div class="fix-who"><strong>Send to:</strong> ${v.sendTo}</div>
+                  <div class="fix-citation"><strong>Legal basis:</strong> ${v.citation}</div>
+                  <div class="fix-timeline">&#9202; ${v.timeline}</div>
+                  <div style="font-size:11px;color:var(--white70);margin-bottom:12px"><strong>Action:</strong> ${v.action}</div>
+                  <button class="btn-start-fix" onclick="startFix(${idx})">START FIX &mdash; GENERATE ${v.form.toUpperCase()} LETTER</button>
+                  <div class="fix-letter-preview" id="fix-letter-${idx}"></div>
+                </div>`).join('')}
+            </div>`;
+          remediationContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 600);
       }, 400);
       return;
     }
@@ -423,6 +492,61 @@ function showMetro2Demo() {
     setTimeout(showNextField, 120);
   }
   setTimeout(showNextField, 300);
+}
+
+// ─── Start Fix: generate dispute letter from violation ──────────────────────
+const demoViolations = [
+  {
+    code: 'METRO2-BAL-001', form: 'Form-221',
+    letterFn: (name) => `${name}\n[YOUR STREET ADDRESS]\n[CITY], [STATE] [ZIP]\n\nDate: ${new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'})}\n\nEquifax Information Services LLC\nP.O. Box 740256\nAtlanta, GA 30374\n\nRe: Formal Dispute — FCRA Section 611\nAccount: CAPITAL ONE — ****4821\n\nDear Investigations Department:\n\nPursuant to 15 U.S.C. § 1681i, I am formally disputing the accuracy of the above-referenced account appearing on my credit report.\n\nSPECIFIC VIOLATION:\nThe Balance Date field reports August 15, 2024 — which is 16 months stale. FCRA requires current reporting within 30 days of account activity. This constitutes a material inaccuracy under Metro 2 reporting standards.\n\nACCOUNT DETAILS:\n  Creditor: Capital One\n  Account: ****4821\n  Current Balance: $4,200\n  Balance Date Reported: 2024-08-15 (STALE)\n  Account Type: Revolving\n\nDemand: Conduct a thorough reinvestigation of this item pursuant to Section 611 of the Fair Credit Reporting Act. If you cannot verify the accuracy of this balance date within 30 days, it must be promptly deleted from my credit file pursuant to FCRA § 611(a)(5)(A).\n\nSincerely,\n${name}\nSSN (last 4): XXX-XX-XXXX`
+  },
+  {
+    code: 'METRO2-SEG-003', form: 'Form-222',
+    letterFn: (name) => `${name}\n[YOUR STREET ADDRESS]\n[CITY], [STATE] [ZIP]\n\nDate: ${new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'})}\n\nCapital One\nAttn: Credit Reporting Department\n[FURNISHER ADDRESS]\n\nRe: METHOD OF VERIFICATION DEMAND — Invalid Metro 2 Segment Code\nAccount: CAPITAL ONE — ****4821\n\nDear Credit Reporting Department:\n\nI have identified an invalid Metro 2 compliance condition code on the above-referenced account. The code "XB" is not a recognized Metro 2 segment identifier per CDIA reporting standards.\n\nPursuant to 15 U.S.C. § 1681s-2(b), as a data furnisher you are required to:\n\n1. Investigate and correct all inaccurate information\n2. Report corrected data to all consumer reporting agencies\n3. Notify me of the results of the investigation\n\nACCOUNT DETAILS:\n  Creditor: Capital One\n  Account: ****4821\n  Invalid Code: XB (not a valid Metro 2 compliance condition code)\n\nIf this is not corrected within 30 days, I will file a formal complaint with the Consumer Financial Protection Bureau (CFPB) and pursue statutory damages under FCRA § 1681n.\n\nSincerely,\n${name}\nSSN (last 4): XXX-XX-XXXX`
+  },
+  {
+    code: 'METRO2-LIM-002', form: 'Form-221',
+    letterFn: (name) => `${name}\n[YOUR STREET ADDRESS]\n[CITY], [STATE] [ZIP]\n\nDate: ${new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'})}\n\nEquifax Information Services LLC\nP.O. Box 740256\nAtlanta, GA 30374\n\nExperian\nP.O. Box 4500\nAllen, TX 75013\n\nTransUnion LLC\nConsumer Dispute Center\nP.O. Box 2000\nChester, PA 19016\n\nRe: Formal Dispute — FCRA Section 611 — Data Integrity Violation\nAccount: CAPITAL ONE — ****4821\n\nDear Investigations Department:\n\nPursuant to 15 U.S.C. § 1681i and § 1681e(b), I am formally disputing the accuracy of the above-referenced account.\n\nSPECIFIC VIOLATION:\nThe reported high balance ($5,100) exceeds the actual credit limit ($5,000). This is a data integrity violation — a high balance cannot mathematically exceed the credit limit on a revolving account without reporting error.\n\nACCOUNT DETAILS:\n  Creditor: Capital One\n  Account: ****4821\n  Credit Limit: $5,000\n  Reported High Balance: $5,100 (INVALID — exceeds limit)\n  Current Balance: $4,200\n\nDemand: Correct the high balance figure to accurately reflect account history. If you cannot verify the accuracy of this information within 30 days, it must be deleted pursuant to FCRA § 611(a)(5)(A).\n\nSincerely,\n${name}\nSSN (last 4): XXX-XX-XXXX`
+  }
+];
+
+function startFix(idx) {
+  const preview = document.getElementById(`fix-letter-${idx}`);
+  const btn = preview.previousElementSibling;
+  const v = demoViolations[idx];
+  if (!v) return;
+
+  const name = '[YOUR NAME]';
+  const letter = v.letterFn(name);
+
+  preview.style.display = 'block';
+  preview.textContent = letter;
+  btn.textContent = 'LETTER GENERATED';
+  btn.style.background = 'var(--green)';
+  btn.style.cursor = 'default';
+  btn.onclick = null;
+
+  // Add copy button
+  const copyBtn = document.createElement('button');
+  copyBtn.style.cssText = 'margin-top:8px;background:var(--navy3);border:1px solid var(--border);color:var(--white70);padding:8px 16px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;cursor:pointer;width:100%;font-family:var(--font)';
+  copyBtn.textContent = 'COPY LETTER TO CLIPBOARD';
+  copyBtn.onclick = () => {
+    navigator.clipboard.writeText(letter).then(() => {
+      copyBtn.textContent = 'COPIED';
+      setTimeout(() => copyBtn.textContent = 'COPY LETTER TO CLIPBOARD', 2000);
+    });
+  };
+  preview.after(copyBtn);
+
+  // Add status badge
+  const badge = document.createElement('div');
+  badge.className = 'fix-status queued';
+  badge.textContent = 'LETTER QUEUED';
+  badge.style.marginTop = '8px';
+  badge.style.display = 'inline-block';
+  copyBtn.after(badge);
+
+  preview.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 // ─── Onboarding ─────────────────────────────────────────────────────────────

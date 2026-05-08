@@ -6,6 +6,7 @@ import { profileRouter } from "./routes/profiles.js";
 import { modulesRouter } from "./routes/modules.js";
 import { importRouter } from "./routes/import.js";
 import { authRouter } from "./routes/auth.js";
+import { log } from "./lib/logger.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -18,6 +19,19 @@ app.use(express.static(path.join(__dirname, "..", "public")));
 
 // Auth routes (no auth required on these)
 app.use("/api/auth", authRouter);
+
+// Auto-seed founding users on startup (works in both stub and Supabase mode)
+setTimeout(async () => {
+  try {
+    const res = await fetch(`http://localhost:${process.env.PORT || 3001}/api/auth/seed`, { method: "POST" });
+    if (res.ok) {
+      const data = await res.json() as { mode: string; users?: unknown[] };
+      log.info({ mode: data.mode, users: data.users?.length }, "Auto-seeded founding users");
+    }
+  } catch {
+    log.warn("Auto-seed failed (server may not be ready yet)");
+  }
+}, 1000);
 
 // Protected API routes
 app.use("/api/profiles", profileRouter);
