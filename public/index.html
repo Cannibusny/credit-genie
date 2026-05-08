@@ -99,8 +99,13 @@ main{flex:1;overflow-y:auto;padding:24px 28px}
 #auth-screen .auth-divider span{position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--navy);padding:0 12px;font-size:10px;color:var(--white30);text-transform:uppercase;letter-spacing:1px}
 
 /* ─── ONBOARDING ─── */
-#onboarding{position:fixed;inset:0;background:var(--navy);z-index:1000;display:flex;align-items:center;justify-content:center;overflow-y:auto;-webkit-overflow-scrolling:touch}
-#onboarding .screen{max-width:680px;width:100%;padding:48px;max-height:none;margin:auto}
+#onboarding{position:fixed;inset:0;background:var(--navy);z-index:1000;display:flex;align-items:flex-start;justify-content:center;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#onboarding .screen{max-width:680px;width:100%;padding:48px 48px 120px 48px;max-height:none;margin:auto}
+.onboarding-sticky-nav{position:fixed;bottom:0;left:0;right:0;z-index:1001;background:linear-gradient(0deg,var(--navy) 60%,transparent);padding:20px 24px 24px;display:flex;gap:12px;justify-content:center;align-items:center}
+.onboarding-sticky-nav button.primary{flex:0 1 400px;padding:14px 24px}
+.onboarding-sticky-nav button.ghost{padding:14px 16px}
+.onboarding-skip-top{position:fixed;top:16px;right:24px;z-index:1002;background:var(--navy3);border:1px solid var(--border);color:var(--white60);padding:8px 16px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;font-family:var(--font);transition:all .12s}
+.onboarding-skip-top:hover{background:var(--blue);color:var(--white);border-color:var(--blue)}
 #onboarding h1{font-size:28px;font-weight:800;margin-bottom:16px;line-height:1.3;letter-spacing:-0.5px}
 #onboarding p{color:var(--white50);margin-bottom:24px;font-size:14px;line-height:1.7}
 #onboarding .state-alert{background:var(--green-dim);border:1px solid var(--green);padding:14px 16px;color:var(--green);margin:16px 0;font-size:12px;font-weight:500;border-radius:var(--radius)}
@@ -368,7 +373,8 @@ let scanResults = null;
 // ─── Metro 2 Demo (triggered by "Show Me Mine") ────────────────────────────
 function showMetro2Demo() {
   const ob = document.getElementById('onboarding');
-  ob.innerHTML = `<div class="screen" style="max-width:680px">
+  ob.innerHTML = `<button class="onboarding-skip-top" onclick="nextScreen(2)">SKIP TO APP &rarr;</button>
+  <div class="screen" style="max-width:680px">
     <div style="font-size:10px;font-weight:700;color:var(--blue-bright);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">METRO 2 AUDITOR &mdash; LIVE DEMO</div>
     <h1 style="margin-bottom:8px">Here is what we find in 30 seconds.</h1>
     <p style="font-size:12px">This is a sample audit of a real Metro 2 tradeline. Your actual report will show your accounts.</p>
@@ -383,11 +389,10 @@ function showMetro2Demo() {
       <div id="metro2-violations" style="margin-top:16px"></div>
       <div id="metro2-remediation"></div>
     </div>
-
-    <div style="margin-top:24px;display:flex;gap:12px">
-      <button class="primary" onclick="nextScreen(2)" style="flex:1;padding:14px">RUN MY REPORT</button>
-      <button class="ghost" onclick="nextScreen(2)">Skip demo</button>
-    </div>
+  </div>
+  <div class="onboarding-sticky-nav">
+    <button class="primary" onclick="nextScreen(2)">RUN MY REPORT</button>
+    <button class="ghost" onclick="nextScreen(2)">Skip demo</button>
   </div>`;
 
   // Animate the Metro 2 fields appearing one by one
