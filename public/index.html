@@ -3,148 +3,223 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Credit Genie — Adaptive Credit Intelligence</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Credit Genie — Enterprise Credit Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#0B1120;--bg2:#111827;--bg3:#1F2937;--border:#374151;
-  --text:#E5E7EB;--text2:#9CA3AF;--accent:#60A5FA;--green:#34D399;
-  --red:#F87171;--orange:#FBBF24;--purple:#A78BFA;
-  --font:'IBM Plex Mono',monospace;
+  --navy:#0A0F1E;--navy2:#0F1629;--navy3:#151D33;--navy4:#1B2340;
+  --steel:#252E4A;--steel2:#2D3756;--border:#334163;--border2:#3D4D70;
+  --white:#FFFFFF;--white90:rgba(255,255,255,0.9);--white70:rgba(255,255,255,0.7);
+  --white50:rgba(255,255,255,0.5);--white30:rgba(255,255,255,0.3);--white10:rgba(255,255,255,0.1);
+  --blue:#2563EB;--blue-light:#3B82F6;--blue-bright:#60A5FA;--blue-glow:rgba(37,99,235,0.15);
+  --green:#10B981;--green-dim:rgba(16,185,129,0.15);
+  --red:#EF4444;--red-dim:rgba(239,68,68,0.12);
+  --amber:#F59E0B;--amber-dim:rgba(245,158,11,0.12);
+  --purple:#8B5CF6;--purple-dim:rgba(139,92,246,0.12);
+  --font:'Inter',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --radius:0px;
 }
-html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font);font-size:13px;line-height:1.5}
-button{font-family:var(--font);cursor:pointer;border:1px solid var(--border);background:var(--bg3);color:var(--text);padding:8px 16px;font-size:12px;transition:all .15s}
-button:hover{background:var(--accent);color:var(--bg);border-color:var(--accent)}
-button.primary{background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:600}
-button.primary:hover{background:#93C5FD}
-button.danger{border-color:var(--red);color:var(--red)}
-button.danger:hover{background:var(--red);color:var(--bg)}
-input,select,textarea{font-family:var(--font);background:var(--bg);border:1px solid var(--border);color:var(--text);padding:8px 12px;font-size:12px;width:100%}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
-label{display:block;margin-bottom:4px;color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:0.5px}
-.card{background:var(--bg2);border:1px solid var(--border);padding:16px;margin-bottom:12px}
-.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.badge{padding:2px 8px;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;border:1px solid}
-.badge.critical{color:var(--red);border-color:var(--red)}
-.badge.high{color:var(--orange);border-color:var(--orange)}
-.badge.medium{color:var(--accent);border-color:var(--accent)}
-.badge.low{color:var(--text2);border-color:var(--border)}
-h1{font-size:18px;font-weight:700;letter-spacing:-0.5px}
-h2{font-size:15px;font-weight:600;letter-spacing:-0.3px}
-h3{font-size:13px;font-weight:600}
+html,body{height:100%;background:var(--navy);color:var(--white90);font-family:var(--font);font-size:13px;line-height:1.6;-webkit-font-smoothing:antialiased}
+::selection{background:var(--blue);color:var(--white)}
+
+/* ─── BUTTONS ─── */
+button{font-family:var(--font);cursor:pointer;border:1px solid var(--border);background:var(--navy3);color:var(--white90);padding:10px 20px;font-size:12px;font-weight:600;letter-spacing:0.3px;text-transform:uppercase;transition:all .12s ease;border-radius:var(--radius)}
+button:hover{background:var(--steel);border-color:var(--border2)}
+button:active{transform:translateY(1px)}
+button.primary{background:var(--blue);color:var(--white);border-color:var(--blue);font-weight:700;letter-spacing:0.5px}
+button.primary:hover{background:var(--blue-light);border-color:var(--blue-light)}
+button.danger{border-color:var(--red);color:var(--red);background:transparent}
+button.danger:hover{background:var(--red-dim);border-color:var(--red)}
+button.ghost{border:none;background:transparent;color:var(--white50);padding:6px 12px;text-transform:none;font-weight:500}
+button.ghost:hover{color:var(--white90);background:var(--white10)}
+
+/* ─── INPUTS ─── */
+input,select,textarea{font-family:var(--font);background:var(--navy);border:1px solid var(--border);color:var(--white90);padding:10px 14px;font-size:12px;width:100%;transition:border-color .15s;border-radius:var(--radius)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-glow)}
+input::placeholder,textarea::placeholder{color:var(--white30)}
+label{display:block;margin-bottom:4px;color:var(--white50);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='rgba(255,255,255,0.5)' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+
+/* ─── CARDS ─── */
+.card{background:var(--navy2);border:1px solid var(--border);padding:20px;margin-bottom:12px;border-radius:var(--radius)}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.card.highlight{border-color:var(--blue);background:linear-gradient(135deg,var(--navy2),var(--blue-glow))}
+
+/* ─── BADGES ─── */
+.badge{padding:3px 10px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;border:1px solid;border-radius:var(--radius);font-family:var(--mono)}
+.badge.critical{color:var(--red);border-color:var(--red);background:var(--red-dim)}
+.badge.high{color:var(--amber);border-color:var(--amber);background:var(--amber-dim)}
+.badge.medium{color:var(--blue-bright);border-color:var(--blue);background:var(--blue-glow)}
+.badge.low{color:var(--white50);border-color:var(--border);background:var(--white10)}
+.badge.success{color:var(--green);border-color:var(--green);background:var(--green-dim)}
+
+/* ─── TYPOGRAPHY ─── */
+h1{font-size:22px;font-weight:800;letter-spacing:-0.5px;color:var(--white)}
+h2{font-size:16px;font-weight:700;letter-spacing:-0.3px;color:var(--white)}
+h3{font-size:13px;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:0.5px}
+.mono{font-family:var(--mono)}
+.text-sm{font-size:11px}
+.text-xs{font-size:10px}
+.text-dim{color:var(--white50)}
+.text-blue{color:var(--blue-bright)}
+
+/* ─── GRID ─── */
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.mt-12{margin-top:12px}.mt-8{margin-top:8px}.mb-8{margin-bottom:8px}
+.grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
+.mt-16{margin-top:16px}.mt-12{margin-top:12px}.mt-8{margin-top:8px}.mb-8{margin-bottom:8px}.mb-12{margin-bottom:12px}.mb-16{margin-bottom:16px}
 
-/* Layout */
+/* ─── LAYOUT ─── */
 #app{display:flex;flex-direction:column;height:100vh}
-nav{display:flex;align-items:center;border-bottom:1px solid var(--border);padding:0 16px;height:48px;flex-shrink:0}
-nav .logo{font-weight:700;font-size:14px;color:var(--accent);margin-right:24px;white-space:nowrap}
+nav{display:flex;align-items:center;border-bottom:2px solid var(--border);padding:0 20px;height:52px;flex-shrink:0;background:var(--navy)}
+nav .logo{font-weight:900;font-size:13px;color:var(--white);letter-spacing:2px;text-transform:uppercase;margin-right:32px;white-space:nowrap;display:flex;align-items:center;gap:8px}
+nav .logo .mark{width:6px;height:6px;background:var(--blue);display:inline-block}
 nav .tabs{display:flex;gap:0;overflow-x:auto}
-nav .tab{padding:12px 16px;color:var(--text2);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap}
-nav .tab:hover{color:var(--text)}
-nav .tab.active{color:var(--accent);border-bottom-color:var(--accent)}
-nav .tier{margin-left:auto;padding:4px 10px;border:1px solid var(--accent);font-size:10px;color:var(--accent);text-transform:uppercase}
-nav .user-info{margin-left:12px;display:flex;align-items:center;gap:8px}
-nav .user-info .email{color:var(--text2);font-size:10px;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-nav .user-info button{padding:4px 10px;font-size:10px}
-main{flex:1;overflow-y:auto;padding:20px}
+nav .tab{padding:14px 18px;color:var(--white50);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .12s}
+nav .tab:hover{color:var(--white90)}
+nav .tab.active{color:var(--blue-bright);border-bottom-color:var(--blue)}
+nav .tier{margin-left:auto;padding:4px 12px;border:1px solid var(--blue);font-size:9px;font-weight:700;color:var(--blue-bright);text-transform:uppercase;letter-spacing:1px;border-radius:var(--radius)}
+nav .user-info{margin-left:12px;display:flex;align-items:center;gap:10px}
+nav .user-info .email{color:var(--white30);font-size:10px;font-weight:500;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+nav .user-info button{padding:5px 12px;font-size:9px}
+main{flex:1;overflow-y:auto;padding:24px 28px}
 
-/* Auth screen */
-#auth-screen{position:fixed;inset:0;background:var(--bg);z-index:2000;display:flex;align-items:center;justify-content:center}
-#auth-screen .auth-box{max-width:400px;width:100%;padding:40px}
-#auth-screen h1{font-size:24px;margin-bottom:8px;color:var(--accent)}
-#auth-screen p{color:var(--text2);margin-bottom:24px;font-size:13px;line-height:1.6}
+/* ─── AUTH SCREEN ─── */
+#auth-screen{position:fixed;inset:0;background:var(--navy);z-index:2000;display:flex;align-items:center;justify-content:center}
+#auth-screen .auth-box{max-width:420px;width:100%;padding:48px}
+#auth-screen h1{font-size:32px;font-weight:900;margin-bottom:4px;color:var(--white);letter-spacing:-1px}
+#auth-screen .subtitle{color:var(--blue-bright);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:32px}
 #auth-screen .form-row{margin-bottom:16px}
-#auth-screen .auth-toggle{color:var(--accent);cursor:pointer;font-size:11px;text-align:center;margin-top:16px}
-#auth-screen .auth-error{color:var(--red);font-size:11px;margin-bottom:12px;display:none}
+#auth-screen .auth-toggle{color:var(--blue-bright);cursor:pointer;font-size:11px;text-align:center;margin-top:20px;font-weight:500}
+#auth-screen .auth-toggle:hover{text-decoration:underline}
+#auth-screen .auth-error{color:var(--red);font-size:11px;margin-bottom:12px;display:none;padding:8px 12px;background:var(--red-dim);border:1px solid var(--red);border-radius:var(--radius)}
+#auth-screen .auth-divider{border-top:1px solid var(--border);margin:28px 0;position:relative}
+#auth-screen .auth-divider span{position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--navy);padding:0 12px;font-size:10px;color:var(--white30);text-transform:uppercase;letter-spacing:1px}
 
-/* Onboarding */
-#onboarding{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;align-items:center;justify-content:center}
-#onboarding .screen{max-width:520px;width:100%;padding:40px}
-#onboarding h1{font-size:24px;margin-bottom:16px;line-height:1.3}
-#onboarding p{color:var(--text2);margin-bottom:20px;font-size:14px;line-height:1.6}
-#onboarding .state-alert{background:var(--bg2);border:1px solid var(--green);padding:12px;color:var(--green);margin:16px 0;font-size:12px}
+/* ─── ONBOARDING ─── */
+#onboarding{position:fixed;inset:0;background:var(--navy);z-index:1000;display:flex;align-items:center;justify-content:center}
+#onboarding .screen{max-width:560px;width:100%;padding:48px}
+#onboarding h1{font-size:28px;font-weight:800;margin-bottom:16px;line-height:1.3;letter-spacing:-0.5px}
+#onboarding p{color:var(--white50);margin-bottom:24px;font-size:14px;line-height:1.7}
+#onboarding .state-alert{background:var(--green-dim);border:1px solid var(--green);padding:14px 16px;color:var(--green);margin:16px 0;font-size:12px;font-weight:500;border-radius:var(--radius)}
 .goal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.goal-btn{padding:20px;text-align:center;border:1px solid var(--border);background:var(--bg2);cursor:pointer;font-size:13px}
-.goal-btn:hover,.goal-btn.selected{border-color:var(--accent);color:var(--accent)}
+.goal-btn{padding:24px;text-align:center;border:1px solid var(--border);background:var(--navy2);cursor:pointer;font-size:13px;font-weight:600;transition:all .12s;border-radius:var(--radius)}
+.goal-btn:hover,.goal-btn.selected{border-color:var(--blue);color:var(--blue-bright);background:var(--blue-glow)}
 
-/* Score gauges */
-.score-display{display:flex;gap:24px;justify-content:center;margin:20px 0}
+/* ─── SCORE GAUGES ─── */
+.score-display{display:flex;gap:32px;justify-content:center;margin:24px 0}
 .score-gauge{text-align:center}
-.score-gauge .number{font-size:32px;font-weight:700}
-.score-gauge .label{font-size:11px;color:var(--text2);text-transform:uppercase;margin-top:4px}
+.score-gauge .number{font-size:36px;font-weight:900;font-family:var(--mono);letter-spacing:-1px}
+.score-gauge .label{font-size:10px;color:var(--white50);text-transform:uppercase;margin-top:4px;letter-spacing:1px;font-weight:700}
 .score-gauge.good .number{color:var(--green)}
-.score-gauge.fair .number{color:var(--orange)}
+.score-gauge.fair .number{color:var(--amber)}
 .score-gauge.poor .number{color:var(--red)}
 
-/* Advisory feed */
-.advisory-item{border-left:3px solid var(--border);padding:12px 16px;margin-bottom:8px;background:var(--bg2)}
+/* ─── ADVISORY FEED ─── */
+.advisory-item{border-left:3px solid var(--border);padding:14px 18px;margin-bottom:8px;background:var(--navy2);transition:all .12s;border-radius:var(--radius)}
+.advisory-item:hover{background:var(--navy3)}
 .advisory-item.critical{border-left-color:var(--red)}
-.advisory-item.high{border-left-color:var(--orange)}
-.advisory-item.medium{border-left-color:var(--accent)}
-.advisory-item .condition{color:var(--text2);font-size:11px;margin-bottom:4px}
-.advisory-item .action{font-weight:600;margin-bottom:4px}
-.advisory-item .impact{color:var(--green);font-size:11px}
-.advisory-item .meta{display:flex;gap:12px;margin-top:8px;font-size:10px;color:var(--text2)}
+.advisory-item.high{border-left-color:var(--amber)}
+.advisory-item.medium{border-left-color:var(--blue)}
+.advisory-item .condition{color:var(--white50);font-size:11px;margin-bottom:4px}
+.advisory-item .action{font-weight:700;margin-bottom:4px;color:var(--white)}
+.advisory-item .impact{color:var(--green);font-size:11px;font-weight:600}
+.advisory-item .meta{display:flex;gap:16px;margin-top:8px;font-size:10px;color:var(--white30);font-weight:500}
 
-/* Module result */
-.module-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.module-header .icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:1px solid var(--accent);color:var(--accent);font-size:14px}
-.stat-row{display:flex;gap:24px;margin:16px 0;flex-wrap:wrap}
-.stat-box{background:var(--bg2);border:1px solid var(--border);padding:12px 16px;min-width:120px}
-.stat-box .value{font-size:20px;font-weight:700;color:var(--accent)}
-.stat-box .label{font-size:10px;color:var(--text2);text-transform:uppercase;margin-top:4px}
+/* ─── MODULE HEADER ─── */
+.module-header{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.module-header .icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:2px solid var(--blue);color:var(--blue-bright);font-size:14px;font-weight:700;border-radius:var(--radius);background:var(--blue-glow)}
+.stat-row{display:flex;gap:12px;margin:16px 0;flex-wrap:wrap}
+.stat-box{background:var(--navy2);border:1px solid var(--border);padding:16px 20px;min-width:130px;border-radius:var(--radius)}
+.stat-box .value{font-size:24px;font-weight:900;color:var(--blue-bright);font-family:var(--mono)}
+.stat-box .label{font-size:9px;color:var(--white30);text-transform:uppercase;margin-top:4px;letter-spacing:1px;font-weight:700}
 
-/* Calendar */
-.calendar-month{margin-bottom:16px}
-.calendar-month h3{margin-bottom:8px;color:var(--accent)}
-.calendar-entry{display:flex;align-items:center;gap:12px;padding:8px;background:var(--bg);margin-bottom:4px;font-size:11px}
-.calendar-entry .dot{width:8px;height:8px;border-radius:0;background:var(--accent)}
-.calendar-entry.sent .dot{background:var(--green)}
-.calendar-entry.completed .dot{background:var(--green)}
+/* ─── CALENDAR ─── */
+.calendar-month{margin-bottom:20px}
+.calendar-month h3{margin-bottom:10px;color:var(--blue-bright)}
+.calendar-entry{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--navy);margin-bottom:4px;font-size:11px;border:1px solid var(--border);border-radius:var(--radius)}
+.calendar-entry .dot{width:8px;height:8px;background:var(--blue);flex-shrink:0}
+.calendar-entry.sent .dot,.calendar-entry.completed .dot{background:var(--green)}
 
-/* Form */
-.form-row{margin-bottom:12px}
+/* ─── FORM ─── */
+.form-row{margin-bottom:14px}
 .form-row.inline{display:flex;gap:12px}
 .form-row.inline>*{flex:1}
 
-/* Scan animation */
-.scan-progress{margin:20px 0}
-.scan-line{display:flex;align-items:center;gap:12px;padding:8px 0;font-size:12px;opacity:0.3;transition:opacity 0.5s}
+/* ─── SCAN ─── */
+.scan-progress{margin:24px 0}
+.scan-line{display:flex;align-items:center;gap:12px;padding:10px 0;font-size:12px;opacity:0.3;transition:opacity 0.5s;font-weight:500}
 .scan-line.active{opacity:1}
 .scan-line.done{opacity:1;color:var(--green)}
 .scan-line .check{color:var(--green)}
+
+/* ─── LETTER PREVIEW ─── */
+.letter-preview{background:var(--navy);border:1px solid var(--border);padding:24px 28px;font-family:var(--mono);font-size:11px;line-height:1.8;color:var(--white70);white-space:pre-wrap;border-radius:var(--radius);max-height:500px;overflow-y:auto}
+.letter-preview .var-injected{color:var(--blue-bright);font-weight:600;background:var(--blue-glow);padding:1px 4px}
+
+/* ─── FORM SELECTOR ─── */
+.form-selector{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin:16px 0}
+.form-card{background:var(--navy);border:1px solid var(--border);padding:14px 16px;cursor:pointer;transition:all .12s;border-radius:var(--radius)}
+.form-card:hover{border-color:var(--blue);background:var(--blue-glow)}
+.form-card.selected{border-color:var(--blue);background:var(--blue-glow)}
+.form-card .form-id{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--blue-bright);margin-bottom:4px}
+.form-card .form-name{font-size:11px;color:var(--white70);font-weight:500}
+
+/* ─── METRO 2 DEMO ─── */
+.metro2-demo{background:var(--navy2);border:1px solid var(--border);padding:24px;margin-top:20px;border-radius:var(--radius)}
+.metro2-field{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;margin-bottom:4px;font-size:11px;font-family:var(--mono);border:1px solid var(--border);background:var(--navy);border-radius:var(--radius)}
+.metro2-field .field-name{color:var(--white50);font-weight:500}
+.metro2-field .field-value{font-weight:600}
+.metro2-field .field-value.error{color:var(--red)}
+.metro2-field .field-value.ok{color:var(--green)}
+.metro2-field .field-value.warn{color:var(--amber)}
+.metro2-violation{padding:12px 16px;border-left:3px solid var(--red);background:var(--red-dim);margin:8px 0;font-size:11px;border-radius:var(--radius)}
+.metro2-violation .code{font-family:var(--mono);font-weight:700;color:var(--red);margin-bottom:2px}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  nav .tabs{gap:0}
+  nav .tab{padding:14px 10px;font-size:9px}
+  nav .tier{display:none}
+  main{padding:16px}
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+  .form-row.inline{flex-direction:column;gap:12px}
+  .stat-row{flex-direction:column}
+  .score-display{flex-direction:column;align-items:center;gap:16px}
+  .form-selector{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 <div id="app">
-  <!-- Auth screen (login/signup) -->
+  <!-- Auth screen -->
   <div id="auth-screen">
     <div class="auth-box" id="auth-box">
       <h1>CREDIT GENIE</h1>
-      <p>Adaptive Credit Intelligence Engine</p>
+      <div class="subtitle">Enterprise Credit Intelligence</div>
       <div id="auth-error" class="auth-error"></div>
-      <div class="form-row"><label>Email</label><input id="auth-email" type="email" placeholder="you@email.com"></div>
-      <div class="form-row"><label>Password</label><input id="auth-password" type="password" placeholder="Password"></div>
-      <button class="primary" style="width:100%;margin-top:8px" onclick="handleLogin()">Log In</button>
-      <div class="auth-toggle" onclick="toggleAuthMode()">Don't have an account? Sign up</div>
+      <div class="form-row"><label>Email Address</label><input id="auth-email" type="email" placeholder="you@email.com"></div>
+      <div class="form-row"><label>Password</label><input id="auth-password" type="password" placeholder="Enter password"></div>
+      <button class="primary" style="width:100%;margin-top:12px" onclick="handleLogin()">ACCESS SYSTEM</button>
+      <div class="auth-toggle" onclick="toggleAuthMode()">Request access</div>
     </div>
   </div>
 
-  <!-- Onboarding overlay (hidden until auth complete) -->
+  <!-- Onboarding overlay -->
   <div id="onboarding" style="display:none">
     <div class="screen" id="screen-1">
-      <h1>Most credit repair tools show you problems.</h1>
-      <p>Credit Genie tells you exactly what to do next — and what it will cost you if you don't.</p>
-      <button class="primary" onclick="nextScreen(2)">Show me mine</button>
+      <div style="font-size:10px;font-weight:700;color:var(--blue-bright);text-transform:uppercase;letter-spacing:2px;margin-bottom:24px">Credit Intelligence Platform</div>
+      <h1>Most credit repair tools<br>show you problems.</h1>
+      <p>Credit Genie shows you exactly what to do next — the precise account, the exact dollar amount, the specific day to act — and what it will cost you if you don't.</p>
+      <button class="primary" onclick="showMetro2Demo()" style="padding:14px 32px;font-size:13px">SHOW ME MINE</button>
     </div>
   </div>
 
-  <!-- Main app (hidden until onboarding complete) -->
+  <!-- Main app -->
   <nav id="main-nav" style="display:none">
-    <span class="logo">CREDIT GENIE</span>
+    <span class="logo"><span class="mark"></span>CREDIT GENIE</span>
     <div class="tabs">
       <div class="tab active" data-tab="dashboard">Dashboard</div>
       <div class="tab" data-tab="import">Import</div>
@@ -156,10 +231,10 @@ main{flex:1;overflow-y:auto;padding:20px}
       <div class="tab" data-tab="monitor">Monitor</div>
       <div class="tab" data-tab="documents">Documents</div>
     </div>
-    <span class="tier" id="tier-badge">FREE</span>
+    <span class="tier" id="tier-badge">ENTERPRISE</span>
     <div class="user-info">
       <span class="email" id="user-email"></span>
-      <button class="danger" onclick="handleLogout()">Logout</button>
+      <button class="danger" onclick="handleLogout()">LOGOUT</button>
     </div>
   </nav>
   <main id="main-content" style="display:none"></main>
@@ -171,11 +246,9 @@ let authToken = localStorage.getItem('cg_token');
 let authUser = JSON.parse(localStorage.getItem('cg_user') || 'null');
 let isSignupMode = false;
 
-// Helper: authenticated fetch
 function authFetch(url, opts = {}) {
   const headers = { ...(opts.headers || {}) };
   if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
-  // Don't set Content-Type for FormData (browser sets multipart boundary)
   if (!(opts.body instanceof FormData) && !headers['Content-Type']) {
     headers['Content-Type'] = 'application/json';
   }
@@ -188,12 +261,12 @@ function toggleAuthMode() {
   const toggle = box.querySelector('.auth-toggle');
   const btn = box.querySelector('button.primary');
   if (isSignupMode) {
-    toggle.textContent = 'Already have an account? Log in';
-    btn.textContent = 'Sign Up';
+    toggle.textContent = 'Already have access? Log in';
+    btn.textContent = 'CREATE ACCOUNT';
     btn.setAttribute('onclick', 'handleSignup()');
   } else {
-    toggle.textContent = "Don't have an account? Sign up";
-    btn.textContent = 'Log In';
+    toggle.textContent = 'Request access';
+    btn.textContent = 'ACCESS SYSTEM';
     btn.setAttribute('onclick', 'handleLogin()');
   }
 }
@@ -208,13 +281,8 @@ async function handleLogin() {
   const email = document.getElementById('auth-email').value.trim();
   const password = document.getElementById('auth-password').value;
   if (!email || !password) { showAuthError('Email and password required'); return; }
-
   try {
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
+    const res = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
     const data = await res.json();
     if (!res.ok) { showAuthError(data.error || 'Login failed'); return; }
     authToken = data.accessToken;
@@ -223,9 +291,7 @@ async function handleLogin() {
     localStorage.setItem('cg_user', JSON.stringify(authUser));
     document.getElementById('auth-screen').style.display = 'none';
     onAuthComplete();
-  } catch (err) {
-    showAuthError('Network error. Please try again.');
-  }
+  } catch (err) { showAuthError('Network error. Please try again.'); }
 }
 
 async function handleSignup() {
@@ -233,13 +299,8 @@ async function handleSignup() {
   const password = document.getElementById('auth-password').value;
   if (!email || !password) { showAuthError('Email and password required'); return; }
   if (password.length < 6) { showAuthError('Password must be at least 6 characters'); return; }
-
   try {
-    const res = await fetch('/api/auth/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
+    const res = await fetch('/api/auth/signup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
     const data = await res.json();
     if (!res.ok) { showAuthError(data.error || 'Signup failed'); return; }
     authToken = data.accessToken;
@@ -248,44 +309,27 @@ async function handleSignup() {
     localStorage.setItem('cg_user', JSON.stringify(authUser));
     document.getElementById('auth-screen').style.display = 'none';
     onAuthComplete();
-  } catch (err) {
-    showAuthError('Network error. Please try again.');
-  }
+  } catch (err) { showAuthError('Network error. Please try again.'); }
 }
 
 function handleLogout() {
-  fetch('/api/auth/logout', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${authToken}` }
-  }).catch(() => {});
-  authToken = null;
-  authUser = null;
-  currentProfile = null;
-  advisories = [];
-  scanResults = null;
-  localStorage.removeItem('cg_token');
-  localStorage.removeItem('cg_user');
+  fetch('/api/auth/logout', { method: 'POST', headers: { 'Authorization': `Bearer ${authToken}` } }).catch(() => {});
+  authToken = null; authUser = null; currentProfile = null; advisories = []; scanResults = null;
+  localStorage.removeItem('cg_token'); localStorage.removeItem('cg_user');
   document.getElementById('auth-screen').style.display = 'flex';
   document.getElementById('main-nav').style.display = 'none';
   document.getElementById('main-content').style.display = 'none';
   document.getElementById('onboarding').style.display = 'none';
-  // Reset auth form
   document.getElementById('auth-email').value = '';
   document.getElementById('auth-password').value = '';
   document.getElementById('auth-error').style.display = 'none';
 }
 
-// ─── Post-Auth Flow ─────────────────────────────────────────────────────────
+// ─── Post-Auth ──────────────────────────────────────────────────────────────
 async function onAuthComplete() {
   document.getElementById('user-email').textContent = authUser?.email || '';
-  // Check if user already has a profile
   const res = await authFetch('/api/profiles');
-  if (!res.ok) {
-    // Token might be invalid
-    handleLogout();
-    showAuthError('Session expired. Please log in again.');
-    return;
-  }
+  if (!res.ok) { handleLogout(); showAuthError('Session expired. Please log in again.'); return; }
   const profiles = await res.json();
   if (profiles.length > 0) {
     currentProfile = profiles[0];
@@ -296,7 +340,6 @@ async function onAuthComplete() {
     if (advRes.ok) advisories = await advRes.json();
     renderDashboard();
   } else {
-    // New user — show onboarding
     document.getElementById('onboarding').style.display = 'flex';
   }
 }
@@ -306,47 +349,119 @@ let currentProfile = null;
 let advisories = [];
 let scanResults = null;
 
+// ─── Metro 2 Demo (triggered by "Show Me Mine") ────────────────────────────
+function showMetro2Demo() {
+  const ob = document.getElementById('onboarding');
+  ob.innerHTML = `<div class="screen" style="max-width:680px">
+    <div style="font-size:10px;font-weight:700;color:var(--blue-bright);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">METRO 2 AUDITOR &mdash; LIVE DEMO</div>
+    <h1 style="margin-bottom:8px">Here is what we find in 30 seconds.</h1>
+    <p style="font-size:12px">This is a sample audit of a real Metro 2 tradeline. Your actual report will show your accounts.</p>
+
+    <div class="metro2-demo" id="metro2-demo-container">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h3 style="color:var(--blue-bright)">TRADELINE: CAPITAL ONE &mdash; ****4821</h3>
+        <span class="badge critical">3 VIOLATIONS</span>
+      </div>
+
+      <div id="metro2-fields"></div>
+      <div id="metro2-violations" style="margin-top:16px"></div>
+    </div>
+
+    <div style="margin-top:24px;display:flex;gap:12px">
+      <button class="primary" onclick="nextScreen(2)" style="flex:1;padding:14px">RUN MY REPORT</button>
+      <button class="ghost" onclick="nextScreen(2)">Skip demo</button>
+    </div>
+  </div>`;
+
+  // Animate the Metro 2 fields appearing one by one
+  const fields = [
+    { name: 'Account Type', value: 'Revolving (R)', status: 'ok' },
+    { name: 'Date Opened', value: '2019-03-14', status: 'ok' },
+    { name: 'Credit Limit', value: '$5,000', status: 'ok' },
+    { name: 'Current Balance', value: '$4,200', status: 'warn', note: '84% utilization' },
+    { name: 'Payment Status', value: 'Current', status: 'ok' },
+    { name: 'Date Reported', value: '2025-12-01', status: 'ok' },
+    { name: 'Balance Date', value: '2024-08-15', status: 'error', note: 'Stale - 16 months old' },
+    { name: 'Account Status', value: '11 (Current)', status: 'ok' },
+    { name: 'Compliance Code', value: 'XB', status: 'error', note: 'Invalid segment identifier' },
+    { name: 'DOFD Reported', value: 'N/A', status: 'ok' },
+    { name: 'High Balance', value: '$5,100', status: 'error', note: 'Exceeds credit limit' },
+  ];
+
+  const violations = [
+    { code: 'METRO2-BAL-001', desc: 'Balance date is 16 months stale. FCRA requires current reporting within 30 days of account activity.' },
+    { code: 'METRO2-SEG-003', desc: 'Compliance condition code "XB" is not a valid Metro 2 segment identifier. Furnisher error.' },
+    { code: 'METRO2-LIM-002', desc: 'Reported high balance ($5,100) exceeds credit limit ($5,000). Data integrity violation.' },
+  ];
+
+  const fieldsContainer = document.getElementById('metro2-fields');
+  const violationsContainer = document.getElementById('metro2-violations');
+  let i = 0;
+
+  function showNextField() {
+    if (i >= fields.length) {
+      // Show violations after all fields
+      setTimeout(() => {
+        violationsContainer.innerHTML = `<h3 style="color:var(--red);margin-bottom:8px">VIOLATIONS DETECTED</h3>` +
+          violations.map(v => `<div class="metro2-violation"><div class="code">${v.code}</div><div>${v.desc}</div></div>`).join('');
+      }, 400);
+      return;
+    }
+    const f = fields[i];
+    const el = document.createElement('div');
+    el.className = 'metro2-field';
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(4px)';
+    el.innerHTML = `<span class="field-name">${f.name}</span><span class="field-value ${f.status}">${f.value}${f.note ? ' <span style="font-size:10px;opacity:0.7">(' + f.note + ')</span>' : ''}</span>`;
+    fieldsContainer.appendChild(el);
+    requestAnimationFrame(() => {
+      el.style.transition = 'all 0.2s ease';
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    });
+    i++;
+    setTimeout(showNextField, 120);
+  }
+  setTimeout(showNextField, 300);
+}
+
 // ─── Onboarding ─────────────────────────────────────────────────────────────
 function nextScreen(num) {
   const ob = document.getElementById('onboarding');
   if (num === 2) {
     ob.innerHTML = `<div class="screen" id="screen-2">
-      <h1>Let's get started</h1>
-      <p>We just need your name and state. No SSN required.</p>
+      <div style="font-size:10px;font-weight:700;color:var(--blue-bright);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">IDENTITY SETUP</div>
+      <h1>Let's get you in the system.</h1>
+      <p>Name and state. No SSN required.</p>
       <div class="form-row"><label>First Name</label><input id="ob-first" placeholder="First name" value="${authUser?.firstName || ''}"></div>
       <div class="form-row"><label>Last Name</label><input id="ob-last" placeholder="Last name" value="${authUser?.lastName || ''}"></div>
       <div class="form-row"><label>Email</label><input id="ob-email" type="email" placeholder="email@example.com" value="${authUser?.email || ''}"></div>
       <div class="form-row inline">
-        <div><label>State</label><input id="ob-state" placeholder="NY" maxlength="2"></div>
+        <div><label>State</label><input id="ob-state" placeholder="NY" maxlength="2" style="text-transform:uppercase"></div>
         <div><label>County</label><input id="ob-county" placeholder="Orange"></div>
       </div>
       <div id="state-alert" class="state-alert" style="display:none"></div>
-      <button class="primary mt-12" onclick="submitIdentity()">Continue</button>
+      <button class="primary mt-12" onclick="submitIdentity()" style="width:100%">CONTINUE</button>
     </div>`;
     document.getElementById('ob-state').addEventListener('input', (e) => {
       const val = e.target.value.toUpperCase();
       const alert = document.getElementById('state-alert');
-      if (val === 'NY') {
-        alert.style.display = 'block';
-        alert.textContent = 'Good news: New York has banned medical debt from credit reports. We will check yours automatically.';
-      } else if (val === 'CO') {
-        alert.style.display = 'block';
-        alert.textContent = 'Colorado restricts medical debt reporting for debts under $500 and debts less than 6 months old.';
-      } else {
-        alert.style.display = 'none';
-      }
+      if (val === 'NY') { alert.style.display = 'block'; alert.textContent = 'New York has banned medical debt from credit reports. We will audit yours automatically.'; }
+      else if (val === 'CO') { alert.style.display = 'block'; alert.textContent = 'Colorado restricts medical debt reporting for debts under $500 and debts less than 6 months old.'; }
+      else { alert.style.display = 'none'; }
     });
   } else if (num === 6) {
     ob.innerHTML = `<div class="screen" id="screen-6">
+      <div style="font-size:10px;font-weight:700;color:var(--blue-bright);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">OBJECTIVE</div>
       <h1>What are you working toward?</h1>
-      <p>This determines which modules get prioritized.</p>
+      <p>This prioritizes which modules fire first.</p>
       <div class="goal-grid">
-        <div class="goal-btn" onclick="selectGoal('buying_home',this)">Buying a home</div>
-        <div class="goal-btn" onclick="selectGoal('business_financing',this)">Business loan / financing</div>
-        <div class="goal-btn" onclick="selectGoal('renting_apartment',this)">Renting an apartment</div>
-        <div class="goal-btn" onclick="selectGoal('better_score',this)">Just want a better score</div>
+        <div class="goal-btn" onclick="selectGoal('buying_home',this)">Buying a Home</div>
+        <div class="goal-btn" onclick="selectGoal('business_financing',this)">Business Financing</div>
+        <div class="goal-btn" onclick="selectGoal('renting_apartment',this)">Renting an Apartment</div>
+        <div class="goal-btn" onclick="selectGoal('better_score',this)">Better Score</div>
       </div>
-      <button class="primary mt-12" onclick="finishOnboarding()">Run My Scan</button>
+      <button class="primary mt-12" onclick="finishOnboarding()" style="width:100%">INITIALIZE SCAN</button>
     </div>`;
   }
 }
@@ -358,11 +473,7 @@ async function submitIdentity() {
   const state = document.getElementById('ob-state').value.trim().toUpperCase();
   const county = document.getElementById('ob-county').value.trim();
   if (!firstName || !lastName || !state) { alert('Name and state required'); return; }
-
-  const res = await authFetch('/api/profiles', {
-    method: 'POST',
-    body: JSON.stringify({ firstName, lastName, email, state, county })
-  });
+  const res = await authFetch('/api/profiles', { method: 'POST', body: JSON.stringify({ firstName, lastName, email, state, county }) });
   currentProfile = await res.json();
   nextScreen(6);
 }
@@ -375,26 +486,23 @@ function selectGoal(goal, el) {
 }
 
 async function finishOnboarding() {
-  await authFetch(`/api/profiles/${currentProfile.id}`, {
-    method: 'PATCH',
-    body: JSON.stringify({ goal: selectedGoal })
-  });
+  await authFetch(`/api/profiles/${currentProfile.id}`, { method: 'PATCH', body: JSON.stringify({ goal: selectedGoal }) });
   currentProfile.goal = selectedGoal;
-
   const ob = document.getElementById('onboarding');
   ob.innerHTML = `<div class="screen" id="screen-4">
-    <h1>Scanning your credit intelligence...</h1>
+    <div style="font-size:10px;font-weight:700;color:var(--blue-bright);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px">SYSTEM SCAN</div>
+    <h1>Initializing credit intelligence...</h1>
     <div class="scan-progress">
-      <div class="scan-line" id="sl-1">&#9654; Payment History</div>
+      <div class="scan-line" id="sl-1">&#9654; Payment History Analysis</div>
       <div class="scan-line" id="sl-2">&#9654; Utilization & Report Dates</div>
       <div class="scan-line" id="sl-3">&#9654; Collections & Medical Debt</div>
       <div class="scan-line" id="sl-4">&#9654; Mixed Files & Duplicates</div>
       <div class="scan-line" id="sl-5">&#9654; Authorized User Accounts</div>
       <div class="scan-line" id="sl-6">&#9654; Account Age & Credit Mix</div>
       <div class="scan-line" id="sl-7">&#9654; Dormant Card Risk</div>
-      <div class="scan-line" id="sl-8">&#9654; Bureau Behavior Analysis</div>
+      <div class="scan-line" id="sl-8">&#9654; Bureau Behavior Profiling</div>
     </div>
-    <p style="color:var(--text2);font-size:11px">Add accounts and scores from the Profile tab to get a full analysis.</p>
+    <p class="text-sm text-dim">Import your credit report from the Import tab for full analysis.</p>
   </div>`;
 
   for (let i = 1; i <= 8; i++) {
@@ -404,13 +512,11 @@ async function finishOnboarding() {
     await new Promise(r => setTimeout(r, 300));
     if (el) { el.classList.add('done'); el.textContent = '\u2713 ' + el.textContent.slice(2); }
   }
-
   await new Promise(r => setTimeout(r, 500));
 
   const scanRes = await authFetch(`/api/modules/${currentProfile.id}/scan`, { method: 'POST' });
   scanResults = await scanRes.json();
   advisories = scanResults.advisories || [];
-
   ob.style.display = 'none';
   document.getElementById('main-nav').style.display = 'flex';
   document.getElementById('main-content').style.display = 'block';
@@ -439,56 +545,40 @@ document.addEventListener('click', (e) => {
 function renderImport() {
   const m = document.getElementById('main-content');
   m.innerHTML = `
-    <div class="module-header"><div class="icon">&uarr;</div><div><h2>IMPORT CREDIT REPORT</h2><span style="color:var(--text2);font-size:11px">Paste text or upload PDF — we parse it automatically</span></div></div>
-
+    <div class="module-header"><div class="icon">&uarr;</div><div><h2>IMPORT CREDIT REPORT</h2><span class="text-sm text-dim">Paste text or upload PDF &mdash; automatic parsing</span></div></div>
     <div class="card">
-      <h3>Option 1: Paste Report Text</h3>
-      <p style="color:var(--text2);font-size:11px;margin:8px 0">Copy your entire credit report from AnnualCreditReport.com, Experian, TransUnion, or Equifax and paste it below.</p>
+      <h3>PASTE REPORT TEXT</h3>
+      <p class="text-sm text-dim mt-8 mb-12">Copy your entire credit report from AnnualCreditReport.com, then paste below.</p>
       <div class="form-row">
         <label>Bureau</label>
-        <select id="import-bureau">
-          <option value="equifax">Equifax</option>
-          <option value="experian">Experian</option>
-          <option value="transunion">TransUnion</option>
-        </select>
+        <select id="import-bureau"><option value="equifax">Equifax</option><option value="experian">Experian</option><option value="transunion">TransUnion</option></select>
       </div>
       <div class="form-row">
         <label>Credit Report Text</label>
-        <textarea id="import-text" rows="12" placeholder="Paste your full credit report text here. Include all accounts, balances, and payment history. The more you paste, the more we can parse."></textarea>
+        <textarea id="import-text" rows="12" placeholder="Paste your full credit report text here. Include all accounts, balances, and payment history."></textarea>
       </div>
-      <button class="primary" onclick="importText()">Parse & Import</button>
+      <button class="primary" onclick="importText()">PARSE & IMPORT</button>
     </div>
-
     <div class="card">
-      <h3>Option 2: Upload PDF</h3>
-      <p style="color:var(--text2);font-size:11px;margin:8px 0">Upload your credit report PDF file. Supported: PDF, TXT, HTML (max 25MB).</p>
+      <h3>UPLOAD PDF</h3>
+      <p class="text-sm text-dim mt-8 mb-12">Upload your credit report PDF file. Supported: PDF, TXT, HTML (max 25MB).</p>
       <div class="form-row">
         <label>Bureau</label>
-        <select id="import-pdf-bureau">
-          <option value="equifax">Equifax</option>
-          <option value="experian">Experian</option>
-          <option value="transunion">TransUnion</option>
-        </select>
+        <select id="import-pdf-bureau"><option value="equifax">Equifax</option><option value="experian">Experian</option><option value="transunion">TransUnion</option></select>
       </div>
       <div class="form-row">
-        <input type="file" id="import-file" accept=".pdf,.txt,.html" style="padding:12px;background:var(--bg2);border:1px dashed var(--border)">
+        <input type="file" id="import-file" accept=".pdf,.txt,.html" style="padding:14px;background:var(--navy3);border:1px dashed var(--border2)">
       </div>
-      <button class="primary" onclick="importPDF()">Upload & Parse</button>
+      <button class="primary" onclick="importPDF()">UPLOAD & PARSE</button>
     </div>
-
-    <div id="import-result" style="display:none" class="card">
-      <h3>Import Results</h3>
-      <div id="import-result-content"></div>
-    </div>
-
-    <div class="card" style="border-color:var(--accent)">
-      <h3 style="color:var(--accent)">Tips for Best Results</h3>
-      <ul style="color:var(--text2);font-size:11px;padding-left:16px;line-height:2">
-        <li>Download your free report from <strong>AnnualCreditReport.com</strong></li>
-        <li>For text paste: Select All (Ctrl+A) on the report page, then Copy (Ctrl+C) and paste here</li>
-        <li>For PDF: Save/download the report as PDF from your browser</li>
-        <li>Import each bureau separately for best cross-bureau comparison</li>
-        <li>The parser detects: account names, balances, limits, dates, negative items, medical debts, and AU accounts</li>
+    <div id="import-result" style="display:none" class="card"></div>
+    <div class="card" style="border-color:var(--blue)">
+      <h3 style="color:var(--blue-bright)">IMPORT GUIDE</h3>
+      <ul style="color:var(--white50);font-size:11px;padding-left:16px;line-height:2.2;margin-top:8px">
+        <li>Download your free report from <strong style="color:var(--white70)">AnnualCreditReport.com</strong></li>
+        <li>For text: Select All (Ctrl+A) on the report page, Copy (Ctrl+C), paste here</li>
+        <li>For PDF: Save the report as PDF from your browser</li>
+        <li>Import each bureau separately for cross-bureau comparison</li>
       </ul>
     </div>
   `;
@@ -497,15 +587,8 @@ function renderImport() {
 async function importText() {
   const text = document.getElementById('import-text').value;
   const bureau = document.getElementById('import-bureau').value;
-  if (!text || text.length < 50) {
-    alert('Please paste more text. A credit report should be at least a few hundred characters.');
-    return;
-  }
-
-  const res = await authFetch(`/api/import/${currentProfile.id}/text`, {
-    method: 'POST',
-    body: JSON.stringify({ text, bureau })
-  });
+  if (!text || text.length < 50) { alert('Please paste more text.'); return; }
+  const res = await authFetch(`/api/import/${currentProfile.id}/text`, { method: 'POST', body: JSON.stringify({ text, bureau }) });
   const data = await res.json();
   showImportResult(data);
 }
@@ -513,46 +596,33 @@ async function importText() {
 async function importPDF() {
   const fileInput = document.getElementById('import-file');
   const bureau = document.getElementById('import-pdf-bureau').value;
-  if (!fileInput.files || !fileInput.files[0]) {
-    alert('Please select a file to upload.');
-    return;
-  }
-
+  if (!fileInput.files || !fileInput.files[0]) { alert('Please select a file.'); return; }
   const formData = new FormData();
   formData.append('file', fileInput.files[0]);
   formData.append('bureau', bureau);
-
-  const res = await authFetch(`/api/import/${currentProfile.id}/pdf`, {
-    method: 'POST',
-    body: formData
-  });
+  const res = await authFetch(`/api/import/${currentProfile.id}/pdf`, { method: 'POST', body: formData });
   const data = await res.json();
   showImportResult(data);
 }
 
 function showImportResult(data) {
   const resultDiv = document.getElementById('import-result');
-  const contentDiv = document.getElementById('import-result-content');
   resultDiv.style.display = 'block';
-
   if (data.error) {
-    contentDiv.innerHTML = `<p style="color:var(--red)">${data.error}</p>${data.details ? `<p style="color:var(--text2);font-size:11px">${data.details}</p>` : ''}`;
+    resultDiv.innerHTML = `<p style="color:var(--red)">${data.error}</p>${data.details ? `<p class="text-sm text-dim">${data.details}</p>` : ''}`;
     return;
   }
-
-  contentDiv.innerHTML = `
-    <div class="stat-row">
-      <div class="stat-box"><div class="value">${data.accountsFound}</div><div class="label">Accounts Found</div></div>
+  resultDiv.innerHTML = `
+    <h3>IMPORT RESULTS</h3>
+    <div class="stat-row mt-8">
+      <div class="stat-box"><div class="value">${data.accountsFound}</div><div class="label">Found</div></div>
       <div class="stat-box"><div class="value">${data.accountsImported}</div><div class="label">Imported</div></div>
-      <div class="stat-box"><div class="value">${data.totalAccounts}</div><div class="label">Total in Profile</div></div>
+      <div class="stat-box"><div class="value">${data.totalAccounts}</div><div class="label">Total</div></div>
     </div>
-    ${data.bureau ? `<p style="color:var(--accent);font-size:11px;margin-top:8px">Detected bureau: ${data.bureau}</p>` : ''}
-    ${data.personalInfo?.name ? `<p style="color:var(--text2);font-size:11px">Name detected: ${data.personalInfo.name}</p>` : ''}
-    ${data.errors?.length > 0 ? `<p style="color:var(--orange);font-size:11px;margin-top:8px">${data.errors.join(' | ')}</p>` : ''}
-    <p style="color:var(--green);margin-top:12px;font-size:12px">Import complete. Go to Dashboard and run a Full Scan to analyze your accounts.</p>
-    <button class="primary mt-8" onclick="runFullScan();document.querySelector('[data-tab=dashboard]').click()">Run Full Scan Now</button>
+    ${data.bureau ? `<p style="color:var(--blue-bright);font-size:11px;margin-top:8px">Bureau: ${data.bureau}</p>` : ''}
+    <p style="color:var(--green);margin-top:12px;font-size:12px;font-weight:600">Import complete. Run Full Scan to analyze.</p>
+    <button class="primary mt-8" onclick="runFullScan();document.querySelector('[data-tab=dashboard]').click()">RUN FULL SCAN</button>
   `;
-
   refreshProfile();
 }
 
@@ -568,7 +638,7 @@ function renderDashboard() {
   const latestScores = getLatestScores(scores);
 
   m.innerHTML = `
-    <div class="module-header"><div class="icon">&#9672;</div><div><h2>ADVISORY FEED</h2><span style="color:var(--text2);font-size:11px">${currentProfile?.firstName} ${currentProfile?.lastName} — ${currentProfile?.state}</span></div></div>
+    <div class="module-header"><div class="icon">&#9672;</div><div><h2>ADVISORY FEED</h2><span class="text-sm text-dim">${currentProfile?.firstName} ${currentProfile?.lastName} &mdash; ${currentProfile?.state}</span></div></div>
 
     ${scores.length > 0 ? `<div class="score-display">
       ${Object.entries(latestScores).map(([bureau, score]) => `
@@ -576,32 +646,32 @@ function renderDashboard() {
           <div class="number">${score}</div>
           <div class="label">${bureau}</div>
         </div>`).join('')}
-    </div>` : '<p style="color:var(--text2);margin-bottom:16px">Add scores in the Profile tab to see your score display.</p>'}
+    </div>` : '<p class="text-dim mb-16">Add scores in the Profile tab to see your score display.</p>'}
 
     <div class="stat-row">
       <div class="stat-box"><div class="value">${advisories.length}</div><div class="label">Active Advisories</div></div>
       <div class="stat-box"><div class="value">${advisories.filter(a=>a.priority==='critical').length}</div><div class="label">Critical</div></div>
       <div class="stat-box"><div class="value">${currentProfile?.accounts?.length || 0}</div><div class="label">Accounts</div></div>
-      <div class="stat-box"><div class="value">${scanResults?.estimatedTotalImpact || 'Run scan'}</div><div class="label">Estimated Impact</div></div>
+      <div class="stat-box"><div class="value">${scanResults?.estimatedTotalImpact || '&mdash;'}</div><div class="label">Est. Impact</div></div>
     </div>
 
-    <h3 class="mt-12 mb-8">YOUR MOVES — Priority Order</h3>
+    <h3 class="mt-16 mb-8">YOUR MOVES &mdash; PRIORITY ORDER</h3>
     <div id="advisory-feed">
-      ${advisories.length === 0 ? '<p style="color:var(--text2)">Add accounts and scores in the Profile tab, then run a scan to get personalized advisories.</p>' : ''}
+      ${advisories.length === 0 ? '<p class="text-dim">Add accounts in Profile tab and run a scan to get advisories.</p>' : ''}
       ${advisories.slice(0, 20).map(a => `
         <div class="advisory-item ${a.priority}">
           <div class="condition">${a.condition}</div>
           <div class="action">${a.action}</div>
           <div class="impact">${a.expectedImpact}</div>
           <div class="meta">
-            <span>${a.module.replace(/_/g,' ')}</span>
-            <span>${a.bureau}</span>
+            <span>${a.module.replace(/_/g,' ').toUpperCase()}</span>
+            <span>${a.bureau.toUpperCase()}</span>
             <span>${a.timeframe}</span>
           </div>
         </div>`).join('')}
     </div>
 
-    <button class="primary mt-12" onclick="runFullScan()">Re-Run Full Scan</button>
+    <button class="primary mt-16" onclick="runFullScan()">RE-RUN FULL SCAN</button>
   `;
 }
 
@@ -619,20 +689,20 @@ function renderProfile() {
   const scores = currentProfile?.scores || [];
 
   m.innerHTML = `
-    <div class="module-header"><div class="icon">&#8853;</div><div><h2>CREDIT PROFILE</h2><span style="color:var(--text2);font-size:11px">${currentProfile?.firstName} ${currentProfile?.lastName}</span></div></div>
+    <div class="module-header"><div class="icon">&#8853;</div><div><h2>CREDIT PROFILE</h2><span class="text-sm text-dim">${currentProfile?.firstName} ${currentProfile?.lastName}</span></div></div>
 
     <div class="card">
-      <h3>Add Score</h3>
+      <h3>ADD SCORE</h3>
       <div class="form-row inline mt-8">
         <div><label>Bureau</label><select id="score-bureau"><option value="equifax">Equifax</option><option value="experian">Experian</option><option value="transunion">TransUnion</option></select></div>
         <div><label>Score</label><input id="score-value" type="number" placeholder="642"></div>
         <div><label>Date</label><input id="score-date" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
-        <div style="display:flex;align-items:flex-end"><button class="primary" onclick="addScore()">Add</button></div>
+        <div style="display:flex;align-items:flex-end"><button class="primary" onclick="addScore()">ADD</button></div>
       </div>
     </div>
 
     <div class="card">
-      <h3>Add Account</h3>
+      <h3>ADD ACCOUNT</h3>
       <div class="form-row inline mt-8">
         <div><label>Creditor Name</label><input id="acct-creditor" placeholder="Capital One"></div>
         <div><label>Account # (last 4)</label><input id="acct-number" placeholder="1234" maxlength="4"></div>
@@ -662,30 +732,30 @@ function renderProfile() {
         <div><label>Primary Holder (if AU)</label><input id="acct-primary" placeholder="Name"></div>
         <div><label>Collection Agency</label><input id="acct-collector" placeholder="Midland Credit"></div>
       </div>
-      <button class="primary mt-8" onclick="addAccount()">Add Account</button>
+      <button class="primary mt-8" onclick="addAccount()">ADD ACCOUNT</button>
     </div>
 
     <div class="card">
-      <h3>Accounts (${accounts.length})</h3>
-      ${accounts.length === 0 ? '<p style="color:var(--text2);margin-top:8px">No accounts added yet.</p>' : ''}
+      <h3>ACCOUNTS (${accounts.length})</h3>
+      ${accounts.length === 0 ? '<p class="text-dim mt-8">No accounts added yet.</p>' : ''}
       ${accounts.map(a => `
         <div class="advisory-item ${a.isNegative ? 'critical' : 'medium'}" style="margin-top:8px">
           <div class="action">${a.creditorName} ${a.accountNumber ? '('+a.accountNumber+')' : ''}</div>
-          <div class="condition">${a.accountType} | ${a.accountStatus} | ${a.bureaus.join(', ')} ${a.isNegative ? '| NEGATIVE: '+a.negativeReason : ''}</div>
+          <div class="condition">${a.accountType} | ${a.accountStatus} | ${a.bureaus.join(', ').toUpperCase()} ${a.isNegative ? '| NEGATIVE: '+a.negativeReason : ''}</div>
           <div class="meta">
             <span>Balance: $${a.balance ?? 'N/A'}</span>
             <span>Limit: $${a.creditLimit ?? 'N/A'}</span>
             <span>Snapshot: Day ${a.snapshotDate ?? 'N/A'}</span>
             ${a.isMedical ? '<span style="color:var(--purple)">MEDICAL</span>' : ''}
-            ${a.isAuthorizedUser ? '<span style="color:var(--orange)">AU</span>' : ''}
+            ${a.isAuthorizedUser ? '<span style="color:var(--amber)">AU</span>' : ''}
           </div>
         </div>`).join('')}
     </div>
 
     <div class="card">
-      <h3>Score History</h3>
-      ${scores.length === 0 ? '<p style="color:var(--text2);margin-top:8px">No scores recorded yet.</p>' : ''}
-      ${scores.map(s => `<div style="display:flex;gap:12px;padding:4px 0;font-size:11px"><span style="color:var(--accent)">${s.bureau}</span><span style="font-weight:600">${s.score}</span><span style="color:var(--text2)">${new Date(s.recordedAt).toLocaleDateString()}</span></div>`).join('')}
+      <h3>SCORE HISTORY</h3>
+      ${scores.length === 0 ? '<p class="text-dim mt-8">No scores recorded yet.</p>' : ''}
+      ${scores.map(s => `<div style="display:flex;gap:16px;padding:6px 0;font-size:11px;font-family:var(--mono)"><span style="color:var(--blue-bright)">${s.bureau.toUpperCase()}</span><span style="font-weight:700">${s.score}</span><span class="text-dim">${new Date(s.recordedAt).toLocaleDateString()}</span></div>`).join('')}
     </div>
   `;
 }
@@ -695,15 +765,8 @@ async function addScore() {
   const score = document.getElementById('score-value').value;
   const date = document.getElementById('score-date').value;
   if (!score) return;
-  const res = await authFetch(`/api/profiles/${currentProfile.id}/scores`, {
-    method: 'POST',
-    body: JSON.stringify({ bureau, score: Number(score), recordedAt: date })
-  });
-  if (res.ok) {
-    const entry = await res.json();
-    currentProfile.scores.push(entry);
-    renderProfile();
-  }
+  const res = await authFetch(`/api/profiles/${currentProfile.id}/scores`, { method: 'POST', body: JSON.stringify({ bureau, score: Number(score), recordedAt: date }) });
+  if (res.ok) { const entry = await res.json(); currentProfile.scores.push(entry); renderProfile(); }
 }
 
 async function addAccount() {
@@ -727,21 +790,14 @@ async function addAccount() {
     collectionAgency: document.getElementById('acct-collector').value || null,
   };
   if (!body.creditorName) return;
-  const res = await authFetch(`/api/profiles/${currentProfile.id}/accounts`, {
-    method: 'POST',
-    body: JSON.stringify(body)
-  });
-  if (res.ok) {
-    const acct = await res.json();
-    currentProfile.accounts.push(acct);
-    renderProfile();
-  }
+  const res = await authFetch(`/api/profiles/${currentProfile.id}/accounts`, { method: 'POST', body: JSON.stringify(body) });
+  if (res.ok) { const acct = await res.json(); currentProfile.accounts.push(acct); renderProfile(); }
 }
 
-// ─── Optimizer Tab (Module 1 + 7) ───────────────────────────────────────────
+// ─── Optimizer Tab ──────────────────────────────────────────────────────────
 async function renderOptimizer() {
   const m = document.getElementById('main-content');
-  m.innerHTML = '<p style="color:var(--text2)">Running Report Date Optimizer + Dormant Monitor...</p>';
+  m.innerHTML = '<p class="text-dim">Running Report Date Optimizer + Dormant Monitor...</p>';
   const [rdoRes, dormRes] = await Promise.all([
     authFetch(`/api/modules/${currentProfile.id}/report-date-optimizer`, {method:'POST'}),
     authFetch(`/api/modules/${currentProfile.id}/dormant-monitor`, {method:'POST'})
@@ -755,110 +811,486 @@ async function renderOptimizer() {
       <div class="stat-box"><div class="value">${rdo.alerts?.length || 0}</div><div class="label">Snapshot Alerts</div></div>
       <div class="stat-box"><div class="value">${dorm.alerts?.length || 0}</div><div class="label">Dormant Cards</div></div>
     </div>
-    <p style="color:var(--text2);margin-bottom:12px">${rdo.summary}</p>
-    <p style="color:var(--text2);margin-bottom:12px">${dorm.summary}</p>
+    <p class="text-dim mb-12">${rdo.summary}</p>
+    <p class="text-dim mb-12">${dorm.summary}</p>
     <h3 class="mt-12 mb-8">SNAPSHOT ALERTS</h3>
     ${(rdo.alerts || []).map(a => `
       <div class="advisory-item high">
-        <div class="action">${a.creditorName} — Pay to $${a.targetBalance} before day ${a.snapshotDate}</div>
+        <div class="action">${a.creditorName} &mdash; Pay to $${a.targetBalance} before day ${a.snapshotDate}</div>
         <div class="condition">Current: $${a.currentBalance}/$${a.creditLimit} (${a.currentUtilization}%) &rarr; Target: ${a.targetUtilization}%</div>
         <div class="impact">${a.expectedImpact}</div>
       </div>`).join('')}
-    <h3 class="mt-12 mb-8">DORMANT CARD ALERTS</h3>
+    <h3 class="mt-16 mb-8">DORMANT CARD ALERTS</h3>
     ${(dorm.alerts || []).map(a => `
       <div class="advisory-item ${a.riskLevel}">
-        <div class="action">${a.creditorName} — ${a.daysSinceLastTransaction} days inactive</div>
+        <div class="action">${a.creditorName} &mdash; ${a.daysSinceLastTransaction} days inactive</div>
         <div class="condition">${a.recommendation}</div>
         <div class="impact">Limit: $${a.creditLimit} | Min spend: $${a.minimumSpend}</div>
       </div>`).join('')}
   `;
 }
 
-// ─── Disputes Tab (Module 3 + 4) ────────────────────────────────────────────
+// ─── Disputes Tab with Form ID Variable Injection ───────────────────────────
+const FORM_LIBRARY = [
+  {
+    id: 'Form-221',
+    name: 'FCRA Section 611 — Initial Dispute',
+    category: 'dispute',
+    template: (p, a) => `${p.firstName} ${p.lastName}
+${p.addresses?.find(x => x.isCurrent)?.street || '[YOUR STREET ADDRESS]'}
+${p.addresses?.find(x => x.isCurrent)?.city || '[CITY]'}, ${p.state} ${p.addresses?.find(x => x.isCurrent)?.zip || '[ZIP]'}
+
+Date: ${new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'})}
+
+${getBureauAddr(a?.bureaus?.[0] || 'equifax')}
+
+Re: Formal Dispute — FCRA Section 611
+Account: ${a?.creditorName || '[CREDITOR NAME]'} — ${a?.accountNumber || '[ACCOUNT NUMBER]'}
+
+Dear Investigations Department:
+
+Pursuant to 15 U.S.C. § 1681i, I am formally disputing the accuracy of the above-referenced account appearing on my credit report.
+
+ACCOUNT DETAILS:
+  Creditor: ${a?.creditorName || '[CREDITOR NAME]'}
+  Account Number: ${a?.accountNumber || '[ACCOUNT NUMBER]'}
+  Reported Balance: $${a?.balance ?? '[BALANCE]'}
+  Account Type: ${a?.accountType || '[TYPE]'}
+  Status Reported: ${a?.accountStatus || '[STATUS]'}
+
+REASON FOR DISPUTE:
+This information is inaccurate and/or incomplete. I request that you conduct a thorough reinvestigation of this item pursuant to Section 611 of the Fair Credit Reporting Act and provide me with the results within 30 days.
+
+If you cannot verify the accuracy of this information, it must be promptly deleted from my credit file pursuant to FCRA § 611(a)(5)(A).
+
+I am enclosing copies of my identification for your records.
+
+Sincerely,
+${p.firstName} ${p.lastName}
+SSN (last 4): XXX-XX-${p.ssn || 'XXXX'}`
+  },
+  {
+    id: 'Form-222',
+    name: 'Method of Verification Demand',
+    category: 'mov',
+    template: (p, a) => `${p.firstName} ${p.lastName}
+${p.addresses?.find(x => x.isCurrent)?.street || '[YOUR STREET ADDRESS]'}
+${p.addresses?.find(x => x.isCurrent)?.city || '[CITY]'}, ${p.state} ${p.addresses?.find(x => x.isCurrent)?.zip || '[ZIP]'}
+
+Date: ${new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'})}
+
+${getBureauAddr(a?.bureaus?.[0] || 'equifax')}
+
+Re: METHOD OF VERIFICATION DEMAND
+Account: ${a?.creditorName || '[CREDITOR NAME]'} — ${a?.accountNumber || '[ACCOUNT NUMBER]'}
+
+Dear Investigations Department:
+
+On or about [DISPUTE DATE], I submitted a formal dispute regarding the above-referenced account pursuant to 15 U.S.C. § 1681i. Your office responded that the item was "verified" without providing any supporting documentation.
+
+Pursuant to 15 U.S.C. § 1681i(a)(6)(B)(iii), I demand the following:
+
+1. The name of the person who conducted the reinvestigation
+2. The specific documents reviewed during the reinvestigation
+3. Whether the verification was automated (e-Oscar) or manual
+4. The name, address, and telephone number of the data furnisher consulted
+5. A copy of any documentation the furnisher provided
+
+If you cannot provide this within fifteen (15) days, the disputed item must be deleted immediately pursuant to FCRA § 611(a)(5)(A).
+
+ACCOUNT IN QUESTION:
+  Creditor: ${a?.creditorName || '[CREDITOR NAME]'}
+  Account: ${a?.accountNumber || '[ACCOUNT NUMBER]'}
+  Balance: $${a?.balance ?? '[BALANCE]'}
+  Status: ${a?.accountStatus || '[STATUS]'}
+
+Sent via Certified Mail, Return Receipt Requested.
+
+Sincerely,
+${p.firstName} ${p.lastName}
+SSN (last 4): XXX-XX-${p.ssn || 'XXXX'}`
+  },
+  {
+    id: 'Form-223',
+    name: 'CFPB Complaint Filing',
+    category: 'escalation',
+    template: (p, a) => `CONSUMER FINANCIAL PROTECTION BUREAU COMPLAINT
+
+Complainant: ${p.firstName} ${p.lastName}
+State: ${p.state}
+Date: ${new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'})}
+
+Company: ${getBureauName2(a?.bureaus?.[0] || 'equifax')}
+
+Product: Credit reporting
+Issue: Incorrect information on credit report
+
+ACCOUNT:
+  Creditor: ${a?.creditorName || '[CREDITOR NAME]'}
+  Account: ${a?.accountNumber || '[ACCOUNT NUMBER]'}
+  Balance: $${a?.balance ?? '[BALANCE]'}
+  Type: ${a?.accountType || '[TYPE]'}
+
+NARRATIVE:
+I submitted a formal dispute to ${getBureauName2(a?.bureaus?.[0] || 'equifax')} regarding account ${a?.creditorName || '[CREDITOR]'} (${a?.accountNumber || '[ACCT#]'}) pursuant to 15 U.S.C. § 1681i.
+
+The bureau responded "verified" without adequate documentation. I then submitted a Method of Verification demand via certified mail. The bureau failed to respond within 15 days.
+
+This violates FCRA Section 611(a)(6)(B)(iii).
+
+DESIRED RESOLUTION:
+1. Immediate deletion of the disputed item
+2. Confirmation the item will not be re-inserted
+3. Updated credit report reflecting the correction
+
+SUPPORTING DOCUMENTATION:
+- Original dispute letter
+- Bureau "verified" response
+- Method of Verification demand letter
+- Certified mail receipts`
+  },
+  {
+    id: 'Form-224',
+    name: 'Pay-for-Delete Offer',
+    category: 'collection',
+    template: (p, a) => `${p.firstName} ${p.lastName}
+${p.addresses?.find(x => x.isCurrent)?.street || '[YOUR STREET ADDRESS]'}
+${p.addresses?.find(x => x.isCurrent)?.city || '[CITY]'}, ${p.state} ${p.addresses?.find(x => x.isCurrent)?.zip || '[ZIP]'}
+
+Date: ${new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'})}
+
+${a?.collectionAgency || a?.creditorName || '[COLLECTION AGENCY]'}
+[AGENCY ADDRESS]
+
+Re: Settlement Offer — Account ${a?.accountNumber || '[ACCOUNT NUMBER]'}
+Original Creditor: ${a?.originalCreditor || a?.creditorName || '[ORIGINAL CREDITOR]'}
+Balance Claimed: $${a?.balance ?? '[BALANCE]'}
+
+Dear Collections Department:
+
+I am writing regarding the above-referenced account. I am prepared to make a payment to resolve this account under the following conditions:
+
+OFFER:
+I will pay $${a?.balance ? Math.round(a.balance * 0.35) : '[AMOUNT]'} (${a?.balance ? '35%' : '[PERCENTAGE]'} of claimed balance) as full and final settlement, provided that you:
+
+1. Accept this amount as payment in full
+2. Report this account as "Paid in Full" or "Deleted" to all three credit bureaus
+3. Provide written confirmation of this agreement before payment is processed
+4. Cease all collection activity immediately upon payment
+
+This offer is valid for 15 days from the date of this letter.
+
+THIS IS NOT AN ACKNOWLEDGMENT OF DEBT. This letter is sent pursuant to my rights under the FDCPA and is not to be construed as an acknowledgment of the validity of the claimed debt.
+
+Sincerely,
+${p.firstName} ${p.lastName}`
+  },
+  {
+    id: 'Form-225',
+    name: 'NY Medical Debt Ban Letter',
+    category: 'medical',
+    template: (p, a) => `${p.firstName} ${p.lastName}
+${p.addresses?.find(x => x.isCurrent)?.street || '[YOUR STREET ADDRESS]'}
+${p.addresses?.find(x => x.isCurrent)?.city || '[CITY]'}, ${p.state} ${p.addresses?.find(x => x.isCurrent)?.zip || '[ZIP]'}
+
+Date: ${new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'})}
+
+${getBureauAddr(a?.bureaus?.[0] || 'equifax')}
+
+Re: DEMAND TO CEASE REPORTING MEDICAL DEBT — NEW YORK STATE LAW
+Account: ${a?.creditorName || '[MEDICAL PROVIDER/COLLECTOR]'} — ${a?.accountNumber || '[ACCOUNT NUMBER]'}
+Balance: $${a?.balance ?? '[BALANCE]'}
+
+Dear ${getBureauName2(a?.bureaus?.[0] || 'equifax')}:
+
+I am a resident of the State of New York. The above-referenced account is a medical debt on my credit report.
+
+Pursuant to New York State law, medical debts are prohibited from appearing on consumer credit reports. This ban is independent of any federal rules and remains in full force.
+
+I demand immediate removal of this item. Continued reporting constitutes a violation of New York consumer protection law.
+
+I also request you notify the data furnisher (${a?.collectionAgency || a?.creditorName || '[FURNISHER]'}) to cease furnishing this information for any New York resident.
+
+If not removed within 30 days, I will file complaints with the New York Attorney General and the CFPB.
+
+Sincerely,
+${p.firstName} ${p.lastName}`
+  },
+  {
+    id: 'Form-226',
+    name: 'State Attorney General Complaint',
+    category: 'escalation',
+    template: (p, a) => `STATE ATTORNEY GENERAL COMPLAINT
+
+To: Office of the Attorney General, State of ${p.state}
+From: ${p.firstName} ${p.lastName}
+${p.addresses?.find(x => x.isCurrent)?.street || '[YOUR STREET ADDRESS]'}
+${p.addresses?.find(x => x.isCurrent)?.city || '[CITY]'}, ${p.state} ${p.addresses?.find(x => x.isCurrent)?.zip || '[ZIP]'}
+
+Date: ${new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'})}
+
+COMPLAINT AGAINST: ${getBureauName2(a?.bureaus?.[0] || 'equifax')}
+
+ACCOUNT IN DISPUTE:
+  Creditor: ${a?.creditorName || '[CREDITOR NAME]'}
+  Account: ${a?.accountNumber || '[ACCOUNT NUMBER]'}
+  Balance: $${a?.balance ?? '[BALANCE]'}
+  Type: ${a?.accountType || '[TYPE]'}
+
+STATEMENT OF FACTS:
+I have attempted to resolve inaccurate credit reporting through the dispute process as required by the Fair Credit Reporting Act (15 U.S.C. § 1681 et seq.).
+
+1. I filed a dispute with ${getBureauName2(a?.bureaus?.[0] || 'equifax')}
+2. The bureau returned a "verified" response without documentation
+3. I sent a Method of Verification demand via certified mail
+4. The bureau failed to respond within the statutory period
+
+This constitutes violations of FCRA Sections 611 and 623, as well as applicable state consumer protection statutes.
+
+RELIEF REQUESTED:
+Investigation of ${getBureauName2(a?.bureaus?.[0] || 'equifax')}'s practices and assistance in resolving this matter.
+
+Sincerely,
+${p.firstName} ${p.lastName}`
+  },
+  {
+    id: 'Form-227',
+    name: 'Goodwill Deletion Request',
+    category: 'goodwill',
+    template: (p, a) => `${p.firstName} ${p.lastName}
+${p.addresses?.find(x => x.isCurrent)?.street || '[YOUR STREET ADDRESS]'}
+${p.addresses?.find(x => x.isCurrent)?.city || '[CITY]'}, ${p.state} ${p.addresses?.find(x => x.isCurrent)?.zip || '[ZIP]'}
+
+Date: ${new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'})}
+
+${a?.creditorName || '[CREDITOR NAME]'}
+[CREDITOR ADDRESS]
+
+Re: Goodwill Adjustment Request
+Account: ${a?.accountNumber || '[ACCOUNT NUMBER]'}
+
+Dear ${a?.creditorName || '[CREDITOR]'} Customer Relations:
+
+I am writing to request a goodwill adjustment to remove a negative entry on my account. I have been a customer since ${a?.dateOpened ? new Date(a.dateOpened).toLocaleDateString('en-US',{year:'numeric',month:'long'}) : '[DATE OPENED]'} and value my relationship with ${a?.creditorName || '[CREDITOR]'}.
+
+The negative mark was due to circumstances beyond my normal control. Since then, I have maintained consistent, on-time payments and responsible account management.
+
+I respectfully request that you update the reporting on this account to reflect my otherwise positive payment history. This adjustment would assist me in ${currentProfile?.goal === 'buying_home' ? 'purchasing my first home' : currentProfile?.goal === 'business_financing' ? 'securing business financing' : currentProfile?.goal === 'renting_apartment' ? 'securing housing' : 'improving my creditworthiness'}.
+
+I would be grateful for your consideration.
+
+Sincerely,
+${p.firstName} ${p.lastName}`
+  }
+];
+
+function getBureauAddr(bureau) {
+  const addrs = {
+    equifax: 'Equifax Information Services LLC\nP.O. Box 740256\nAtlanta, GA 30374',
+    experian: 'Experian\nP.O. Box 4500\nAllen, TX 75013',
+    transunion: 'TransUnion LLC\nConsumer Dispute Center\nP.O. Box 2000\nChester, PA 19016'
+  };
+  return addrs[bureau] || addrs.equifax;
+}
+
+function getBureauName2(bureau) {
+  const names = { equifax: 'Equifax Information Services LLC', experian: 'Experian', transunion: 'TransUnion LLC' };
+  return names[bureau] || 'Equifax Information Services LLC';
+}
+
+let selectedFormId = null;
+let selectedDisputeAccountId = null;
+
 async function renderDisputes() {
   const m = document.getElementById('main-content');
-  m.innerHTML = '<p style="color:var(--text2)">Building dispute calendar...</p>';
+  m.innerHTML = '<p class="text-dim">Building dispute system...</p>';
   const res = await authFetch(`/api/modules/${currentProfile.id}/dispute-calendar`, {method:'POST'});
   const cal = await res.json();
+  const accounts = currentProfile?.accounts || [];
 
   m.innerHTML = `
-    <div class="module-header"><div class="icon">&#9889;</div><div><h2>STAGGERED DISPUTE CALENDAR</h2><span style="color:var(--text2);font-size:11px">4-month rolling window — never all bureaus at once</span></div></div>
-    <p style="color:var(--text2);margin-bottom:16px">${cal.summary}</p>
-    <div class="stat-row">
-      <div class="stat-box"><div class="value">${cal.calendar?.entries?.length || 0}</div><div class="label">Scheduled</div></div>
-      <div class="stat-box"><div class="value">${cal.calendar?.currentMonth || 1}</div><div class="label">Current Month</div></div>
+    <div class="module-header"><div class="icon">&#9889;</div><div><h2>DISPUTE COMMAND CENTER</h2><span class="text-sm text-dim">Form ID Variable Injection &mdash; Select form, select account, generate letter</span></div></div>
+
+    <div class="card highlight">
+      <h3>FORM LIBRARY</h3>
+      <p class="text-sm text-dim mt-8 mb-12">Select a form template. Client details and account data auto-populate.</p>
+      <div class="form-selector" id="form-selector">
+        ${FORM_LIBRARY.map(f => `
+          <div class="form-card" data-form-id="${f.id}" onclick="selectForm('${f.id}')">
+            <div class="form-id">${f.id}</div>
+            <div class="form-name">${f.name}</div>
+          </div>`).join('')}
+      </div>
     </div>
-    ${[1,2,3,4].map(month => {
-      const entries = (cal.calendar?.entries || []).filter(e => e.month === month);
-      const labels = {1:'Month 1: Payment History & Status',2:'Month 2: Limits & Duplicates',3:'Month 3: Personal Info & AU',4:'Month 4: Escalation (MoV/CFPB/AG)'};
-      return entries.length > 0 ? `<div class="calendar-month"><h3>${labels[month]}</h3>${entries.map(e => `
-        <div class="calendar-entry ${e.status}"><div class="dot"></div><span>${e.notes}</span><span style="color:var(--text2);margin-left:auto">${e.bureau} | ${new Date(e.scheduledDate).toLocaleDateString()}</span></div>`).join('')}</div>` : '';
-    }).join('')}
-    ${(cal.calendar?.entries || []).length === 0 ? '<p style="color:var(--text2)">Add negative accounts in Profile tab to generate a dispute calendar.</p>' : ''}
+
+    ${accounts.length > 0 ? `
+    <div class="card" id="account-selector-card">
+      <h3>SELECT ACCOUNT</h3>
+      <p class="text-sm text-dim mt-8 mb-12">Choose which account to inject into the letter.</p>
+      <div id="dispute-account-list">
+        ${accounts.map(a => `
+          <div class="advisory-item ${a.isNegative ? 'critical' : 'medium'}" style="cursor:pointer" onclick="selectDisputeAccount('${a.id}')">
+            <div class="action">${a.creditorName} ${a.accountNumber ? '('+a.accountNumber+')' : ''}</div>
+            <div class="condition">${a.accountType} | ${a.accountStatus} | ${a.bureaus.join(', ').toUpperCase()}</div>
+            <div class="meta"><span>Balance: $${a.balance ?? 'N/A'}</span><span>Limit: $${a.creditLimit ?? 'N/A'}</span></div>
+          </div>`).join('')}
+      </div>
+    </div>` : '<div class="card"><p class="text-dim">Add accounts in Profile tab to generate dispute letters.</p></div>'}
+
+    <div class="card" id="letter-output-card" style="display:none">
+      <div class="card-header">
+        <h3 id="letter-form-title">GENERATED LETTER</h3>
+        <button class="ghost" onclick="copyLetter()">COPY TO CLIPBOARD</button>
+      </div>
+      <div class="letter-preview" id="letter-content"></div>
+    </div>
+
+    <div class="card mt-16">
+      <h3>STAGGERED DISPUTE CALENDAR</h3>
+      <p class="text-dim mt-8 mb-12">${cal.summary}</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="value">${cal.calendar?.entries?.length || 0}</div><div class="label">Scheduled</div></div>
+        <div class="stat-box"><div class="value">${cal.calendar?.currentMonth || 1}</div><div class="label">Current Month</div></div>
+      </div>
+      ${[1,2,3,4].map(month => {
+        const entries = (cal.calendar?.entries || []).filter(e => e.month === month);
+        const labels = {1:'MONTH 1: PAYMENT HISTORY & STATUS',2:'MONTH 2: LIMITS & DUPLICATES',3:'MONTH 3: PERSONAL INFO & AU',4:'MONTH 4: ESCALATION (MOV/CFPB/AG)'};
+        return entries.length > 0 ? `<div class="calendar-month mt-12"><h3>${labels[month]}</h3>${entries.map(e => `
+          <div class="calendar-entry ${e.status}"><div class="dot"></div><span>${e.notes}</span><span class="text-dim" style="margin-left:auto;font-family:var(--mono)">${e.bureau.toUpperCase()} | ${new Date(e.scheduledDate).toLocaleDateString()}</span></div>`).join('')}</div>` : '';
+      }).join('')}
+      ${(cal.calendar?.entries || []).length === 0 ? '<p class="text-dim mt-8">Add negative accounts to generate dispute calendar.</p>' : ''}
+    </div>
   `;
 }
 
-// ─── Collections Tab (Module 5) ─────────────────────────────────────────────
+function selectForm(formId) {
+  selectedFormId = formId;
+  document.querySelectorAll('.form-card').forEach(c => c.classList.remove('selected'));
+  const card = document.querySelector(`[data-form-id="${formId}"]`);
+  if (card) card.classList.add('selected');
+  generateLetter();
+}
+
+function selectDisputeAccount(accountId) {
+  selectedDisputeAccountId = accountId;
+  document.querySelectorAll('#dispute-account-list .advisory-item').forEach(c => {
+    c.style.borderLeftColor = '';
+    c.style.background = '';
+  });
+  const el = event.currentTarget;
+  el.style.borderLeftColor = 'var(--blue)';
+  el.style.background = 'var(--blue-glow)';
+  generateLetter();
+}
+
+function generateLetter() {
+  if (!selectedFormId) return;
+  const form = FORM_LIBRARY.find(f => f.id === selectedFormId);
+  if (!form) return;
+
+  const account = selectedDisputeAccountId
+    ? (currentProfile?.accounts || []).find(a => a.id === selectedDisputeAccountId)
+    : null;
+
+  const letterText = form.template(currentProfile || {}, account);
+
+  const outputCard = document.getElementById('letter-output-card');
+  const titleEl = document.getElementById('letter-form-title');
+  const contentEl = document.getElementById('letter-content');
+
+  outputCard.style.display = 'block';
+  titleEl.textContent = `${form.id} — ${form.name}`;
+
+  // Highlight injected variables
+  let html = letterText
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\[([^\]]+)\]/g, '<span class="var-injected">[$1]</span>');
+
+  // Highlight actual injected values (non-placeholder text from profile/account)
+  if (currentProfile?.firstName) {
+    html = html.replace(new RegExp(currentProfile.firstName + ' ' + currentProfile.lastName, 'g'),
+      `<span class="var-injected">${currentProfile.firstName} ${currentProfile.lastName}</span>`);
+  }
+  if (account?.creditorName) {
+    html = html.replace(new RegExp(account.creditorName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'),
+      `<span class="var-injected">${account.creditorName}</span>`);
+  }
+
+  contentEl.innerHTML = html;
+  outputCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function copyLetter() {
+  const el = document.getElementById('letter-content');
+  const text = el.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('#letter-output-card .ghost');
+    btn.textContent = 'COPIED';
+    setTimeout(() => btn.textContent = 'COPY TO CLIPBOARD', 2000);
+  });
+}
+
+// ─── Collections Tab ────────────────────────────────────────────────────────
 async function renderCollections() {
   const m = document.getElementById('main-content');
-  m.innerHTML = '<p style="color:var(--text2)">Analyzing collections...</p>';
+  m.innerHTML = '<p class="text-dim">Analyzing collections...</p>';
   const res = await authFetch(`/api/modules/${currentProfile.id}/collections`, {method:'POST'});
   const data = await res.json();
 
   m.innerHTML = `
-    <div class="module-header"><div class="icon">$</div><div><h2>PAY-FOR-DELETE NEGOTIATOR</h2><span style="color:var(--text2);font-size:11px">Zombie debt detection &bull; SOL calculator &bull; Graduated offers</span></div></div>
-    <p style="color:var(--text2);margin-bottom:16px">${data.summary}</p>
+    <div class="module-header"><div class="icon">$</div><div><h2>PAY-FOR-DELETE NEGOTIATOR</h2><span class="text-sm text-dim">Zombie debt detection &bull; SOL calculator &bull; Graduated offers</span></div></div>
+    <p class="text-dim mb-12">${data.summary}</p>
     <div class="stat-row">
       <div class="stat-box"><div class="value">${data.analyses?.length || 0}</div><div class="label">Collections</div></div>
       <div class="stat-box"><div class="value">${(data.analyses||[]).filter(a=>a.isZombiDebt).length}</div><div class="label">Zombie Debts</div></div>
       <div class="stat-box"><div class="value">${(data.analyses||[]).filter(a=>a.strategy.startsWith('pay_for')).length}</div><div class="label">PFD Candidates</div></div>
     </div>
     ${(data.analyses||[]).map(a => `
-      <div class="card">
+      <div class="card mt-8">
         <div class="card-header"><h3>${a.creditorName}</h3><span class="badge ${a.isZombiDebt ? 'critical' : 'medium'}">${a.strategy.replace(/_/g,' ')}</span></div>
         <div class="grid-3" style="font-size:11px">
-          <div><label>Balance</label>$${a.currentBalance}</div>
-          <div><label>Age</label>${a.ageMonths} months</div>
-          <div><label>State SOL</label>${a.stateSOL} months</div>
-          <div><label>FCRA Expiry</label>${new Date(a.fcraExpiry).toLocaleDateString()}</div>
-          <div><label>Months Left</label>${a.monthsUntilExpiry}</div>
-          <div><label>Zombie?</label>${a.isZombiDebt ? '<span style="color:var(--red)">YES — DO NOT PAY</span>' : 'No'}</div>
+          <div><label>Balance</label><span class="mono">$${a.currentBalance}</span></div>
+          <div><label>Age</label><span class="mono">${a.ageMonths} mo</span></div>
+          <div><label>State SOL</label><span class="mono">${a.stateSOL} mo</span></div>
+          <div><label>FCRA Expiry</label><span class="mono">${new Date(a.fcraExpiry).toLocaleDateString()}</span></div>
+          <div><label>Months Left</label><span class="mono">${a.monthsUntilExpiry}</span></div>
+          <div><label>Zombie?</label>${a.isZombiDebt ? '<span style="color:var(--red);font-weight:700">YES &mdash; DO NOT PAY</span>' : '<span class="text-dim">No</span>'}</div>
         </div>
       </div>`).join('')}
-    ${(data.analyses||[]).length === 0 ? '<p style="color:var(--text2)">No collection accounts found. Add collection-type accounts in Profile tab.</p>' : ''}
+    ${(data.analyses||[]).length === 0 ? '<p class="text-dim mt-8">No collection accounts found. Add collection-type accounts in Profile tab.</p>' : ''}
   `;
 }
 
-// ─── Medical Tab (Module 8) ─────────────────────────────────────────────────
+// ─── Medical Tab ────────────────────────────────────────────────────────────
 async function renderMedical() {
   const m = document.getElementById('main-content');
-  m.innerHTML = '<p style="color:var(--text2)">Running medical debt engine...</p>';
+  m.innerHTML = '<p class="text-dim">Running medical debt engine...</p>';
   const res = await authFetch(`/api/modules/${currentProfile.id}/medical-debt`, {method:'POST'});
   const data = await res.json();
 
   m.innerHTML = `
-    <div class="module-header"><div class="icon">+</div><div><h2>STATE-AWARE MEDICAL DEBT ENGINE</h2><span style="color:var(--text2);font-size:11px">${currentProfile?.state === 'NY' ? 'NY STATE BAN ACTIVE' : 'Federal rules + bureau voluntary commitments'}</span></div></div>
-    <p style="color:var(--text2);margin-bottom:16px">${data.summary}</p>
+    <div class="module-header"><div class="icon">+</div><div><h2>STATE-AWARE MEDICAL DEBT ENGINE</h2><span class="text-sm text-dim">${currentProfile?.state === 'NY' ? 'NY STATE BAN ACTIVE' : 'Federal rules + bureau voluntary commitments'}</span></div></div>
+    <p class="text-dim mb-12">${data.summary}</p>
     ${(data.actions||[]).map(a => `
-      <div class="card">
-        <div class="card-header"><span class="badge ${a.rule === 'ny_state_ban' ? 'critical' : 'high'}">${a.rule.replace(/_/g,' ')}</span><span style="color:var(--green);font-size:11px">${a.expectedImpact}</span></div>
-        <p style="font-size:11px;color:var(--text2);margin-bottom:8px">Target: ${a.targetFurnisher} | Bureau: ${a.targetBureau || 'All'}</p>
-        <details><summary style="cursor:pointer;color:var(--accent);font-size:11px">View Letter</summary><pre style="white-space:pre-wrap;font-size:10px;margin-top:8px;padding:12px;background:var(--bg);border:1px solid var(--border)">${a.letterContent}</pre></details>
+      <div class="card mt-8">
+        <div class="card-header"><span class="badge ${a.rule === 'ny_state_ban' ? 'critical' : 'high'}">${a.rule.replace(/_/g,' ')}</span><span style="color:var(--green);font-size:11px;font-weight:600">${a.expectedImpact}</span></div>
+        <p class="text-sm text-dim mb-8">Target: ${a.targetFurnisher} | Bureau: ${a.targetBureau || 'All'}</p>
+        <details><summary style="cursor:pointer;color:var(--blue-bright);font-size:11px;font-weight:600">VIEW LETTER</summary><div class="letter-preview mt-8">${a.letterContent}</div></details>
       </div>`).join('')}
-    ${(data.actions||[]).length === 0 ? '<p style="color:var(--text2)">No medical debts found. Add medical accounts (check "Medical? Yes") in Profile tab.</p>' : ''}
+    ${(data.actions||[]).length === 0 ? '<p class="text-dim">No medical debts found. Add medical accounts (Medical? Yes) in Profile tab.</p>' : ''}
   `;
 }
 
-// ─── Monitor Tab (Module 6 + 7) ─────────────────────────────────────────────
+// ─── Monitor Tab ────────────────────────────────────────────────────────────
 async function renderMonitor() {
   const m = document.getElementById('main-content');
-  m.innerHTML = '<p style="color:var(--text2)">Running AU Audit & Credit Mix analysis...</p>';
+  m.innerHTML = '<p class="text-dim">Running AU Audit & Credit Mix analysis...</p>';
   const res = await authFetch(`/api/modules/${currentProfile.id}/au-audit`, {method:'POST'});
   const data = await res.json();
 
   m.innerHTML = `
     <div class="module-header"><div class="icon">&#9673;</div><div><h2>AU AUDIT & CREDIT MIX ADVISOR</h2></div></div>
-    <p style="color:var(--text2);margin-bottom:16px">${data.summary}</p>
+    <p class="text-dim mb-12">${data.summary}</p>
 
     <h3 class="mb-8">AUTHORIZED USER ACCOUNTS</h3>
     ${(data.auResults||[]).map(a => `
@@ -867,21 +1299,21 @@ async function renderMonitor() {
         <div class="condition">${a.reason}</div>
         <div class="meta"><span>Primary: ${a.primaryHolder}</span><span>Util: ${a.reportedUtilization}%</span><span>${a.expectedImpact}</span></div>
       </div>`).join('')}
-    ${(data.auResults||[]).length === 0 ? '<p style="color:var(--text2)">No authorized user accounts found.</p>' : ''}
+    ${(data.auResults||[]).length === 0 ? '<p class="text-dim">No authorized user accounts found.</p>' : ''}
 
-    <h3 class="mt-12 mb-8">CREDIT MIX ANALYSIS</h3>
+    <h3 class="mt-16 mb-8">CREDIT MIX ANALYSIS</h3>
     <div class="card">
       <div class="grid-3" style="font-size:11px">
-        <div><label>Revolving</label>${data.mixAnalysis?.revolvingCount || 0} accounts</div>
-        <div><label>Installment</label>${data.mixAnalysis?.installmentCount || 0} accounts</div>
-        <div><label>Mortgage</label>${data.mixAnalysis?.hasMortgage ? 'Yes' : 'No'}</div>
+        <div><label>Revolving</label><span class="mono">${data.mixAnalysis?.revolvingCount || 0} accounts</span></div>
+        <div><label>Installment</label><span class="mono">${data.mixAnalysis?.installmentCount || 0} accounts</span></div>
+        <div><label>Mortgage</label><span class="mono">${data.mixAnalysis?.hasMortgage ? 'Yes' : 'No'}</span></div>
       </div>
       ${data.mixAnalysis?.recommendation ? `
         <div class="advisory-item medium mt-8">
           <div class="action">${data.mixAnalysis.recommendation.productName}</div>
           <div class="condition">${data.mixAnalysis.recommendation.reason}</div>
           <div class="impact">${data.mixAnalysis.recommendation.expectedImpact}</div>
-        </div>` : '<p style="color:var(--green);margin-top:8px">Credit mix is balanced.</p>'}
+        </div>` : '<p style="color:var(--green);margin-top:12px;font-weight:600">Credit mix is balanced.</p>'}
     </div>
   `;
 }
@@ -890,9 +1322,12 @@ async function renderMonitor() {
 function renderDocuments() {
   const m = document.getElementById('main-content');
   m.innerHTML = `
-    <div class="module-header"><div class="icon">&#9719;</div><div><h2>GENERATED DOCUMENTS</h2><span style="color:var(--text2);font-size:11px">Letters, complaints, and filings</span></div></div>
-    <p style="color:var(--text2)">Documents are generated when you run modules (Collections, Medical, Disputes). Check each module tab to generate letters.</p>
-    <button class="primary mt-12" onclick="renderDashboard();document.querySelector('[data-tab=dashboard]').click()">Return to Dashboard</button>
+    <div class="module-header"><div class="icon">&#9719;</div><div><h2>GENERATED DOCUMENTS</h2><span class="text-sm text-dim">Letters, complaints, and filings</span></div></div>
+    <div class="card">
+      <p class="text-dim">Documents are generated when you run modules (Collections, Medical, Disputes).</p>
+      <p class="text-dim mt-8">Use the <strong style="color:var(--white70)">Disputes tab</strong> Form Library to generate letters with auto-populated client details.</p>
+      <button class="primary mt-12" onclick="document.querySelector('[data-tab=disputes]').click()">GO TO DISPUTES</button>
+    </div>
   `;
 }
 
@@ -900,38 +1335,23 @@ function renderDocuments() {
 function getLatestScores(scores) {
   const latest = {};
   for (const s of scores) {
-    if (!latest[s.bureau] || new Date(s.recordedAt) > new Date(latest[s.bureau].recordedAt)) {
-      latest[s.bureau] = s;
-    }
+    if (!latest[s.bureau] || new Date(s.recordedAt) > new Date(latest[s.bureau].recordedAt)) latest[s.bureau] = s;
   }
   const result = {};
-  for (const [bureau, entry] of Object.entries(latest)) {
-    result[bureau] = entry.score;
-  }
+  for (const [bureau, entry] of Object.entries(latest)) result[bureau] = entry.score;
   return result;
 }
 
-// ─── Init: check stored auth ────────────────────────────────────────────────
+// ─── Init ───────────────────────────────────────────────────────────────────
 async function init() {
   if (authToken && authUser) {
-    // Verify token is still valid
     try {
-      const res = await fetch('/api/auth/session', {
-        headers: { 'Authorization': `Bearer ${authToken}` }
-      });
-      if (res.ok) {
-        document.getElementById('auth-screen').style.display = 'none';
-        onAuthComplete();
-        return;
-      }
+      const res = await fetch('/api/auth/session', { headers: { 'Authorization': `Bearer ${authToken}` } });
+      if (res.ok) { document.getElementById('auth-screen').style.display = 'none'; onAuthComplete(); return; }
     } catch (e) {}
-    // Token invalid — clear and show login
-    localStorage.removeItem('cg_token');
-    localStorage.removeItem('cg_user');
-    authToken = null;
-    authUser = null;
+    localStorage.removeItem('cg_token'); localStorage.removeItem('cg_user');
+    authToken = null; authUser = null;
   }
-  // Show login screen
   document.getElementById('auth-screen').style.display = 'flex';
 }
 init();
