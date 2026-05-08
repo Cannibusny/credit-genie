@@ -2,7 +2,7 @@
 import { Router } from "express";
 import crypto from "node:crypto";
 import { getAdminClient, getPublicClient, isSupabaseConfigured } from "../lib/supabase.js";
-import { createStubSession, removeStubSession, requireAuth } from "../middleware/auth.js";
+import { createStubSession, createStubToken, removeStubSession, requireAuth } from "../middleware/auth.js";
 import { stubs } from "../lib/config.js";
 import { log } from "../lib/logger.js";
 
@@ -36,7 +36,7 @@ authRouter.post("/signup", async (req, res) => {
     if (stubUsers.has(email.toLowerCase())) {
       return res.status(409).json({ error: "User already exists" });
     }
-    const id = `user-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const id = "user-" + crypto.createHash("sha256").update(email.toLowerCase()).digest("hex").slice(0, 16);
     stubUsers.set(email.toLowerCase(), {
       id,
       email: email.toLowerCase(),
@@ -45,8 +45,7 @@ authRouter.post("/signup", async (req, res) => {
       lastName: lastName ?? "",
       createdAt: new Date().toISOString(),
     });
-    const token = crypto.randomBytes(32).toString("hex");
-    createStubSession(token, id, email.toLowerCase());
+    const token = createStubToken(id, email.toLowerCase());
     log.info({ email, userId: id }, "Stub user created");
     return res.status(201).json({
       user: { id, email: email.toLowerCase(), firstName, lastName },
@@ -103,8 +102,7 @@ authRouter.post("/login", async (req, res) => {
     if (!user || user.password !== hashPassword(password)) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
-    const token = crypto.randomBytes(32).toString("hex");
-    createStubSession(token, user.id, user.email);
+    const token = createStubToken(user.id, user.email);
     log.info({ email: user.email, userId: user.id }, "Stub login");
     return res.json({
       user: { id: user.id, email: user.email, firstName: user.firstName, lastName: user.lastName },
@@ -178,7 +176,7 @@ authRouter.post("/seed", async (_req, res) => {
         results.push({ email: u.email, status: "already_exists", userId: existing.id });
         continue;
       }
-      const id = `user-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      const id = "user-" + crypto.createHash("sha256").update(u.email.toLowerCase()).digest("hex").slice(0, 16);
       stubUsers.set(u.email.toLowerCase(), {
         id,
         email: u.email.toLowerCase(),

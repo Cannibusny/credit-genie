@@ -1,5 +1,6 @@
 // Authentication middleware — verifies Supabase JWT or falls back to stub auth
 import type { Request, Response, NextFunction } from "express";
+import crypto from "node:crypto";
 import { getAdminClient, isSupabaseConfigured } from "../lib/supabase.js";
 import { log } from "../lib/logger.js";
 import { stubs } from "../lib/config.js";
@@ -14,7 +15,30 @@ declare global {
   }
 }
 
-// In-memory stub sessions (used when Supabase is not configured)
+// HMAC key for signing stub tokens (deterministic so all serverless instances agree)
+const STUB_SIGNING_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "credit-genie-stub-key-2026";
+
+/** Create an HMAC-signed token encoding user identity (no server-side state needed). */
+export function createStubToken(userId: string, email: string): string {
+  const payload = Buffer.from(JSON.stringify({ userId, email })).toString("base64url");
+  const sig = crypto.createHmac("sha256", STUB_SIGNING_KEY).update(payload).digest("base64url");
+  return `${payload}.${sig}`;
+}
+
+/** Verify and decode an HMAC-signed stub token. Returns null if invalid. */
+function verifyStubToken(token: string): { userId: string; email: string } | null {
+  const dot = token.indexOf(".");
+  if (dot < 0) return null;
+  const payload = token.slice(0, dot);
+  const sig = token.slice(dot + 1);
+  const expected = crypto.createHmac("sha256", STUB_SIGNING_KEY).update(payload).digest("base64url");
+  if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return null;
+  try {
+    return JSON.parse(Buffer.from(payload, "base64url").toString()) as { userId: string; email: string };
+  } catch { return null; }
+}
+
+// Legacy in-memory sessions kept for backward compat (logout, etc.)
 const stubSessions = new Map<string, { userId: string; email: string }>();
 
 export function createStubSession(token: string, userId: string, email: string): void {
@@ -39,7 +63,14 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
   const token = authHeader.slice(7); // Remove "Bearer "
 
   if (stubs.supabase || !isSupabaseConfigured()) {
-    // Stub mode: look up token in in-memory session store
+    // Stub mode: first try HMAC-signed token, then fall back to legacy session lookup
+    const verified = verifyStubToken(token);
+    if (verified) {
+      req.userId = verified.userId;
+      req.userEmail = verified.email;
+      next();
+      return;
+    }
     const session = stubSessions.get(token);
     if (!session) {
       res.status(401).json({ error: "Invalid or expired session token" });

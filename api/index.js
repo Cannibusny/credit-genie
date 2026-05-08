@@ -10,6 +10,11 @@ function hashPassword(password) {
   return crypto.createHash("sha256").update(password).digest("hex");
 }
 
+// Deterministic user ID — same email always gets the same ID across all instances
+function deterministicId(email) {
+  return "user-" + crypto.createHash("sha256").update(email.toLowerCase()).digest("hex").slice(0, 16);
+}
+
 // Auto-seed the 3 founding users on module init (handles cold starts)
 const foundingUsers = [
   { email: "sjw136@msn.com", firstName: "Sheridan", lastName: "Williams", password: "CreditGenie2026!" },
@@ -20,7 +25,7 @@ const foundingUsers = [
 for (const u of foundingUsers) {
   if (!stubUsers.has(u.email.toLowerCase())) {
     stubUsers.set(u.email.toLowerCase(), {
-      id: `user-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      id: deterministicId(u.email),
       email: u.email.toLowerCase(),
       password: hashPassword(u.password),
       firstName: u.firstName,
